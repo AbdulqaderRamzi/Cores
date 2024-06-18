@@ -1,0 +1,52 @@
+﻿@model IEnumerable<ActivityLog>
+
+<!-- DataTale -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Activity Logs</h6>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>Entity Type</th>
+                    <th>Action</th>
+                    <th>TimeStamp</th>
+                    <th>Property</th>
+                    <th>Old Value</th>
+                    <th>New Value</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>Entity Type</th>
+                    <th>Action</th>
+                    <th>TimeStamp</th>
+                    <th>Property</th>
+                    <th>Old Value</th>
+                    <th>New Value</th>
+                </tr>
+                </tfoot>
+                <tbody>
+                @foreach (var activity in Model)
+                {
+                    <tr>
+                        @{
+                            var words = activity.EntityType.Split(['.']);
+                            <td>@words[^1]</td>
+                        }
+                        <td>@activity.Action</td>
+                        <td>@activity.TimeStamp.ToString("MMM-dd-yy hh:mm tt")</td>
+                        <td>@activity.Property</td>
+                        <td>@activity.OldValue</td>
+                        <td>@activity.NewValue</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

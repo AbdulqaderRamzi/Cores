@@ -1,0 +1,17 @@
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\Cores.DataService.deps.json
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\Cores.DataService.runtimeconfig.json
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\Cores.DataService.dll
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\Cores.DataService.pdb
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\Cores.Models.dll
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\Cores.Models.pdb
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\Cores.DataService.csproj.AssemblyReference.cache
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\Cores.DataService.GeneratedMSBuildEditorConfig.editorconfig
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\Cores.DataService.AssemblyInfoInputs.cache
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\Cores.DataService.AssemblyInfo.cs
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\Cores.DataService.csproj.CoreCompileInputs.cache
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\Cores.DataService.csproj.CopyComplete
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\Cores.DataService.dll
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\refint\Cores.DataService.dll
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\Cores.DataService.pdb
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\Cores.DataService.genruntimeconfig.cache
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\ref\Cores.DataService.dll
