@@ -22,6 +22,21 @@ namespace Cores.DataService.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("ApplicationUserLanguage", b =>
+                {
+                    b.Property<string>("EmployeesId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("LanguagesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeesId", "LanguagesId");
+
+                    b.HasIndex("LanguagesId");
+
+                    b.ToTable("ApplicationUserLanguage");
+                });
+
             modelBuilder.Entity("Cores.Models.ActivityLog", b =>
                 {
                     b.Property<int>("Id")
@@ -90,15 +105,10 @@ namespace Cores.DataService.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("IsLead")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("State")
@@ -132,7 +142,7 @@ namespace Cores.DataService.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("Cores.Models.CheckBox", b =>
+            modelBuilder.Entity("Cores.Models.Language", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -140,21 +150,13 @@ namespace Cores.DataService.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("varchar(255)");
-
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("isChecked")
-                        .HasColumnType("tinyint(1)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("CheckBoxes");
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("Cores.Models.MessagePayload", b =>
@@ -187,6 +189,21 @@ namespace Cores.DataService.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("MessagePayloads");
+                });
+
+            modelBuilder.Entity("CustomerLanguage", b =>
+                {
+                    b.Property<int>("CustomersId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LanguagesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CustomersId", "LanguagesId");
+
+                    b.HasIndex("LanguagesId");
+
+                    b.ToTable("CustomerLanguage");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -417,24 +434,36 @@ namespace Cores.DataService.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("Salary")
                         .HasColumnType("int");
 
                     b.Property<string>("State")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("StreetAddress")
                         .HasColumnType("longtext");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("ApplicationUserLanguage", b =>
+                {
+                    b.HasOne("Cores.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("EmployeesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cores.Models.Language", null)
+                        .WithMany()
+                        .HasForeignKey("LanguagesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Cores.Models.ActivityLog", b =>
@@ -448,15 +477,6 @@ namespace Cores.DataService.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("Cores.Models.CheckBox", b =>
-                {
-                    b.HasOne("Cores.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId");
-
-                    b.Navigation("ApplicationUser");
-                });
-
             modelBuilder.Entity("Cores.Models.MessagePayload", b =>
                 {
                     b.HasOne("Cores.Models.ApplicationUser", "ApplicationUser")
@@ -464,6 +484,21 @@ namespace Cores.DataService.Migrations
                         .HasForeignKey("SenderId");
 
                     b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("CustomerLanguage", b =>
+                {
+                    b.HasOne("Cores.Models.CRM.Customer", null)
+                        .WithMany()
+                        .HasForeignKey("CustomersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cores.Models.Language", null)
+                        .WithMany()
+                        .HasForeignKey("LanguagesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

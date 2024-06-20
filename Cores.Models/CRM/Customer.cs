@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Cores.Models.CRM;
@@ -10,14 +11,13 @@ public class Customer
     [DisplayName("First Name")]
     public string FirstName { get; set; }
     [DisplayName("Last Name")]
-    public string LastName { get; set; } = string.Empty;
+    public string? LastName { get; set; }
     [EmailAddress]
     [Required]
     public string Email { get; set; }
-    [Required]
     [Phone]
     [DisplayName("Phone Number")]
-    public string PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
     [Required]
     public string Gender { get; set; }
     public string? State{ get; set; }
@@ -25,7 +25,7 @@ public class Customer
     [DisplayName("Street Address")]
     public string? StreetAddress{ get; set; }
     public string? Document { get; set; }
-    [Required]
-    public bool IsLead { get; set; } = false;
     public DateTime CreatedTime { get; set; } = DateTime.Now;
+    public ICollection<Language> Languages { get; set; } = 
+            new Collection<Language>();
 }

@@ -169,34 +169,30 @@ public class RegisterModel : PageModel
                 {
                     await file.CopyToAsync(fileStream);
                 }
-
-                /*if (!string.IsNullOrEmpty(Input.ImageUrl)) {
-                    var oldImagePath = Path.Combine(wwwRootPath, Input.ImageUrl.TrimStart('\\'));
-                    if (System.IO.File.Exists(oldImagePath))
-                        System.IO.File.Delete(oldImagePath);
-                }*/
                 Input.ImageUrl = @"\images\employees\" + fileName;
             }
 
             user.ImageUrl = Input.ImageUrl;
-            foreach (var lang in languages)
-            {
-                var checkbox = new CheckBox
-                {
-                    Value = lang,
-                    isChecked = true,
-                    EmployeeId = user.Id
-                };
-                await _unitOfWork.CheckBox.Add(checkbox);
-            }
+           
 
             var result = await _userManager.CreateAsync(user, Input.Password);
-            await _unitOfWork.SaveAsync();
-
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
                 if (!string.IsNullOrEmpty(Input.Role)) await _userManager.AddToRoleAsync(user, Input.Role);
+                
+                foreach (var lang in languages)
+                {
+                    var language = await _unitOfWork.Language.Get(l => l.Value == lang);
+                    if (language is null)
+                    {
+                        language = new Language { Value = lang };
+                        await _unitOfWork.Language.Add(language);
+                    }
+                    user.Languages.Add(language);
+                }
+                await _unitOfWork.SaveAsync();
+
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

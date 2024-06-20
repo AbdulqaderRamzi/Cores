@@ -10,3 +10,4 @@ D:\Graduation-Project-Related-Things\Cores\Cores.Models\obj\Debug\net8.0\refint\
 D:\Graduation-Project-Related-Things\Cores\Cores.Models\obj\Debug\net8.0\Cores.Models.pdb
 D:\Graduation-Project-Related-Things\Cores\Cores.Models\obj\Debug\net8.0\ref\Cores.Models.dll
 D:\Graduation-Project-Related-Things\Cores\Cores.Models\obj\Debug\net8.0\Cores.Models.csproj.AssemblyReference.cache
+D:\Graduation-Project-Related-Things\Cores\Cores.Models\obj\Debug\net8.0\Cores.Models.sourcelink.json

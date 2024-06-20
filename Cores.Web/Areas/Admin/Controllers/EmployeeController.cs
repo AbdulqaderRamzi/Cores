@@ -1,5 +1,4 @@
-﻿using Cores.DataService.Data;
-using Cores.DataService.Repository.IRepository;
+﻿using Cores.DataService.Repository.IRepository;
 using Cores.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +23,7 @@ public class EmployeeController : Controller
     {
         if (id is null)
             return RedirectToAction(nameof(Index));
-        var employee = await _unitOfWork.ApplicationUser.Get(a => a.Id == id);
+        var employee = await _unitOfWork.ApplicationUser.Get(a => a.Id == id, "Languages");
         if (employee is null)
             return RedirectToAction(nameof(Index));
         return View(employee);

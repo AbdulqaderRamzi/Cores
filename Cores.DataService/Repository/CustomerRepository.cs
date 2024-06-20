@@ -1,5 +1,6 @@
 ﻿using Cores.DataService.Data;
 using Cores.DataService.Repository.IRepository;
+using Cores.Models;
 using Cores.Models.CRM;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +14,9 @@ public class CustomerRepository : Repository<Customer>, ICustomerRepository
         _db = db;
     }
 
-    public async Task Update(Customer customer)
+    public async Task Update(Customer customer, List<string> languages)
     {
-        var customerFromDb = await _db.Customers.FirstOrDefaultAsync(c => c.Id == customer.Id);
+        var customerFromDb = await _db.Customers.Include("Languages").FirstOrDefaultAsync(c => c.Id == customer.Id);
         if (customerFromDb is null) 
             return;
         customerFromDb.FirstName = customer.FirstName;
@@ -25,8 +26,20 @@ public class CustomerRepository : Repository<Customer>, ICustomerRepository
         customerFromDb.State = customer.State;
         customerFromDb.PhoneNumber = customer.PhoneNumber;
         customerFromDb.StreetAddress = customer.StreetAddress;
-        customerFromDb.IsLead = customer.IsLead;
         customerFromDb.Document = customer.Document;
-
+        
+        /* Update Languages */
+        customerFromDb.Languages.Clear();
+        var languagesFromDb = await _db.Languages.ToListAsync();
+        foreach (var lang in languages)
+        {
+            var language = languagesFromDb.Find(l => l.Value == lang);
+            if (language is null)
+            {
+                language = new Language { Value = lang};
+                await _db.Languages.AddAsync(language);
+            }
+            customerFromDb.Languages.Add(language);
+        }
     }
 }

@@ -15,3 +15,4 @@ D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\re
 D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\Cores.DataService.pdb
 D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\Cores.DataService.genruntimeconfig.cache
 D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\ref\Cores.DataService.dll
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\Cores.DataService.sourcelink.json

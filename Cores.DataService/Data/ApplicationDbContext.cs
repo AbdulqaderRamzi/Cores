@@ -20,11 +20,11 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     ];
 
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-    public DbSet<CheckBox> CheckBoxes { get; set; }
     public DbSet<ActivityLog> ActivityLogs { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<MessagePayload> MessagePayloads { get; set; }
     public DbSet<Customer> Customers { get; set; }
+    public DbSet<Language> Languages { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
         IHttpContextAccessor httpContextAccessor) : base(options)

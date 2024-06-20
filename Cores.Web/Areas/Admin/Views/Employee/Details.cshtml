@@ -25,6 +25,17 @@
                                     <label asp-for="PhoneNumber"></label>
                                 </dt>
                                 <dd class="col-sm-6">@Model.PhoneNumber</dd>
+                                <dt class="col-sm-6">
+                                    <label asp-for="Languages"></label>
+                                </dt>
+                               <dd class="col-sm-6">
+                                   <ul class="list-unstyled">
+                                       @foreach (var lang in Model.Languages)
+                                       {
+                                           <li>@lang.Value</li>
+                                       }
+                                   </ul>
+                               </dd>
                             </dl>
                         </div>
                         <div class="col-md-6">

@@ -21,3 +21,4 @@ D:\Graduation-Project-Related-Things\Cores\Cores.Utilities\obj\Debug\net8.0\Core
 D:\Graduation-Project-Related-Things\Cores\Cores.Utilities\obj\Debug\net8.0\Cores.Utilities.csproj.CopyComplete
 D:\Graduation-Project-Related-Things\Cores\Cores.Utilities\bin\Debug\net8.0\Cores.Models.dll
 D:\Graduation-Project-Related-Things\Cores\Cores.Utilities\bin\Debug\net8.0\Cores.Models.pdb
+D:\Graduation-Project-Related-Things\Cores\Cores.Utilities\obj\Debug\net8.0\Cores.Utilities.sourcelink.json

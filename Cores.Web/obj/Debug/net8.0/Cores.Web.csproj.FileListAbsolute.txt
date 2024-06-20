@@ -260,3 +260,4 @@ D:\Graduation-Project-Related-Things\Cores\Cores.Web\bin\Debug\net8.0\Microsoft.
 D:\Graduation-Project-Related-Things\Cores\Cores.Web\bin\Debug\net8.0\Microsoft.Owin.Host.SystemWeb.dll
 D:\Graduation-Project-Related-Things\Cores\Cores.Web\bin\Debug\net8.0\Microsoft.Owin.Security.dll
 D:\Graduation-Project-Related-Things\Cores\Cores.Web\bin\Debug\net8.0\Owin.dll
+D:\Graduation-Project-Related-Things\Cores\Cores.Web\obj\Debug\net8.0\Cores.Web.sourcelink.json

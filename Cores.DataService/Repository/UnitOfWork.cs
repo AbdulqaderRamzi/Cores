@@ -12,6 +12,7 @@ public class UnitOfWork : IUnitOfWork
     public ITagRepository Tag { get; }
     public IMessagePayloadRepository MessagePayload { get; }
     public ICustomerRepository Customer { get; }
+    public ILanguageRepository Language { get; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
@@ -22,6 +23,7 @@ public class UnitOfWork : IUnitOfWork
         Tag = new TagRepository(_db);
         MessagePayload = new MessagePayloadRepository(_db);
         Customer = new CustomerRepository(_db);
+        Language = new LanguageRepository(_db);
     }
 
     public async Task SaveAsync() => await _db.SaveChangesAsync();

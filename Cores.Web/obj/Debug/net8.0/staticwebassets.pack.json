@@ -17,6 +17,18 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\images\\customers\\63a1a438-ca07-413b-a429-b269c79ecf99.jpg",
+      "PackagePath": "staticwebassets\\images\\customers\\63a1a438-ca07-413b-a429-b269c79ecf99.jpg"
+    },
+    {
+      "Id": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\images\\customers\\8225aa1f-0700-4e22-b072-b33d57a687d3.htm",
+      "PackagePath": "staticwebassets\\images\\customers\\8225aa1f-0700-4e22-b072-b33d57a687d3.htm"
+    },
+    {
+      "Id": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\images\\employees\\316afbe5-796b-460d-83d8-79d881643143.jpg",
+      "PackagePath": "staticwebassets\\images\\employees\\316afbe5-796b-460d-83d8-79d881643143.jpg"
+    },
+    {
       "Id": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\images\\employees\\5d231f42-72ad-4fa2-8705-cf73c61bc005.jpg",
       "PackagePath": "staticwebassets\\images\\employees\\5d231f42-72ad-4fa2-8705-cf73c61bc005.jpg"
     },
@@ -43,6 +55,10 @@
     {
       "Id": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\images\\employees\\9a2d544c-c7e1-45c1-ae7c-d5c5150e1ad1.jpg",
       "PackagePath": "staticwebassets\\images\\employees\\9a2d544c-c7e1-45c1-ae7c-d5c5150e1ad1.jpg"
+    },
+    {
+      "Id": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\images\\employees\\faa4c633-19ab-48a0-98b4-4f46c71e4837.jpg",
+      "PackagePath": "staticwebassets\\images\\employees\\faa4c633-19ab-48a0-98b4-4f46c71e4837.jpg"
     },
     {
       "Id": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\img\\login-image.jpg",

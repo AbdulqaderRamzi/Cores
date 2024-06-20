@@ -8,5 +8,6 @@ public interface IUnitOfWork
     ITagRepository Tag { get; }
     IMessagePayloadRepository MessagePayload { get; }
     ICustomerRepository Customer { get; }
+    ILanguageRepository Language { get; }
     Task SaveAsync();
 }
