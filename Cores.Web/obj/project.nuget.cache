@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "QwWFqMthZ6eBKaOSUGhihPCXz947MqEIfFiLHBCyonGhhxo0zVYmauNozrhpO3B0FRZKfNnqhGjdhahmqhXnmw==",
+  "dgSpecHash": "EfGTaKmJwidgfjE1wUEIw07mI6MO+lzGvKtbbR5GuzlBR+VV5dPGdNTExB15Icjap2kH1dnJ27YChsMB+jDvKQ==",
   "success": true,
   "projectFilePath": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\Cores.Web.csproj",
   "expectedPackageFiles": [
@@ -171,6 +171,7 @@
     "C:\\Users\\abood\\.nuget\\packages\\nuget.versioning\\6.9.1\\nuget.versioning.6.9.1.nupkg.sha512",
     "C:\\Users\\abood\\.nuget\\packages\\owin\\1.0.0\\owin.1.0.0.nupkg.sha512",
     "C:\\Users\\abood\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\8.0.2\\pomelo.entityframeworkcore.mysql.8.0.2.nupkg.sha512",
+    "C:\\Users\\abood\\.nuget\\packages\\questpdf\\2024.6.0\\questpdf.2024.6.0.nupkg.sha512",
     "C:\\Users\\abood\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\abood\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\abood\\.nuget\\packages\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",

@@ -69,8 +69,8 @@
                     <div class="form-group">
                         <label>Status</label>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gender" id="male" value="Male">
-                            <label class="form-check-label" for="male">Customer</label>
+                            <input asp-for="Customer.Document" class="form-check-input" type="radio" name="gender" id="male" value="Male">
+                            <label asp-for="Customer.Document" class="form-check-label" for="male">Customer</label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="gender" id="female" value="Female">
@@ -97,25 +97,48 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-12">
-                    <label for="file">Attachment</label>
-                    <div class="custom-file">
-                        <input asp-for="Customer.Document" type="file" name="file" class="custom-file-input" id="file">
-                        <label asp-for="Customer.Document" class="custom-file-label" for="file">Choose file</label>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="file">Upload Attachment</label>
+                        <div class="custom-file">
+                            <input type="file" name="file" class="custom-file-input" id="file" accept="image/*,application/pdf">
+                            <label class="custom-file-label" for="file">
+                                @(!string.IsNullOrEmpty(Model.Customer.Document) ? "Choose new file" : "Choose file")
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <div class="dropzone" id="myDropzone">
+                            <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                            <span class="dropzone-text">Drag and drop files here</span>
+                        </div>
+                        <p class="mt-2 text-muted">
+                            <small>Please include any attachments (e.g., logo, mission statement, annual report, etc.) that would provide more info about the customer.</small>
+                        </p>
                     </div>
                 </div>
-                <div class="form-group col-md-12">
-                    <div class="dropzone">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <span class="dropzone-text">Drag and drop files here</span>
+                <div class="col-md-6 my-auto">
+                    <div id="currentDocument" class="text-center" style="display: none;">
+                        <i id="fileIcon" class="fas fa-file fa-5x mb-3"></i>
+                        <p id="fileName" class="mb-3"></p>
+                        <div>
+                            @if (!string.IsNullOrEmpty(Model.Customer.Document))
+                            {
+                                <a href="@Url.Action("DownloadDocument", "Customer", new { fileName = Model.Customer.Document })" class="btn btn-info btn-sm" id="downloadDocument" download>
+                                    <i class="fas fa-download"></i> Download
+                                </a>
+                            }
+                            <button type="button" onclick="deleteObj('/CRM/Customer/DeleteDocument?customerId=@Model.Customer.Id')"
+                                    class="btn btn-danger btn-sm ml-2" id="removeDocument">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                        </div>
                     </div>
-                    <p class="mt-2">Please include any attachments (e.g., logo, mission statement, annual report, etc.) that would provide more info about the customer.</p>
                 </div>
             </div>
         </div>
         <div class="container">
             <div class="form-row">
-
             </div>
         </div>
 
@@ -125,7 +148,8 @@
                 <i class="fas fa-arrow-left"></i> Back
             </a>
             <button type="submit" class="btn btn-success ml-4 mt-5">
-                <i class="fas fa-solid fa-check"></i> Create
+                <i class="fas fa-solid fa-check"></i>
+                @(Model.Customer.Id == 0 ? "Create" : "Update")
             </button>
         </div>
     </form>
@@ -159,41 +183,77 @@
 
 @section Scripts
 {
+    <script src="~/js/delete.js"></script>
+
     <script>
         $(document).ready(function() {
-            // Show the file name when a file is selected
-            $('.custom-file-input').on('change', function(event) {
-                var inputFile = event.currentTarget;
-                $(inputFile).next('.custom-file-label').html(inputFile.files[0].name);
+            function displayFileInfo(file) {
+                let fileName = file.name;
+                let fileExtension = fileName.split('.').pop().toLowerCase();
+
+                $('#fileName').text(fileName);
+
+                // Set appropriate icon based on file type
+                if (fileExtension === 'pdf') {
+                    $('#fileIcon').removeClass().addClass('fas fa-file-pdf fa-5x mb-3 text-danger');
+                } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                    $('#fileIcon').removeClass().addClass('fas fa-file-image fa-5x mb-3 text-primary');
+                } else {
+                    $('#fileIcon').removeClass().addClass('fas fa-file fa-5x mb-3 text-secondary');
+                }
+
+                $('#currentDocument').show();
+            }
+
+            $('.custom-file-input').on('change', function(e) {
+                let fileInput = $(this);
+                let fileName = fileInput.val().split('\\').pop();
+
+                if (fileName) {
+                    fileInput.next('.custom-file-label').html("Choose new file");
+                    if (this.files && this.files[0]) {
+                        displayFileInfo(this.files[0]);
+                        // Hide download button for new file upload
+                        $('#downloadDocument').hide();
+                    }
+                } else {
+                    // If the file input is empty, reset the label and hide the document info
+                    fileInput.next('.custom-file-label').html('Choose file');
+                    $('#currentDocument').hide();
+                }
             });
-    
-            // Prevent default behavior for the drag and drop functionality
-            $('.dropzone').on('dragover', function(event) {
-                event.preventDefault();
-                event.stopPropagation();
+
+            $('#myDropzone').on('dragover', function(e) {
+                e.preventDefault();
+                $(this).addClass('dropzone-active');
+            }).on('dragleave', function() {
+                $(this).removeClass('dropzone-active');
+            }).on('drop', function(e) {
+                e.preventDefault();
+                $(this).removeClass('dropzone-active');
+                let file = e.originalEvent.dataTransfer.files[0];
+                $('#file').prop('files', e.originalEvent.dataTransfer.files);
+                $('.custom-file-label').html("Choose new file");
+                displayFileInfo(file);
+                // Hide download button for new file upload
+                $('#downloadDocument').hide();
             });
-    
-            $('.dropzone').on('dragenter', function(event) {
-                event.preventDefault();
-                event.stopPropagation();
-            });
-    
-            $('.dropzone').on('drop', function(event) {
-                event.preventDefault();
-                event.stopPropagation();
-    
-                var files = event.originalEvent.dataTransfer.files;
-                var fileInput = $('#file');
-    
-                // Use DataTransfer to set the files on the file input
-                var dt = new DataTransfer();
-                dt.items.add(files[0]);
-                fileInput[0].files = dt.files;
-    
-                // Show the file name in the custom file input label
-                $('.custom-file-label').html(files[0].name);
-            });
+
+            // Display existing document if available
+            if ('@Model.Customer.Document' !== '') {
+                let fileName = '@Model.Customer.Document'.split('/').pop();
+                $('#fileName').text(fileName);
+                $('.custom-file-label').html('Choose new file');
+                let fileExtension = fileName.split('.').pop().toLowerCase();
+                if (fileExtension === 'pdf') {
+                    $('#fileIcon').removeClass().addClass('fas fa-file-pdf fa-5x mb-3 text-danger');
+                } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                    $('#fileIcon').removeClass().addClass('fas fa-file-image fa-5x mb-3 text-primary');
+                } else {
+                    $('#fileIcon').removeClass().addClass('fas fa-file fa-5x mb-3 text-secondary');
+                }
+                $('#currentDocument').show();
+            }
         });
     </script>
-
 }

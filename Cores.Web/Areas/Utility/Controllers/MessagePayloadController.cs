@@ -12,10 +12,16 @@ public class MessagePayloadController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public MessagePayloadController(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
-    
+    public MessagePayloadController(IUnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
 
-    public IActionResult Send() => View();
+
+    public IActionResult Send()
+    {
+        return View();
+    }
 
     [HttpPost]
     public async Task<IActionResult> Send(MessagePayload messagePayload)

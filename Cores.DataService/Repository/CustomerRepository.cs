@@ -22,6 +22,7 @@ public class CustomerRepository : Repository<Customer>, ICustomerRepository
         customerFromDb.FirstName = customer.FirstName;
         customerFromDb.LastName = customer.LastName;
         customerFromDb.City = customer.City;
+        customerFromDb.Email = customer.Email;
         customerFromDb.Gender = customer.Gender;
         customerFromDb.State = customer.State;
         customerFromDb.PhoneNumber = customer.PhoneNumber;

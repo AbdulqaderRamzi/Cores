@@ -45,4 +45,18 @@ public class TagController : Controller
         await _unitOfWork.SaveAsync();
         return RedirectToAction(nameof(Index));
     }
+
+
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id is null)
+            return NotFound();
+        var tag = await _unitOfWork.Tag.Get(t => t.Id == id);
+        if (tag is null)
+            return NotFound();
+        _unitOfWork.Tag.Remove(tag);
+        await _unitOfWork.SaveAsync();
+        TempData["success"] = "Tag deleted successfully";
+        return RedirectToAction(nameof(Index));
+    }
 }

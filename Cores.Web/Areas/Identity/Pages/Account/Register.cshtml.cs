@@ -169,18 +169,19 @@ public class RegisterModel : PageModel
                 {
                     await file.CopyToAsync(fileStream);
                 }
+
                 Input.ImageUrl = @"\images\employees\" + fileName;
             }
 
             user.ImageUrl = Input.ImageUrl;
-           
+
 
             var result = await _userManager.CreateAsync(user, Input.Password);
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
                 if (!string.IsNullOrEmpty(Input.Role)) await _userManager.AddToRoleAsync(user, Input.Role);
-                
+
                 foreach (var lang in languages)
                 {
                     var language = await _unitOfWork.Language.Get(l => l.Value == lang);
@@ -189,8 +190,10 @@ public class RegisterModel : PageModel
                         language = new Language { Value = lang };
                         await _unitOfWork.Language.Add(language);
                     }
+
                     user.Languages.Add(language);
                 }
+
                 await _unitOfWork.SaveAsync();
 
                 var userId = await _userManager.GetUserIdAsync(user);
@@ -240,7 +243,6 @@ public class RegisterModel : PageModel
             throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
                                                 $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                                                 $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-                                                
         }
     }
 

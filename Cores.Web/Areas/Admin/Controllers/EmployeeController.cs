@@ -11,8 +11,11 @@ public class EmployeeController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public EmployeeController(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
-    
+    public EmployeeController(IUnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
+
     public async Task<IActionResult> Index()
     {
         var applicationUsers = await _unitOfWork.ApplicationUser.GetAll();

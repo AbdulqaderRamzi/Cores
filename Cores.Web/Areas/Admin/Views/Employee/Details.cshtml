@@ -28,14 +28,14 @@
                                 <dt class="col-sm-6">
                                     <label asp-for="Languages"></label>
                                 </dt>
-                               <dd class="col-sm-6">
-                                   <ul class="list-unstyled">
-                                       @foreach (var lang in Model.Languages)
-                                       {
-                                           <li>@lang.Value</li>
-                                       }
-                                   </ul>
-                               </dd>
+                                <dd class="col-sm-6">
+                                    <ul class="list-unstyled">
+                                        @foreach (var lang in Model.Languages)
+                                        {
+                                            <li>@lang.Value</li>
+                                        }
+                                    </ul>
+                                </dd>
                             </dl>
                         </div>
                         <div class="col-md-6">
@@ -70,7 +70,7 @@
         </div>
         <div class="col-md-4">
             <div class="card shadow-sm">
-                <img src="@Model.ImageUrl" alt="@Model.FirstName @Model.LastName" class="card-img-top img-fluid mx-auto d-block" style="max-width: 200px; margin-top: 20px;" />
+                <img src="@Model.ImageUrl" alt="@Model.FirstName @Model.LastName" class="card-img-top img-fluid mx-auto d-block" style="max-width: 200px; margin-top: 20px;"/>
                 <div class="card-body text-center">
                     <h5 class="card-title text-dark">@Model.FirstName @Model.LastName</h5>
                     <p class="card-text text-dark">@Model.Career</p>
@@ -78,7 +78,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 </div>
 

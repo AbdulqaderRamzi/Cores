@@ -69,15 +69,15 @@
                 <label asp-for="Input.DateOfBirth" class="text-gray-800">Date of Birth</label>
                 <input asp-for="Input.DateOfBirth" id="dateOfBirth" class="form-control" placeholder="Date of Birth">
                 <a class="input-button" title="toggle" data-toggle>
-                        <i class="icon-calendar"></i>
-                    </a>
-                
-                    <a class="input-button" title="clear" data-clear>
-                        <i class="icon-close"></i>
-                    </a>
+                    <i class="icon-calendar"></i>
+                </a>
+
+                <a class="input-button" title="clear" data-clear>
+                    <i class="icon-close"></i>
+                </a>
                 <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
             </div>
-            
+
             <div class="form-group">
                 <label class="form-check-label text-gray-800" for="english">Choose Role</label>
                 <select class="form-control" aria-required="true" asp-for="Input.Role" asp-items="@Model.Input.RoleList"></select>
@@ -125,8 +125,8 @@
                     }
                     <!-- Add more checkboxes as needed -->
                 </div>
-                
-                
+
+
             </div>
             <div class="row mx-5">
             </div>
@@ -235,4 +235,3 @@
         <partial name="_ValidationScriptsPartial"/>
     }
 }
-

@@ -52,7 +52,7 @@
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';">
                                         <i class="fas fa-edit"></i> Update
                                     </a>
-                                    <a class="dropdown-item" href="#"
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/CRM/Tag/Delete?id=@tag.Id')"
                                        onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';">
                                         <i class="fas fa-trash"></i> Delete
@@ -67,3 +67,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script src="~/js/delete.js"></script>
+}
