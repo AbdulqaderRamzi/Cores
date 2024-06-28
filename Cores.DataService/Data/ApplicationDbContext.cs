@@ -1,6 +1,8 @@
 ﻿using System.Security.Claims;
 using Cores.Models;
+using Cores.Models.Accounting;
 using Cores.Models.CRM;
+using Cores.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +18,8 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
                 "Cores.Models.MessagePayload", 
                 "Cores.Models.CheckBox", 
                 "Cores.Models.ApplicationUser", 
-                "Microsoft.AspNetCore.Identity.IdentityUserRole`1[System.String]"
+                "Microsoft.AspNetCore.Identity.IdentityUserRole`1[System.String]", 
+                "System.Collections.Generic.Dictionary`2[System.String,System.Object]"
     ];
 
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
@@ -25,6 +28,12 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<MessagePayload> MessagePayloads { get; set; }
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Language> Languages { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Purchase> Purchases { get; set; }
+    public DbSet<PaymentMethod> PaymentMethods { get; set; }
+    public DbSet<Status> Statuses { get; set; }
+    public DbSet<Currency> Currencies { get; set; }
+    public DbSet<Order> Orders { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
         IHttpContextAccessor httpContextAccessor) : base(options)

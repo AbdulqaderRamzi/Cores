@@ -1,0 +1,152 @@
+﻿@model PurchaseVM
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-body">
+            <form method="POST">
+                <input type="hidden" id="serializedProducts" name="SerializedProducts" />
+                <input type="hidden" asp-for="CustomerId"/>
+                
+                <!-- Product Table Section -->
+                <div class="mb-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="text-dark m-0">Products</h3>
+                        <button type="button" class="btn btn-primary" id="addProductBtn">
+                            <i class="fas fa-plus"></i> Add Product
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="productTable">
+                            <thead class="thead-dark">
+                                <tr>
+                                     <th>Product Name</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Total Price</th>
+                                    <th>Actions</th>
+                                            
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Rows will be dynamically added here -->
+                            </tbody>
+                            <tfoot>
+                                <tr class="font-weight-bold">
+                                    <td colspan="4" class="text-right"></td>
+                                    <td id="grandTotal">0.00</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Purchase Details Section -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="text-dark mb-3">Customer Information</h3>
+                        @if (Model.CustomerId is not null)
+                        {
+                            <div class="form-group">
+                                <label asp-for="CustomerName">Customer Name</label>
+                                <input asp-for="CustomerName" type="text" class="form-control" readonly>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <label asp-for="SelectedCustomerId">Choose Customer</label>
+                                <select class="form-control select2" asp-for="SelectedCustomerId" asp-items="@Model.Customers">
+                                    <option value="">-- Select a Customer --</option>
+                                </select>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="text-dark mb-3">Payment Details</h4>
+                        <div class="form-group">
+                            <label asp-for="Purchase.PaymentMethod">Payment Method</label>
+                            <input asp-for="Purchase.PaymentMethod" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Purchase.Status">Status</label>
+                            <input asp-for="Purchase.Status" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Purchase.PurchaseAmount">Purchase Amount</label>
+                            <input asp-for="Purchase.PurchaseAmount" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Purchase.Currency">Currency</label>
+                            <input asp-for="Purchase.Currency" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Purchase.Note">Note</label>
+                            <textarea asp-for="Purchase.Note" class="form-control" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5 text-right">
+                    <a asp-controller="Customer" asp-action="Index" class="btn btn-secondary mr-2">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Create Purchase
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .select2-container .select2-selection--single {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 36px;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .form-control {
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+    }
+</style>
+
+@section Scripts
+{
+    <script src="~/js/product.js"></script>
+    <script>
+        $(document).ready(function () {
+          // This should run first 
+            $('.select2').select2({
+                placeholder: "Search for a customer",
+                allowClear: true
+            });
+            
+            let existingProducts = @Html.Raw(Json.Serialize(Model.Purchase.Orders));
+            let products = @Html.Raw(Json.Serialize(Model.Products));
+            initializeProductTable(existingProducts, products);
+            
+           
+        });
+    </script>
+}
+
+
+

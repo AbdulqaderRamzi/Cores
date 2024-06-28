@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>@ViewData["Title"] - CRUDHistoryWeb</title>
+    <title>Cores</title>
     <!-- Custom fonts for this template-->
     <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
@@ -22,6 +22,9 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
     <!-- Flatpickr For Data Input -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 
 </head>
 <body id="page-top">
@@ -66,11 +69,14 @@
                 }
                 <a class="collapse-item" asp-area="CRM" asp-controller="Tag" asp-action="Index">Tags</a>
                 <a class="collapse-item" asp-area="CRM" asp-controller="Customer" asp-action="Index">Customers</a>
+                <a class="collapse-item" asp-area="CRM" asp-controller="Purchase" asp-action="Index">Purchases</a>
 
                 @if (User.IsInRole(SD.ADMIN_ROLE))
                 {
-                    <h6 class="collapse-header">HR</h6>
+                    <h6 class="collapse-header">Accounting</h6>
                 }
+                <a class="collapse-item" asp-area="Accounting" asp-controller="Product" asp-action="Index">Products</a>
+                
 
                 @*<a class="collapse-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Products Table</a>*@
                 @*<a class="collapse-item" asp-area="Admin" asp-controller="Employee" asp-action="Index">Employees Table</a>*@
@@ -366,6 +372,8 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <!--Flatpickr For Data Input -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<!-- Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 @await RenderSectionAsync("Scripts", false)
 </body>

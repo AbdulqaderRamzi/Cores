@@ -7,6 +7,7 @@ using Cores.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -48,22 +49,31 @@ public class CustomerController : Controller
             languagesOptions.Add(new CheckBox { Id = i, Value = languagesList[i - 1].Value, isChecked = false });
 
         Customer? customer = new();
+        var selectedTagIds = new List<int>();
         if (id is not 0)
         {
-            customer = await _unitOfWork.Customer.Get(u => u.Id == id, "Languages");
+            customer = await _unitOfWork.Customer.Get(u => u.Id == id, "Languages,Tags");
             if (customer is null)
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index)); 
             foreach (var lang in customer.Languages)
                 languagesOptions.First(l => string.Equals(l.Value, lang.Value)).isChecked = true;
+            selectedTagIds = customer.Tags.Select(t => t.Id).ToList();
         }
 
         var customerVm = new CustomerVM
-            { Customer = customer, Tags = tagsSelectItems, LanguagesOptions = languagesOptions };
+        {
+            Customer = customer,
+            Tags = tagsSelectItems,
+            LanguagesOptions = languagesOptions, 
+            SelectedTagIds = selectedTagIds, 
+            
+        };
         return View(customerVm);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Upsert(IFormFile? file, List<string> languages, CustomerVM customerVm)
+    public async Task<IActionResult> Upsert(IFormFile? file, List<string> languages, CustomerVM customerVm,
+        bool createPurchase = false)
     {
         if (!ModelState.IsValid)
         {
@@ -110,6 +120,28 @@ public class CustomerController : Controller
         }
 
         customerVm.Customer.Email = customerVm.Customer.Email.ToLower().Trim();
+        
+        /*
+        if (!string.IsNullOrEmpty(customerVm.SerializedProducts))
+        {
+            customerVm.Products = JsonConvert.DeserializeObject<List<Product>>(customerVm.SerializedProducts);
+        }*/
+
+        /*var purchaseAmount = 0m;
+        foreach (var product in customerVm.Products)
+        {
+            purchaseAmount += product.TotalPrice;
+        }
+
+        customerVm.Purchase.PurchaseAmount = purchaseAmount;
+        customerVm.Purchase.PurchaseItems.AddRange(customerVm.Products);*/
+        
+        
+        if (customerVm.SelectedTagIds is not null)
+        {
+            var selectedTags = await _unitOfWork.Tag.GetAll(t => customerVm.SelectedTagIds.Contains(t.Id));
+            customerVm.Customer.Tags = selectedTags.ToList();
+        }
 
         if (customerVm.Customer.Id is 0)
         {
@@ -126,18 +158,19 @@ public class CustomerController : Controller
 
                 customerVm.Customer.Languages.Add(language);
             }
+            
 
             await _unitOfWork.Customer.Add(customerVm.Customer);
             TempData["success"] = "Customer added successfully";
         }
         else
-        {
+        {   
             await _unitOfWork.Customer.Update(customerVm.Customer, languages);
             TempData["success"] = "Customer updated successfully";
         }
-
         await _unitOfWork.SaveAsync();
-        return RedirectToAction(nameof(Index));
+        return createPurchase ? RedirectToAction(nameof(Upsert), "Purchase", new { customerId = customerVm.Customer.Id}) 
+                              : RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Delete(int? id)
@@ -192,8 +225,7 @@ public class CustomerController : Controller
         await _unitOfWork.SaveAsync();
         return RedirectToAction(nameof(Upsert), new { id = customerId });
     }
-
-
+    
     public async Task<IActionResult> DownloadSummery(int? id)
     {
         if (id is null)

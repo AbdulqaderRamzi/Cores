@@ -11,4 +11,10 @@ public class SD
     
     // SESSIONS
     public const string SESSION_MESSAGE = "SessionMessagePayload";
+    
+    // STATUS
+    public const string PENDING = "Pending";
+    public const string COMPLETED = "Completed";
+    public const string CANCELD = "Cancelled";
+    public const string REFUNDED = "Refunded";
 }

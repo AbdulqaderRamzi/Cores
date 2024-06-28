@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "EfGTaKmJwidgfjE1wUEIw07mI6MO+lzGvKtbbR5GuzlBR+VV5dPGdNTExB15Icjap2kH1dnJ27YChsMB+jDvKQ==",
+  "dgSpecHash": "mAPUJuzwSPEXemcgs4sJzb78/oaIjJWrGdODJk43yLy6uTiqLV8QDZnK/WdrfzuBkwUEF3DDpzgg29+4rDzpWA==",
   "success": true,
-  "projectFilePath": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\Cores.Web.csproj",
+  "projectFilePath": "D:\\Graduation-Project-Related-Things\\Cores\\cores.Web\\Cores.Web.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\abood\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\abood\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

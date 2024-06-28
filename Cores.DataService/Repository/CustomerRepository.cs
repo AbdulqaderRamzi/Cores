@@ -16,8 +16,9 @@ public class CustomerRepository : Repository<Customer>, ICustomerRepository
 
     public async Task Update(Customer customer, List<string> languages)
     {
-        var customerFromDb = await _db.Customers.Include("Languages").FirstOrDefaultAsync(c => c.Id == customer.Id);
-        if (customerFromDb is null) 
+        var customerFromDb = await _db.Customers.Include("Languages").Include("Tags")
+            .FirstOrDefaultAsync(c => c.Id == customer.Id);
+        if (customerFromDb is null)
             return;
         customerFromDb.FirstName = customer.FirstName;
         customerFromDb.LastName = customer.LastName;
@@ -28,19 +29,29 @@ public class CustomerRepository : Repository<Customer>, ICustomerRepository
         customerFromDb.PhoneNumber = customer.PhoneNumber;
         customerFromDb.StreetAddress = customer.StreetAddress;
         customerFromDb.Document = customer.Document;
-        
-        /* Update Languages */
-        customerFromDb.Languages.Clear();
-        var languagesFromDb = await _db.Languages.ToListAsync();
-        foreach (var lang in languages)
+        customerFromDb.Tags.Clear();
+        foreach (var tag in customer.Tags)
         {
-            var language = languagesFromDb.Find(l => l.Value == lang);
-            if (language is null)
-            {
-                language = new Language { Value = lang};
-                await _db.Languages.AddAsync(language);
-            }
-            customerFromDb.Languages.Add(language);
+            customerFromDb.Tags.Add(tag);
         }
+
+        if (languages.Count != 0)
+        {
+            /* Update Languages */
+            customerFromDb.Languages.Clear();
+            var languagesFromDb = await _db.Languages.ToListAsync();
+            foreach (var lang in languages)
+            {
+                var language = languagesFromDb.Find(l => l.Value == lang);
+                if (language is null)
+                {
+                    language = new Language { Value = lang };
+                    await _db.Languages.AddAsync(language);
+                }
+
+                customerFromDb.Languages.Add(language);
+            }
+        }
+        
     }
 }

@@ -26,6 +26,7 @@ public class Customer
     public string? StreetAddress{ get; set; }
     public string? Document { get; set; }
     public DateTime CreatedTime { get; set; } = DateTime.Now;
-    public ICollection<Language> Languages { get; set; } = 
-            new Collection<Language>();
+    public ICollection<Language> Languages { get; set; } = new Collection<Language>();
+    public ICollection<Tag> Tags { get; set; } = new Collection<Tag>();
+    public ICollection<Purchase> Purchases { get; set; } = new Collection<Purchase>();
 }

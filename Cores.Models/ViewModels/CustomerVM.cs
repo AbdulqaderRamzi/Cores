@@ -10,6 +10,8 @@ public class CustomerVM
     [ValidateNever]
     public List<SelectListItem> Tags { get; set; }
     [ValidateNever]
+    public List<int> SelectedTagIds { get; set; }
+    [ValidateNever]
     public List<CheckBox> LanguagesOptions { get; set; }
-    
+   
 }

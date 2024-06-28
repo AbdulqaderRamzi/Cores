@@ -2,7 +2,9 @@
 
 <div class="container mt-5">
     <form method="POST" enctype="multipart/form-data">
-        <input asp-for="Customer.Id" hidden>
+        <input asp-for="Customer.Id" type="hidden">
+        
+         <input type="hidden" name="createPurchase" id="createPurchase" value="false" />
         <div>
             <h2 class="text-dark">Personal Info</h2>
             <div class="form-row">
@@ -50,6 +52,11 @@
                     <input asp-for="Customer.CreatedTime" type="text" class="form-control" readonly>
                     <span asp-validation-for="Customer.CreatedTime" class="text-danger"></span>
                 </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Customer.Tags">Tags</label>
+                    <select asp-for="SelectedTagIds" asp-items="Model.Tags" class="form-control select2-tags" multiple>
+                    </select>
+                </div>
             </div>
             <div class="form-row">
                 <div class="col-md-2">
@@ -65,19 +72,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label>Status</label>
-                        <div class="form-check">
-                            <input asp-for="Customer.Document" class="form-check-input" type="radio" name="gender" id="male" value="Male">
-                            <label asp-for="Customer.Document" class="form-check-label" for="male">Customer</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gender" id="female" value="Female">
-                            <label class="form-check-label" for="female">Lead</label>
-                        </div>
-                    </div>
-                </div>
+               <div class="col-md-2">
+                   <div class="form-group">
+                       <label>Status</label>
+                       <div class="form-check">
+                           <input class="form-check-input" type="radio" name="status" id="customer" value="Customer" onchange="togglePurchaseInfo()">
+                           <label class="form-check-label" for="customer">Customer</label>
+                       </div>
+                       <div class="form-check">
+                           <input class="form-check-input" type="radio" name="status" id="lead" value="Lead" onchange="togglePurchaseInfo()">
+                           <label class="form-check-label" for="lead">Lead</label>
+                       </div>
+                   </div>
+               </div>
                 <div class="col-md-2">
                     <div class="form-group mr-lg-5">
                         <label class="text-gray-800">Languages:</label><br>
@@ -137,20 +144,20 @@
                 </div>
             </div>
         </div>
-        <div class="container">
-            <div class="form-row">
-            </div>
-        </div>
 
         <div class="row">
             <a asp-controller="Customer" asp-action="Index"
                class="btn btn-dark mt-5">
                 <i class="fas fa-arrow-left"></i> Back
             </a>
-            <button type="submit" class="btn btn-success ml-4 mt-5">
-                <i class="fas fa-solid fa-check"></i>
-                @(Model.Customer.Id == 0 ? "Create" : "Update")
+             <button type="submit" onclick="document.getElementById('createPurchase').value='false'" class="btn btn-success ml-4 mt-5">
+                      <i class="fas fa-solid fa-check"></i>
+                      @(Model.Customer.Id == 0 ? "Create" : "Update")
+                  </button>
+            <button type="submit" onclick="document.getElementById('createPurchase').value='true'" class="btn btn-success ml-4 mt-5">
+                <i class="fas fa-solid fa-check"></i> Create With Purchases
             </button>
+            
         </div>
     </form>
 </div>
@@ -179,13 +186,28 @@
         font-size: 16px;
         display: block;
     }
+    
 </style>
 
 @section Scripts
 {
     <script src="~/js/delete.js"></script>
+    @*<script src="~/js/product.js"></script>*@
 
     <script>
+        
+       
+ 
+     $(document).ready(function() {
+            $('.select2-tags').select2({
+                            placeholder: "",
+                            allowClear: true,
+                            tags: true, 
+                            width: '100%'
+                        });
+                    });
+    
+   
         $(document).ready(function() {
             function displayFileInfo(file) {
                 let fileName = file.name;
@@ -255,5 +277,19 @@
                 $('#currentDocument').show();
             }
         });
+        
+      /*  function togglePurchaseInfo() {
+            let customerRadio = document.getElementById('customer');
+            let purchaseInfo = document.getElementById('purchaseInfo');
+            if (customerRadio.checked) {
+                purchaseInfo.style.display = 'flex';
+                purchaseInfo.style.flexDirection = 'column';
+                purchaseInfo.style.gap = '1rem';
+            } else {
+                purchaseInfo.style.display = 'none';
+            }
+        }
+        // Initialize purchase info visibility on page load
+        document.addEventListener('DOMContentLoaded', togglePurchaseInfo);*/
     </script>
 }

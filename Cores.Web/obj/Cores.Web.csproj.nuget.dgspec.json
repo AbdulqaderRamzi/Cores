@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\Cores.Web.csproj": {}
+    "D:\\Graduation-Project-Related-Things\\Cores\\cores.Web\\Cores.Web.csproj": {}
   },
   "projects": {
     "D:\\Graduation-Project-Related-Things\\Cores\\Cores.DataService\\Cores.DataService.csproj": {
@@ -213,14 +213,14 @@
         }
       }
     },
-    "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\Cores.Web.csproj": {
+    "D:\\Graduation-Project-Related-Things\\Cores\\cores.Web\\Cores.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\Cores.Web.csproj",
+        "projectUniqueName": "D:\\Graduation-Project-Related-Things\\Cores\\cores.Web\\Cores.Web.csproj",
         "projectName": "Cores.Web",
-        "projectPath": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\Cores.Web.csproj",
+        "projectPath": "D:\\Graduation-Project-Related-Things\\Cores\\cores.Web\\Cores.Web.csproj",
         "packagesPath": "C:\\Users\\abood\\.nuget\\packages\\",
-        "outputPath": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\obj\\",
+        "outputPath": "D:\\Graduation-Project-Related-Things\\Cores\\cores.Web\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\abood\\AppData\\Roaming\\NuGet\\NuGet.Config",
