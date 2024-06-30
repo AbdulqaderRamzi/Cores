@@ -9,4 +9,4 @@ public class Language
     public string Value { get; set; }
     public ICollection<ApplicationUser> Employees { get; set; } = new Collection<ApplicationUser>();
     public ICollection<Customer> Customers { get; set; } = new Collection<Customer>();
-}   
+} 

@@ -19,9 +19,9 @@ public class Purchase
     public string PaymentMethod { get; set; }
     public string? Note { get; set; }
     public int CustomerId { get; set; }
-    [ValidateNever]
     [ForeignKey("CustomerId")]
-    public Customer Customer { get; set; }
+    [ValidateNever]
+    public Customer? Customer { get; set; }
 
     public ICollection<Order> Orders { get; set; } = new Collection<Order>();
 }

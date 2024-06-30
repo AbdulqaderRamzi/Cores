@@ -1,11 +1,13 @@
 ﻿function initializeProductTable(existingProducts, products) {
+ 
     let table = $('#productTable').DataTable({
         columns: [
             {
                 data: 'name',
                 render: function (data, type, row) {
                     let options = products.map(product => {
-                        return `<option value="${product.id}" data-unit-price="${product.unitPrice}" ${product.id == row.id ? 'selected' : ''}>${product.name}</option>`;
+                        console.log(product.name);
+                        return `<option value="${product.name}" data-unit-price="${product.unitPrice}" ${product.name === row.name ? 'selected' : ''}>${product.name}</option>`;
                     }).join('');
                     return `
                         <select class="form-control product-name" required>
@@ -242,7 +244,7 @@
                 let { id, ...productWithoutId } = product;
                 return productWithoutId;
             });
-
+    
             $('#serializedProducts').val(JSON.stringify(productsWithoutId));
         } catch (error) {
             e.preventDefault();
@@ -252,7 +254,7 @@
     });
 
     if (existingProducts && existingProducts.length > 0) {
-        table.rows.add(existingProducts).draw(false);
+        table.rows.add(existingProducts).draw();
         updateGrandTotal();
     }
 }

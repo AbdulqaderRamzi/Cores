@@ -6,12 +6,25 @@ namespace Cores.Models.ViewModels;
 
 public class PurchaseVM
 {
+    // Store Purchase info 
     public Purchase Purchase { get; set; }
-    public int? CustomerId { get; set; }
-    public string? CustomerName { get; set; }
+    
+    // For Create with purchase
+    public int? CustomerId { get; set; } 
+    public Customer Customer { get; set; }
+    
+    // Display Existing Orders For A Particular Purchase 
     public List<Order> Orders { get; set; }
+    
+    // Products Dropdown list
     public List<Product> Products { get; set; }
+    
+    // Customers Dropdown list 
     public List<SelectListItem>? Customers { get; set; }
+    
+    // taking the orders list to HttpPost
     public string SerializedProducts { get; set; }
-    public int SelectedCustomerId { get; set; }
+    
+    // Customer id from dropdown 
+    public int? SelectedCustomerId { get; set; }
 }

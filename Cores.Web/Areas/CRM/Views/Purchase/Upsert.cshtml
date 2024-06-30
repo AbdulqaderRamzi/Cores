@@ -1,11 +1,13 @@
 ﻿@model PurchaseVM
 
 <div class="container mt-5">
-    <div class="card shadow">
+    <div class="card shadow">   
         <div class="card-body">
             <form method="POST">
                 <input type="hidden" id="serializedProducts" name="SerializedProducts" />
                 <input type="hidden" asp-for="CustomerId"/>
+                <input type="hidden" asp-for="Purchase.Id"/>
+                <input type="hidden" asp-for="Purchase.CustomerId"/>
                 
                 <!-- Product Table Section -->
                 <div class="mb-5">
@@ -46,20 +48,59 @@
                         <h3 class="text-dark mb-3">Customer Information</h3>
                         @if (Model.CustomerId is not null)
                         {
+                            <label asp-for="SelectedCustomerId">Choose Customer</label>
+                            <select class="form-control select2" asp-for="SelectedCustomerId" asp-items="@Model.Customers" id="customerSelect">
+                                <option selected>@Model.Customer.FirstName</option>
+                            </select>
                             <div class="form-group">
-                                <label asp-for="CustomerName">Customer Name</label>
-                                <input asp-for="CustomerName" type="text" class="form-control" readonly>
+                                <label asp-for="Customer.PhoneNumber">Customer Phone Number</label>
+                                <input asp-for="Customer.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Customer.Email">Customer Email</label>
+                                <input asp-for="Customer.Email" type="text" class="form-control" id="customerEmail" readonly>
                             </div>
                         }
                         else
                         {
-                            <div class="form-group">
+                            if (Model.Purchase.CustomerId is not 0)
+                            {
                                 <label asp-for="SelectedCustomerId">Choose Customer</label>
-                                <select class="form-control select2" asp-for="SelectedCustomerId" asp-items="@Model.Customers">
-                                    <option value="">-- Select a Customer --</option>
+                                <select class="form-control select2" asp-for="SelectedCustomerId" asp-items="@Model.Customers" id="customerSelect">
+                                    <option  asp-for="Purchase.Customer.PhoneNumber" selected>@Model.Purchase.Customer.FirstName</option>
                                 </select>
-                            </div>
+                                <div class="form-group">
+                                    <label asp-for="Purchase.Customer.PhoneNumber">Customer Phone Number</label>
+                                    <input asp-for="Purchase.Customer.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Purchase.Customer.Email">Customer Email</label>
+                                    <input asp-for="Purchase.Customer.Email" type="text" class="form-control" id="customerEmail" readonly>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <label asp-for="SelectedCustomerId">Choose Customer</label>
+                                    <select class="form-control select2" asp-for="SelectedCustomerId" asp-items="@Model.Customers" id="customerSelect">
+                                        <option value="">-- Select a Customer --</option>
+                                    </select>
+                                    
+                                   <!-- Customer Info Section -->
+                                   <div id="customer-info" style="display: none">
+                                       <div class="form-group">
+                                           <label asp-for="Purchase.Customer.PhoneNumber">Phone Number</label>
+                                           <input asp-for="Purchase.Customer.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>
+                                       </div>
+                                       <div class="form-group">
+                                           <label asp-for="Purchase.Customer.Email">Email</label>
+                                           <input asp-for="Purchase.Customer.Email" type="text" class="form-control" id="customerEmail" readonly>
+                                       </div>
+                                   </div>
+                                </div>
+                            }
                         }
+                        
                     </div>
                     <div class="col-md-6">
                         <h4 class="text-dark mb-3">Payment Details</h4>
@@ -71,11 +112,6 @@
                             <label asp-for="Purchase.Status">Status</label>
                             <input asp-for="Purchase.Status" type="text" class="form-control">
                         </div>
-                    </div>
-                </div>
-
-                <div class="row mt-4">
-                    <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="Purchase.PurchaseAmount">Purchase Amount</label>
                             <input asp-for="Purchase.PurchaseAmount" type="text" class="form-control">
@@ -84,17 +120,23 @@
                             <label asp-for="Purchase.Currency">Currency</label>
                             <input asp-for="Purchase.Currency" type="text" class="form-control">
                         </div>
-                    </div>
-                    <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="Purchase.Note">Note</label>
                             <textarea asp-for="Purchase.Note" class="form-control" rows="4"></textarea>
                         </div>
+                        
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                   
+                    <div class="col-md-6">
+                       
                     </div>
                 </div>
 
                 <div class="mt-5 text-right">
-                    <a asp-controller="Customer" asp-action="Index" class="btn btn-secondary mr-2">
+                    <a asp-controller="Purchase" asp-action="Index" class="btn btn-secondary mr-2">
                         <i class="fas fa-arrow-left"></i> Back
                     </a>
                     <button type="submit" class="btn btn-primary">
@@ -133,19 +175,48 @@
     <script src="~/js/product.js"></script>
     <script>
         $(document).ready(function () {
-          // This should run first 
+            // Initialize select2
             $('.select2').select2({
                 placeholder: "Search for a customer",
                 allowClear: true
             });
-            
+    
+            // Initialize product table
             let existingProducts = @Html.Raw(Json.Serialize(Model.Purchase.Orders));
             let products = @Html.Raw(Json.Serialize(Model.Products));
             initializeProductTable(existingProducts, products);
-            
-           
+    
+            // Event listener for customer selection
+            $('#customerSelect').on('change', function () {
+                let customerId = $(this).val();
+                if (customerId) {
+                    showCustomerInfo(customerId);
+                } else {
+                    $('#customer-info').hide();
+                }
+            });
         });
+    
+        function showCustomerInfo(customerId) {
+            $.ajax({
+                url: '@Url.Action("GetCustomerById", "Purchase")' + '?id=' + customerId,
+                type: 'GET',
+                data: { id: customerId },
+                success: function (customer) {
+                    if (customer) {
+                        $('#customerName').val(customer.firstName);
+                        $('#customerPhone').val(customer.phoneNumber);
+                        $('#customerEmail').val(customer.email);
+                        $('#customer-info').show();
+                    }
+                },
+                error: function () {
+                    alert('Failed to fetch customer details.');
+                }
+            });
+        }
     </script>
+
 }
 
 

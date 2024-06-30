@@ -4,5 +4,5 @@ namespace Cores.DataService.Repository.IRepository;
 
 public interface IPurchaseRepository : IRepository<Purchase>
 {
-    void Update(Purchase purchase);
+    Task Update(Purchase purchase);
 }
