@@ -15,6 +15,8 @@ public interface IUnitOfWork
     ICurrencyRepository Currency { get; }
     public IProductRepository Product { get; }
     public IOrderRepository Order { get; }
+    public IProblemRepository Problem { get; }
+    public IProblemTypeRepository ProblemType { get; }
 
     Task SaveAsync();
 }

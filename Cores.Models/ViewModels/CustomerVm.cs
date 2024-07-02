@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Cores.Models.ViewModels;
 
-public class CustomerVM
+public class CustomerVm
 {
     public Customer Customer { get; set; }
     [ValidateNever]
@@ -13,5 +13,6 @@ public class CustomerVM
     public List<int> SelectedTagIds { get; set; }
     [ValidateNever]
     public List<CheckBox> LanguagesOptions { get; set; }
-   
+    [ValidateNever]
+    public List<Purchase> Purchases{ get; set; }
 }

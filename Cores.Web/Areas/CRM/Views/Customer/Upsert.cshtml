@@ -1,4 +1,4 @@
-﻿@model CustomerVM
+﻿@model CustomerVm
 
 <div class="container mt-5">
     <form method="POST" enctype="multipart/form-data">
@@ -72,19 +72,19 @@
                         </div>
                     </div>
                 </div>
-               <div class="col-md-2">
-                   <div class="form-group">
-                       <label>Status</label>
-                       <div class="form-check">
-                           <input class="form-check-input" type="radio" name="status" id="customer" value="Customer" onchange="togglePurchaseInfo()">
-                           <label class="form-check-label" for="customer">Customer</label>
-                       </div>
-                       <div class="form-check">
-                           <input class="form-check-input" type="radio" name="status" id="lead" value="Lead" onchange="togglePurchaseInfo()">
-                           <label class="form-check-label" for="lead">Lead</label>
-                       </div>
-                   </div>
-               </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="status" id="customer" value="Customer" onchange="togglePurchaseInfo()">
+                            <label class="form-check-label" for="customer">Customer</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="status" id="lead" value="Lead" onchange="togglePurchaseInfo()">
+                            <label class="form-check-label" for="lead">Lead</label>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-2">
                     <div class="form-group mr-lg-5">
                         <label class="text-gray-800">Languages:</label><br>
@@ -103,46 +103,95 @@
                     </div>
                 </div>
             </div>
-            <div class="form-row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="file">Upload Attachment</label>
-                        <div class="custom-file">
-                            <input type="file" name="file" class="custom-file-input" id="file" accept="image/*,application/pdf">
-                            <label class="custom-file-label" for="file">
-                                @(!string.IsNullOrEmpty(Model.Customer.Document) ? "Choose new file" : "Choose file")
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group mt-3">
-                        <div class="dropzone" id="myDropzone">
-                            <i class="fas fa-cloud-upload-alt fa-3x"></i>
-                            <span class="dropzone-text">Drag and drop files here</span>
-                        </div>
-                        <p class="mt-2 text-muted">
-                            <small>Please include any attachments (e.g., logo, mission statement, annual report, etc.) that would provide more info about the customer.</small>
-                        </p>
-                    </div>
+                <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="file">Upload Attachment</label>
+                                        <div class="custom-file">
+                                            <input type="file" name="file" class="custom-file-input" id="file" accept="image/*,application/pdf">
+                                            <label class="custom-file-label" for="file">
+                                                @(!string.IsNullOrEmpty(Model.Customer.Document) ? "Choose new file" : "Choose file")
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                        <div class="dropzone" id="myDropzone">
+                                            <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                                            <span class="dropzone-text">Drag and drop files here</span>
+                                        </div>
+                                        <p class="mt-2 text-muted">
+                                            <small>Please include any attachments (e.g., logo, mission statement, annual report, etc.) that would provide more info about the customer.</small>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 my-auto">
+                                    <div id="currentDocument" class="text-center" style="display: none;">
+                                        <i id="fileIcon" class="fas fa-file fa-5x mb-3"></i>
+                                        <p id="fileName" class="mb-3"></p>
+                                        <div>
+                                            @if (!string.IsNullOrEmpty(Model.Customer.Document))
+                                            {
+                                                <a href="@Url.Action("DownloadDocument", "Customer", new { fileName = Model.Customer.Document })" class="btn btn-info btn-sm" id="downloadDocument" download>
+                                                    <i class="fas fa-download"></i> Download
+                                                </a>
+                                            }
+                                            <button type="button" onclick="deleteObj('/CRM/Customer/DeleteDocument?customerId=@Model.Customer.Id')"
+                                                    class="btn btn-danger btn-sm ml-2" id="removeDocument">
+                                                <i class="fas fa-trash"></i> Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+            
+            @if (Model.Customer.Id is not 0)
+            {
+                <div class="mt-3">
+                    <h2 class="text-dark">Purchase Info</h2>
+                    <table class="table table-bordered purchases" id="dataTable">
+                        <thead>
+                        <tr>
+                            <th>Purchase Date</th>
+                            <th>Purchase Amount</th>
+                            <th>Currency</th>
+                            <th>Status</th>
+                            <th>Payment Method</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>Purchase Date</th>
+                            <th>Purchase Amount</th>
+                            <th>Currency</th>
+                            <th>Status</th>
+                            <th>Payment Method</th>
+                            <th>Actions</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        @foreach (var purchase in Model.Purchases)
+                        {
+                            <tr>
+                                <td>@purchase.PurchaseDate</td>
+                                <td>@purchase.PurchaseAmount</td>
+                                <td>@purchase.Currency</td>
+                                <td>@purchase.Status</td>
+                                <td>@purchase.PaymentMethod</td>
+                                <td>
+                                    <a class="btn" asp-controller="Purchase" asp-action="Upsert" asp-route-id="@purchase.Id" asp-route-customerId="@Model.Customer.Id"
+                                       style="background-color: #f6a23e; color: #ffffff"
+                                       onmouseover="this.style.backgroundColor='#e78211';"
+                                       onmouseout="this.style.backgroundColor='#f6a23e'">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
                 </div>
-                <div class="col-md-6 my-auto">
-                    <div id="currentDocument" class="text-center" style="display: none;">
-                        <i id="fileIcon" class="fas fa-file fa-5x mb-3"></i>
-                        <p id="fileName" class="mb-3"></p>
-                        <div>
-                            @if (!string.IsNullOrEmpty(Model.Customer.Document))
-                            {
-                                <a href="@Url.Action("DownloadDocument", "Customer", new { fileName = Model.Customer.Document })" class="btn btn-info btn-sm" id="downloadDocument" download>
-                                    <i class="fas fa-download"></i> Download
-                                </a>
-                            }
-                            <button type="button" onclick="deleteObj('/CRM/Customer/DeleteDocument?customerId=@Model.Customer.Id')"
-                                    class="btn btn-danger btn-sm ml-2" id="removeDocument">
-                                <i class="fas fa-trash"></i> Remove
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
 
         <div class="row">

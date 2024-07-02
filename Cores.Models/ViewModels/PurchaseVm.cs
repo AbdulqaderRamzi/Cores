@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Cores.Models.ViewModels;
 
-public class PurchaseVM
+public class PurchaseVm
 {
     // Store Purchase info 
     public Purchase Purchase { get; set; }

@@ -49,6 +49,7 @@ public class CustomerController : Controller
             languagesOptions.Add(new CheckBox { Id = i, Value = languagesList[i - 1].Value, isChecked = false });
 
         Customer? customer = new();
+        List<Purchase> purchasesList = [];
         var selectedTagIds = new List<int>();
         if (id is not 0)
         {
@@ -58,21 +59,23 @@ public class CustomerController : Controller
             foreach (var lang in customer.Languages)
                 languagesOptions.First(l => string.Equals(l.Value, lang.Value)).isChecked = true;
             selectedTagIds = customer.Tags.Select(t => t.Id).ToList();
+            var purchases = await _unitOfWork.Purchase.GetAll(p => p.CustomerId == customer.Id);
+            purchasesList.AddRange(purchases);
         }
-
-        var customerVm = new CustomerVM
+        
+        var customerVm = new CustomerVm
         {
             Customer = customer,
             Tags = tagsSelectItems,
             LanguagesOptions = languagesOptions, 
             SelectedTagIds = selectedTagIds, 
-            
+            Purchases = purchasesList
         };
         return View(customerVm);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Upsert(IFormFile? file, List<string> languages, CustomerVM customerVm,
+    public async Task<IActionResult> Upsert(IFormFile? file, List<string> languages, CustomerVm customerVm,
         bool createPurchase = false)
     {
         if (!ModelState.IsValid)
@@ -120,22 +123,6 @@ public class CustomerController : Controller
         }
 
         customerVm.Customer.Email = customerVm.Customer.Email.ToLower().Trim();
-        
-        /*
-        if (!string.IsNullOrEmpty(customerVm.SerializedProducts))
-        {
-            customerVm.Products = JsonConvert.DeserializeObject<List<Product>>(customerVm.SerializedProducts);
-        }*/
-
-        /*var purchaseAmount = 0m;
-        foreach (var product in customerVm.Products)
-        {
-            purchaseAmount += product.TotalPrice;
-        }
-
-        customerVm.Purchase.PurchaseAmount = purchaseAmount;
-        customerVm.Purchase.PurchaseItems.AddRange(customerVm.Products);*/
-        
         
         if (customerVm.SelectedTagIds is not null)
         {

@@ -34,6 +34,8 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<Status> Statuses { get; set; }
     public DbSet<Currency> Currencies { get; set; }
     public DbSet<Order> Orders { get; set; }
+    public DbSet<Problem> Problems { get; set; }
+    public DbSet<ProblemType> ProblemTypes { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
         IHttpContextAccessor httpContextAccessor) : base(options)

@@ -25,6 +25,7 @@ public class Customer
     [DisplayName("Street Address")]
     public string? StreetAddress{ get; set; }
     public string? Document { get; set; }
+    /*public bool IsCustomer { get; set; }*/
     public DateTime CreatedTime { get; set; } = DateTime.Now;
     public ICollection<Language> Languages { get; set; } = new Collection<Language>();
     public ICollection<Tag> Tags { get; set; } = new Collection<Tag>();

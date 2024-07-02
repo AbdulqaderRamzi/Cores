@@ -85,6 +85,10 @@
       "PackagePath": "staticwebassets\\images\\customers\\4ef34152-da06-4222-87c7-5546752acde1.jpg"
     },
     {
+      "Id": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\images\\customers\\5a2fd1b1-7e9a-409c-bee7-0aee0ff463ae.pdf",
+      "PackagePath": "staticwebassets\\images\\customers\\5a2fd1b1-7e9a-409c-bee7-0aee0ff463ae.pdf"
+    },
+    {
       "Id": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\images\\customers\\5b6e8631-6286-4d39-a9da-38ddf9bc660f.jpg",
       "PackagePath": "staticwebassets\\images\\customers\\5b6e8631-6286-4d39-a9da-38ddf9bc660f.jpg"
     },
@@ -297,6 +301,10 @@
       "PackagePath": "staticwebassets\\js\\demo\\datatables-demo.js"
     },
     {
+      "Id": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\js\\problem-form.js",
+      "PackagePath": "staticwebassets\\js\\problem-form.js"
+    },
+    {
       "Id": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\js\\product.js",
       "PackagePath": "staticwebassets\\js\\product.js"
     },
@@ -307,6 +315,10 @@
     {
       "Id": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\js\\sb-admin-2.min.js",
       "PackagePath": "staticwebassets\\js\\sb-admin-2.min.js"
+    },
+    {
+      "Id": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\js\\select2.js",
+      "PackagePath": "staticwebassets\\js\\select2.js"
     },
     {
       "Id": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\js\\signalr.js",

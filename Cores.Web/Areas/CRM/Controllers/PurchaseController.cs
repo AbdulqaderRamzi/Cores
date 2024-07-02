@@ -29,7 +29,7 @@ public class PurchaseController : Controller
 
     public async Task<IActionResult> Upsert(int id, int customerId)
     {
-            var purchaseVm = new PurchaseVM { Purchase = new Purchase() };
+            var purchaseVm = new PurchaseVm { Purchase = new Purchase() };
 
         var products = await _unitOfWork.Product.GetAll();
         purchaseVm.Products = products.ToList();
@@ -58,7 +58,7 @@ public class PurchaseController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Upsert(PurchaseVM purchaseVm)
+    public async Task<IActionResult> Upsert(PurchaseVm purchaseVm)
     {
         Customer? customer;
         if (purchaseVm.CustomerId is not null)

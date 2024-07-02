@@ -19,6 +19,8 @@ public class UnitOfWork : IUnitOfWork
     public ICurrencyRepository Currency { get; }
     public IProductRepository Product { get; }
     public IOrderRepository Order { get; }
+    public IProblemRepository Problem { get; }
+    public IProblemTypeRepository ProblemType { get; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
@@ -36,6 +38,8 @@ public class UnitOfWork : IUnitOfWork
         Currency = new CurrencyRepository(_db);
         Product = new ProductRepository(_db);
         Order = new OrderRepository(_db);
+        Problem = new ProblemRepository(_db);
+        ProblemType = new ProblemTypeRepository(_db);
     }
 
     public async Task SaveAsync() => await _db.SaveChangesAsync();

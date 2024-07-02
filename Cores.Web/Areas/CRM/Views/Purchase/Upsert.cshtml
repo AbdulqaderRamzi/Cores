@@ -1,4 +1,4 @@
-﻿@model PurchaseVM
+﻿@model PurchaseVm
 
 <div class="container mt-5">
     <div class="card shadow">   
@@ -173,14 +173,9 @@
 @section Scripts
 {
     <script src="~/js/product.js"></script>
-    <script>
+    <script src="~/js/select2.js"></script>
+    <script>    
         $(document).ready(function () {
-            // Initialize select2
-            $('.select2').select2({
-                placeholder: "Search for a customer",
-                allowClear: true
-            });
-    
             // Initialize product table
             let existingProducts = @Html.Raw(Json.Serialize(Model.Purchase.Orders));
             let products = @Html.Raw(Json.Serialize(Model.Products));

@@ -228,6 +228,82 @@ namespace Cores.DataService.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("Cores.Models.CRM.Problem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DateResolved")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ProblemTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ReportedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Resolution")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Severity")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("ProblemTypeId");
+
+                    b.ToTable("Problems");
+                });
+
+            modelBuilder.Entity("Cores.Models.CRM.ProblemType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProblemTypes");
+                });
+
             modelBuilder.Entity("Cores.Models.CRM.Purchase", b =>
                 {
                     b.Property<int>("Id")
@@ -642,6 +718,37 @@ namespace Cores.DataService.Migrations
                     b.HasOne("Cores.Models.CRM.Purchase", null)
                         .WithMany("Orders")
                         .HasForeignKey("PurchaseId");
+                });
+
+            modelBuilder.Entity("Cores.Models.CRM.Problem", b =>
+                {
+                    b.HasOne("Cores.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("Cores.Models.CRM.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cores.Models.ApplicationUser", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById");
+
+                    b.HasOne("Cores.Models.CRM.ProblemType", "ProblemType")
+                        .WithMany()
+                        .HasForeignKey("ProblemTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("ModifiedBy");
+
+                    b.Navigation("ProblemType");
                 });
 
             modelBuilder.Entity("Cores.Models.CRM.Purchase", b =>
