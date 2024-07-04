@@ -37,6 +37,36 @@ namespace Cores.DataService.Migrations
                     b.ToTable("ApplicationUserLanguage");
                 });
 
+            modelBuilder.Entity("ContactLanguage", b =>
+                {
+                    b.Property<int>("ContactsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LanguagesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ContactsId", "LanguagesId");
+
+                    b.HasIndex("LanguagesId");
+
+                    b.ToTable("ContactLanguage");
+                });
+
+            modelBuilder.Entity("ContactTag", b =>
+                {
+                    b.Property<int>("ContactsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ContactsId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("ContactTag");
+                });
+
             modelBuilder.Entity("Cores.Models.Accounting.Currency", b =>
                 {
                     b.Property<int>("Id")
@@ -151,7 +181,7 @@ namespace Cores.DataService.Migrations
                     b.ToTable("ActivityLogs");
                 });
 
-            modelBuilder.Entity("Cores.Models.CRM.Customer", b =>
+            modelBuilder.Entity("Cores.Models.CRM.Contact", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -189,12 +219,79 @@ namespace Cores.DataService.Migrations
                     b.Property<string>("State")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("StreetAddress")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Contacts");
+                });
+
+            modelBuilder.Entity("Cores.Models.CRM.Event", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("ContactId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("EventTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ContactId");
+
+                    b.HasIndex("EventTypeId");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("Cores.Models.CRM.EventType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EventTypes");
                 });
 
             modelBuilder.Entity("Cores.Models.CRM.Order", b =>
@@ -239,7 +336,7 @@ namespace Cores.DataService.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("ContactId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DateResolved")
@@ -275,7 +372,7 @@ namespace Cores.DataService.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("ContactId");
 
                     b.HasIndex("ModifiedById");
 
@@ -312,12 +409,12 @@ namespace Cores.DataService.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ContactId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Currency")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Note")
                         .HasColumnType("longtext");
@@ -338,7 +435,7 @@ namespace Cores.DataService.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("ContactId");
 
                     b.ToTable("Purchases");
                 });
@@ -410,36 +507,6 @@ namespace Cores.DataService.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("MessagePayloads");
-                });
-
-            modelBuilder.Entity("CustomerLanguage", b =>
-                {
-                    b.Property<int>("CustomersId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LanguagesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CustomersId", "LanguagesId");
-
-                    b.HasIndex("LanguagesId");
-
-                    b.ToTable("CustomerLanguage");
-                });
-
-            modelBuilder.Entity("CustomerTag", b =>
-                {
-                    b.Property<int>("CustomersId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CustomersId", "TagsId");
-
-                    b.HasIndex("TagsId");
-
-                    b.ToTable("CustomerTag");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -702,6 +769,36 @@ namespace Cores.DataService.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ContactLanguage", b =>
+                {
+                    b.HasOne("Cores.Models.CRM.Contact", null)
+                        .WithMany()
+                        .HasForeignKey("ContactsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cores.Models.Language", null)
+                        .WithMany()
+                        .HasForeignKey("LanguagesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ContactTag", b =>
+                {
+                    b.HasOne("Cores.Models.CRM.Contact", null)
+                        .WithMany()
+                        .HasForeignKey("ContactsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cores.Models.CRM.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Cores.Models.ActivityLog", b =>
                 {
                     b.HasOne("Cores.Models.ApplicationUser", "ApplicationUser")
@@ -711,6 +808,37 @@ namespace Cores.DataService.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Cores.Models.CRM.Event", b =>
+                {
+                    b.HasOne("Cores.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("Cores.Models.CRM.Contact", "Contact")
+                        .WithMany()
+                        .HasForeignKey("ContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cores.Models.CRM.EventType", "EventType")
+                        .WithMany()
+                        .HasForeignKey("EventTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cores.Models.ApplicationUser", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById");
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Contact");
+
+                    b.Navigation("EventType");
+
+                    b.Navigation("ModifiedBy");
                 });
 
             modelBuilder.Entity("Cores.Models.CRM.Order", b =>
@@ -726,9 +854,9 @@ namespace Cores.DataService.Migrations
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("Cores.Models.CRM.Customer", "Customer")
+                    b.HasOne("Cores.Models.CRM.Contact", "Contact")
                         .WithMany()
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("ContactId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -744,7 +872,7 @@ namespace Cores.DataService.Migrations
 
                     b.Navigation("ApplicationUser");
 
-                    b.Navigation("Customer");
+                    b.Navigation("Contact");
 
                     b.Navigation("ModifiedBy");
 
@@ -753,13 +881,13 @@ namespace Cores.DataService.Migrations
 
             modelBuilder.Entity("Cores.Models.CRM.Purchase", b =>
                 {
-                    b.HasOne("Cores.Models.CRM.Customer", "Customer")
+                    b.HasOne("Cores.Models.CRM.Contact", "Contact")
                         .WithMany("Purchases")
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("ContactId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("Contact");
                 });
 
             modelBuilder.Entity("Cores.Models.MessagePayload", b =>
@@ -769,36 +897,6 @@ namespace Cores.DataService.Migrations
                         .HasForeignKey("SenderId");
 
                     b.Navigation("ApplicationUser");
-                });
-
-            modelBuilder.Entity("CustomerLanguage", b =>
-                {
-                    b.HasOne("Cores.Models.CRM.Customer", null)
-                        .WithMany()
-                        .HasForeignKey("CustomersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cores.Models.Language", null)
-                        .WithMany()
-                        .HasForeignKey("LanguagesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CustomerTag", b =>
-                {
-                    b.HasOne("Cores.Models.CRM.Customer", null)
-                        .WithMany()
-                        .HasForeignKey("CustomersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cores.Models.CRM.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -852,7 +950,7 @@ namespace Cores.DataService.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Cores.Models.CRM.Customer", b =>
+            modelBuilder.Entity("Cores.Models.CRM.Contact", b =>
                 {
                     b.Navigation("Purchases");
                 });

@@ -16,3 +16,13 @@ D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\Co
 D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\Cores.DataService.genruntimeconfig.cache
 D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\ref\Cores.DataService.dll
 D:\Graduation-Project-Related-Things\Cores\Cores.DataService\obj\Debug\net8.0\Cores.DataService.sourcelink.json
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\Cores.Utilities.dll
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.dll
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.Cookies.dll
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.dll
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Results.dll
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.BearerToken.dll
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\Microsoft.Extensions.Features.dll
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\System.IO.Pipelines.dll
+D:\Graduation-Project-Related-Things\Cores\Cores.DataService\bin\Debug\net8.0\Cores.Utilities.pdb

@@ -26,7 +26,7 @@ public class ProblemRepository : Repository<Problem>, IProblemRepository
         problemFromDb.Description = problem.Description;
         problemFromDb.Resolution = problem.Resolution;
         problemFromDb.Note = problem.Note;
-        problemFromDb.CustomerId = problem.CustomerId;
+        problemFromDb.ContactId = problem.ContactId;
         if (problem.ModifiedById is not null)
         {
             problemFromDb.ModifiedById = problem.ModifiedById;

@@ -9,5 +9,5 @@ public class Tag
     [Required]
     public string Name{ get; set; }
     public DateTime DateTime{ get; set; } = DateTime.Now;
-    public ICollection<Customer> Customers { get; set; } = new Collection<Customer>();
+    public ICollection<Contact> Contacts { get; set; } = new Collection<Contact>();
 }

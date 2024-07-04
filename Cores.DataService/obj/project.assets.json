@@ -2952,6 +2952,19 @@
         "runtime": {
           "bin/placeholder/Cores.Models.dll": {}
         }
+      },
+      "Cores.Utilities/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Cores.Models": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Cores.Utilities.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Cores.Utilities.dll": {}
+        }
       }
     }
   },
@@ -8630,11 +8643,17 @@
       "type": "project",
       "path": "../Cores.Models/Cores.Models.csproj",
       "msbuildProject": "../Cores.Models/Cores.Models.csproj"
+    },
+    "Cores.Utilities/1.0.0": {
+      "type": "project",
+      "path": "../Cores.Utilities/Cores.Utilities.csproj",
+      "msbuildProject": "../Cores.Utilities/Cores.Utilities.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
       "Cores.Models >= 1.0.0",
+      "Cores.Utilities >= 1.0.0",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.2",
       "Microsoft.EntityFrameworkCore >= 8.0.2",
       "Microsoft.EntityFrameworkCore.Design >= 8.0.2",
@@ -8671,6 +8690,9 @@
           "projectReferences": {
             "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Models\\Cores.Models.csproj": {
               "projectPath": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Models\\Cores.Models.csproj"
+            },
+            "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Utilities\\Cores.Utilities.csproj": {
+              "projectPath": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Utilities\\Cores.Utilities.csproj"
             }
           }
         }

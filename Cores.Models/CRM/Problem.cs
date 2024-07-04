@@ -8,10 +8,10 @@ public class Problem
 {
     public int Id { get; set; }
     
-    public int CustomerId { get; set; }
-    [ForeignKey("CustomerId")]
+    public int ContactId { get; set; }
+    [ForeignKey("ContactId")]
     [ValidateNever]
-    public Customer Customer { get; set; }
+    public Contact Contact { get; set; }
     
     public DateTime ReportedDate { get; set; } = DateTime.Now;
     

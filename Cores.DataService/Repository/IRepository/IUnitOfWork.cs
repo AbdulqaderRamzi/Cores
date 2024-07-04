@@ -7,7 +7,7 @@ public interface IUnitOfWork
     IActivityLogRepository ActivityLog { get; }
     ITagRepository Tag { get; }
     IMessagePayloadRepository MessagePayload { get; }
-    ICustomerRepository Customer { get; }
+    IContactRepository Contact { get; }
     ILanguageRepository Language { get; }
     IPurchaseRepository Purchase { get; }
     IPaymentMethodRepository PaymentMethod { get; }
@@ -17,6 +17,8 @@ public interface IUnitOfWork
     public IOrderRepository Order { get; }
     public IProblemRepository Problem { get; }
     public IProblemTypeRepository ProblemType { get; }
+    public IEventRepository Event { get; }
+    public IEventTypeRepository EventType { get; }
 
     Task SaveAsync();
 }

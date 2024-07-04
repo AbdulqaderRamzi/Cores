@@ -10,8 +10,8 @@ public class PurchaseVm
     public Purchase Purchase { get; set; }
     
     // For Create with purchase
-    public int? CustomerId { get; set; } 
-    public Customer Customer { get; set; }
+    public int? ContactId { get; set; } 
+    public Contact Contact { get; set; }
     
     // Display Existing Orders For A Particular Purchase 
     public List<Order> Orders { get; set; }
@@ -20,11 +20,11 @@ public class PurchaseVm
     public List<Product> Products { get; set; }
     
     // Customers Dropdown list 
-    public List<SelectListItem>? Customers { get; set; }
+    public List<SelectListItem>? Contacts { get; set; }
     
     // taking the orders list to HttpPost
     public string SerializedProducts { get; set; }
     
     // Customer id from dropdown 
-    public int? SelectedCustomerId { get; set; }
+    public int? SelectedContactId { get; set; }
 }

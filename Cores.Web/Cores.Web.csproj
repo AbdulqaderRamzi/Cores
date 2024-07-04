@@ -26,7 +26,7 @@
     <ItemGroup>
         <Folder Include="Areas\HR\Controllers\"/>
         <Folder Include="Areas\HR\Views\"/>
-        <Folder Include="wwwroot\images\customers\"/>
+        <Folder Include="wwwroot\images\contacts\" />
     </ItemGroup>
 
     <ItemGroup>

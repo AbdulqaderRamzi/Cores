@@ -18,10 +18,10 @@ public class Purchase
     [Required]
     public string PaymentMethod { get; set; }
     public string? Note { get; set; }
-    public int CustomerId { get; set; }
-    [ForeignKey("CustomerId")]
+    public int ContactId { get; set; }
+    [ForeignKey("ContactId")]
     [ValidateNever]
-    public Customer? Customer { get; set; }
+    public Contact? Contact { get; set; }
 
     public ICollection<Order> Orders { get; set; } = new Collection<Order>();
 }

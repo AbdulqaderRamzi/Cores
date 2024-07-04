@@ -26,7 +26,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<ActivityLog> ActivityLogs { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<MessagePayload> MessagePayloads { get; set; }
-    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Contact> Contacts { get; set; }
     public DbSet<Language> Languages { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Purchase> Purchases { get; set; }
@@ -36,6 +36,8 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<Order> Orders { get; set; }
     public DbSet<Problem> Problems { get; set; }
     public DbSet<ProblemType> ProblemTypes { get; set; }
+    public DbSet<EventType> EventTypes { get; set; }
+    public DbSet<Event> Events { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
         IHttpContextAccessor httpContextAccessor) : base(options)
@@ -43,25 +45,27 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+{
+    var modifiedEntries = ChangeTracker
+        .Entries()
+        .Where(x => x.State is EntityState.Added or EntityState.Modified or EntityState.Deleted)
+        .ToList();
+
+    var httpContext = _httpContextAccessor.HttpContext;
+    if (httpContext != null)
     {
-     
-        var modifiedEntries = ChangeTracker
-            .Entries()
-            .Where(x => x.State is
-                EntityState.Added or EntityState.Modified
-                or EntityState.Deleted)
-            .ToList();
-        var claimsIdentity = (ClaimsIdentity)_httpContextAccessor.HttpContext.User.Identity!;
-        var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var claimsIdentity = httpContext.User.Identity as ClaimsIdentity;
+        var userId = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
         foreach (var entity in modifiedEntries)
         {
             if (_entitiesToSkip.Contains(entity.Entity.GetType().ToString())) 
                 continue;
-               
             var updates = GetUpdate(entity);
             if (updates.Count == 0)
-                updates.Add(["", "", ""]);
+                updates.Add(new List<string?> { "", "", "" });
+
             foreach (var update in updates)
             {
                 var auditLog = new ActivityLog
@@ -77,20 +81,25 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
                 ActivityLogs.Add(auditLog);
             }
         }
-
-        return base.SaveChangesAsync(cancellationToken);
     }
+    else
+    {
+        Console.WriteLine("No HTTP context available. Skipping audit log.");
+    }
+
+    return await base.SaveChangesAsync(cancellationToken);
+}
 
     private static List<List<string?>> GetUpdate(EntityEntry entry)
     {
-        List<List<string?>> list = [];
+        var list = new List<List<string?>>();
         foreach (var prop in entry.OriginalValues.Properties)
         {
             var originalValue = entry.OriginalValues[prop];
             var currentValue = entry.CurrentValues[prop];
             if (currentValue is null || originalValue is null) continue;
             if (!Equals(originalValue, currentValue))
-                list.Add([prop.Name, originalValue.ToString(), currentValue.ToString()]);
+                list.Add(new List<string?> { prop.Name, originalValue.ToString(), currentValue.ToString() });
         }
 
         return list;

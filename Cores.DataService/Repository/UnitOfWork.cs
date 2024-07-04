@@ -11,7 +11,7 @@ public class UnitOfWork : IUnitOfWork
     public IActivityLogRepository ActivityLog { get; }
     public ITagRepository Tag { get; }
     public IMessagePayloadRepository MessagePayload { get; }
-    public ICustomerRepository Customer { get; }
+    public IContactRepository Contact { get; }
     public ILanguageRepository Language { get; }
     public IPurchaseRepository Purchase { get; }
     public IPaymentMethodRepository PaymentMethod { get; }
@@ -21,6 +21,8 @@ public class UnitOfWork : IUnitOfWork
     public IOrderRepository Order { get; }
     public IProblemRepository Problem { get; }
     public IProblemTypeRepository ProblemType { get; }
+    public IEventRepository Event { get; }
+    public IEventTypeRepository EventType { get; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
@@ -30,7 +32,7 @@ public class UnitOfWork : IUnitOfWork
         ActivityLog = new ActivityLogRepository(_db);
         Tag = new TagRepository(_db);
         MessagePayload = new MessagePayloadRepository(_db);
-        Customer = new CustomerRepository(_db);
+        Contact = new ContactRepository(_db);
         Language = new LanguageRepository(_db);
         Purchase = new PurchaseRepository(_db);
         PaymentMethod = new PaymentMethodRepository(_db);
@@ -40,6 +42,8 @@ public class UnitOfWork : IUnitOfWork
         Order = new OrderRepository(_db);
         Problem = new ProblemRepository(_db);
         ProblemType = new ProblemTypeRepository(_db);
+        Event = new EventRepository(_db);
+        EventType = new EventTypeRepository(_db);
     }
 
     public async Task SaveAsync() => await _db.SaveChangesAsync();

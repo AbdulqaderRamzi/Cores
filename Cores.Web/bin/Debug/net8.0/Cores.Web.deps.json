@@ -2793,6 +2793,7 @@
       "Cores.DataService/1.0.0": {
         "dependencies": {
           "Cores.Models": "1.0.0",
+          "Cores.Utilities": "1.0.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.2",
           "Microsoft.EntityFrameworkCore": "8.0.2",
           "Pomelo.EntityFrameworkCore.MySql": "8.0.2"

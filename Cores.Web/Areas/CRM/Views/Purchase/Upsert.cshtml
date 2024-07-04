@@ -5,9 +5,9 @@
         <div class="card-body">
             <form method="POST">
                 <input type="hidden" id="serializedProducts" name="SerializedProducts" />
-                <input type="hidden" asp-for="CustomerId"/>
+                <input type="hidden" asp-for="ContactId"/>
                 <input type="hidden" asp-for="Purchase.Id"/>
-                <input type="hidden" asp-for="Purchase.CustomerId"/>
+                <input type="hidden" asp-for="Purchase.ContactId"/>
                 
                 <!-- Product Table Section -->
                 <div class="mb-5">
@@ -46,55 +46,55 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h3 class="text-dark mb-3">Customer Information</h3>
-                        @if (Model.CustomerId is not null)
+                        @if (Model.ContactId is not null)
                         {
-                            <label asp-for="SelectedCustomerId">Choose Customer</label>
-                            <select class="form-control select2" asp-for="SelectedCustomerId" asp-items="@Model.Customers" id="customerSelect">
-                                <option selected>@Model.Customer.FirstName</option>
+                            <label asp-for="SelectedContactId">Choose Customer</label>
+                            <select class="form-control select2" asp-for="SelectedContactId" asp-items="@Model.Contacts" id="customerSelect">
+                                <option selected>@Model.Contact.FirstName</option>
                             </select>
                             <div class="form-group">
-                                <label asp-for="Customer.PhoneNumber">Customer Phone Number</label>
-                                <input asp-for="Customer.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>
+                                <label asp-for="Contact.PhoneNumber">Customer Phone Number</label>
+                                <input asp-for="Contact.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>
                             </div>
                             <div class="form-group">
-                                <label asp-for="Customer.Email">Customer Email</label>
-                                <input asp-for="Customer.Email" type="text" class="form-control" id="customerEmail" readonly>
+                                <label asp-for="Contact.Email">Customer Email</label>
+                                <input asp-for="Contact.Email" type="text" class="form-control" id="customerEmail" readonly>
                             </div>
                         }
                         else
                         {
-                            if (Model.Purchase.CustomerId is not 0)
+                            if (Model.Purchase.ContactId is not 0)
                             {
-                                <label asp-for="SelectedCustomerId">Choose Customer</label>
-                                <select class="form-control select2" asp-for="SelectedCustomerId" asp-items="@Model.Customers" id="customerSelect">
-                                    <option  asp-for="Purchase.Customer.PhoneNumber" selected>@Model.Purchase.Customer.FirstName</option>
+                                <label asp-for="SelectedContactId">Choose Customer</label>
+                                <select class="form-control select2" asp-for="SelectedContactId" asp-items="@Model.Contacts" id="customerSelect">
+                                    <option  asp-for="Purchase.Customer.PhoneNumber" selected>@Model.Purchase.Contact.FirstName</option>
                                 </select>
                                 <div class="form-group">
-                                    <label asp-for="Purchase.Customer.PhoneNumber">Customer Phone Number</label>
-                                    <input asp-for="Purchase.Customer.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>
+                                    <label asp-for="Purchase.Contact.PhoneNumber">Customer Phone Number</label>
+                                    <input asp-for="Purchase.Contact.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="Purchase.Customer.Email">Customer Email</label>
-                                    <input asp-for="Purchase.Customer.Email" type="text" class="form-control" id="customerEmail" readonly>
+                                    <label asp-for="Purchase.Contact.Email">Customer Email</label>
+                                    <input asp-for="Purchase.Contact.Email" type="text" class="form-control" id="customerEmail" readonly>
                                 </div>
                             }
                             else
                             {
                                 <div class="form-group">
-                                    <label asp-for="SelectedCustomerId">Choose Customer</label>
-                                    <select class="form-control select2" asp-for="SelectedCustomerId" asp-items="@Model.Customers" id="customerSelect">
+                                    <label asp-for="SelectedContactId">Choose Customer</label>
+                                    <select class="form-control select2" asp-for="SelectedContactId" asp-items="@Model.Contacts" id="customerSelect">
                                         <option value="">-- Select a Customer --</option>
                                     </select>
                                     
                                    <!-- Customer Info Section -->
                                    <div id="customer-info" style="display: none">
                                        <div class="form-group">
-                                           <label asp-for="Purchase.Customer.PhoneNumber">Phone Number</label>
-                                           <input asp-for="Purchase.Customer.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>
+                                           <label asp-for="Purchase.Contact.PhoneNumber">Phone Number</label>
+                                           <input asp-for="Purchase.Contact.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>
                                        </div>
                                        <div class="form-group">
-                                           <label asp-for="Purchase.Customer.Email">Email</label>
-                                           <input asp-for="Purchase.Customer.Email" type="text" class="form-control" id="customerEmail" readonly>
+                                           <label asp-for="Purchase.Contact.Email">Email</label>
+                                           <input asp-for="Purchase.Contact.Email" type="text" class="form-control" id="customerEmail" readonly>
                                        </div>
                                    </div>
                                 </div>
@@ -194,7 +194,7 @@
     
         function showCustomerInfo(customerId) {
             $.ajax({
-                url: '@Url.Action("GetCustomerById", "Purchase")' + '?id=' + customerId,
+                url: '@Url.Action("GetContactById", "Purchase")' + '?id=' + customerId,
                 type: 'GET',
                 data: { id: customerId },
                 success: function (customer) {

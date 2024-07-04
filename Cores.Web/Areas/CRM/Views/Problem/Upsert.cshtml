@@ -39,8 +39,8 @@
 
                 <div class="form-row">
                     <div class="form-group col-md-4">
-                        <label asp-for="Problem.CustomerId">Customer</label>
-                        <select id="customerSelect" class="form-control select2" asp-for="Problem.CustomerId" asp-items="Model.Customers" aria-describedby="customerHelp">
+                        <label asp-for="Problem.ContactId">Customer</label>
+                        <select id="customerSelect" class="form-control select2" asp-for="Problem.ContactId" asp-items="Model.Contacts" aria-describedby="customerHelp">
                             <option value="">-- Select a Customer --</option>
                         </select>
                         <small id="customerHelp" class="form-text text-muted">Select a customer to auto-fill contact information.</small>

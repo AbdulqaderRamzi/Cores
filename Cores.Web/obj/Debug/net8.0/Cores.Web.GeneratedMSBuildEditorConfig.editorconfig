@@ -68,12 +68,28 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/CRM/Views/Customer/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ1JNXFZpZXdzXEN1c3RvbWVyXEluZGV4LmNzaHRtbA==
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/CRM/Views/Contact/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ1JNXFZpZXdzXENvbnRhY3RcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/CRM/Views/Customer/Upsert.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ1JNXFZpZXdzXEN1c3RvbWVyXFVwc2VydC5jc2h0bWw=
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/CRM/Views/Contact/Upsert.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ1JNXFZpZXdzXENvbnRhY3RcVXBzZXJ0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/CRM/Views/EventType/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ1JNXFZpZXdzXEV2ZW50VHlwZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/CRM/Views/EventType/Upsert.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ1JNXFZpZXdzXEV2ZW50VHlwZVxVcHNlcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/CRM/Views/Event/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ1JNXFZpZXdzXEV2ZW50XEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/CRM/Views/Event/Upsert.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ1JNXFZpZXdzXEV2ZW50XFVwc2VydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/CRM/Views/ProblemType/Index.cshtml]

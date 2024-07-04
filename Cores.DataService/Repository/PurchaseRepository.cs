@@ -24,8 +24,8 @@ public class PurchaseRepository : Repository<Purchase>, IPurchaseRepository
         purchaseFromDb.Status = purchase.Status;
         purchaseFromDb.PaymentMethod = purchase.PaymentMethod;
         purchaseFromDb.Note = purchase.Note;
-        purchaseFromDb.CustomerId = purchase.CustomerId;
-        purchaseFromDb.Customer = purchase.Customer;
+        purchaseFromDb.ContactId = purchase.ContactId;
+        purchaseFromDb.Contact = purchase.Contact;
         purchaseFromDb.Orders.Clear();
         foreach (var order in purchase.Orders)
         {

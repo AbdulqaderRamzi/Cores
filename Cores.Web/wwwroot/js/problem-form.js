@@ -32,21 +32,18 @@ function showCustomerInfo(customerId) {
         $('#customerPhone, #customerEmail').val('Loading...'); // Show loading indicator
     }
     $.ajax({
-        url: `/CRM/Problem/GetCustomerById/${customerId}`,
+        url: `/CRM/Problem/GetContactById/${customerId}`,
         type: 'GET',
         data: { id: customerId },
         success: function(customer) {
             if (customer) {
                 $('#customerPhone').val(customer.phoneNumber);
                 $('#customerEmail').val(customer.email);
-            } else {
-                clearCustomerInfo();
             }
         },
         error: function(xhr, status, error) {
             console.error("Error fetching customer details:", error);
             alert('Failed to fetch customer details. Please try again or contact support.');
-            clearCustomerInfo();
         }
     });
 }

@@ -223,14 +223,13 @@
                 }
                 reader.readAsDataURL(file);
             });
-            document.addEventListener("DOMContentLoaded", function() {
-                    flatpickr("#dateOfBirth", {
-                        altInput: true,
-                        altFormat: "F j, Y",
-                        dateFormat: "Y-m-d", 
-                        defaultDate: []
-                    });
-                });
+           document.addEventListener("DOMContentLoaded", function() {
+               flatpickr("#dateOfBirth", {
+                   altInput: true,
+                   altFormat: "F j, Y",
+                   dateFormat: "Y-m-d"
+               });
+           });
         </script>
         <partial name="_ValidationScriptsPartial"/>
     }

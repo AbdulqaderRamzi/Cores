@@ -22,7 +22,7 @@ public class ProblemController : Controller
     
     public async Task<IActionResult> Index()
     {
-        var problems = await _unitOfWork.Problem.GetAll(includeProperties:"Customer,ApplicationUser,ProblemType");
+        var problems = await _unitOfWork.Problem.GetAll(includeProperties:"Contact,ApplicationUser,ProblemType");
         return View(problems);
     }
     
@@ -45,8 +45,8 @@ public class ProblemController : Controller
             problem.ApplicationUser = employee;   
         }
 
-        var customers = await _unitOfWork.Customer.GetAll();
-        var customerListItems = customers.Select(c => new SelectListItem
+        var contacts = await _unitOfWork.Contact.GetAll();
+        var contactListItems = contacts.Select(c => new SelectListItem
         {   
             Text = string.Concat(c.FirstName, " ", c.LastName),
             Value = c.Id.ToString()
@@ -62,7 +62,7 @@ public class ProblemController : Controller
         var problemVm = new ProblemVm
         {
             Problem = problem, 
-            Customers = customerListItems,
+            Contacts = contactListItems,
             ProblemTypes = problemTypesListItems
         };
         return View(problemVm);
@@ -107,13 +107,11 @@ public class ProblemController : Controller
     }
 
     #region API CALL
-
-    
     [HttpGet]
-    public async Task<IActionResult> GetCustomerById(int id)
+    public async Task<IActionResult> GetContactById(int id)
     {
-        var customer = await _unitOfWork.Customer.Get(c => c.Id == id);
-        return Json(customer);
+        var contact = await _unitOfWork.Contact.Get(c => c.Id == id);
+        return Json(contact);
     }
 
     #endregion

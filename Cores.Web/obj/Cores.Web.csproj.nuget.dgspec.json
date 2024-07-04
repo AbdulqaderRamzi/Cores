@@ -30,6 +30,9 @@
             "projectReferences": {
               "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Models\\Cores.Models.csproj": {
                 "projectPath": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Models\\Cores.Models.csproj"
+              },
+              "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Utilities\\Cores.Utilities.csproj": {
+                "projectPath": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Utilities\\Cores.Utilities.csproj"
               }
             }
           }

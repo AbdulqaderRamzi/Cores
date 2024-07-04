@@ -68,10 +68,12 @@
                     <h6 class="collapse-header">CRM</h6>
                 }
                 <a class="collapse-item" asp-area="CRM" asp-controller="Tag" asp-action="Index">Tags</a>
-                <a class="collapse-item" asp-area="CRM" asp-controller="Customer" asp-action="Index">Customers</a>
+                <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index">Customers</a>
                 <a class="collapse-item" asp-area="CRM" asp-controller="Purchase" asp-action="Index">Purchases</a>
                 <a class="collapse-item" asp-area="CRM" asp-controller="Problem" asp-action="Index">Problems</a>
+                <a class="collapse-item" asp-area="CRM" asp-controller="Event" asp-action="Index">Event</a>
                 <a class="collapse-item" asp-area="CRM" asp-controller="ProblemType" asp-action="Index">Problems Types</a>
+                <a class="collapse-item" asp-area="CRM" asp-controller="EventType" asp-action="Index">Event Types</a>
 
 
                 @if (User.IsInRole(SD.ADMIN_ROLE))

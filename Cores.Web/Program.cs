@@ -1,4 +1,5 @@
 using Cores.DataService.Data;
+using Cores.DataService.DbInitializer;
 using Cores.DataService.Repository;
 using Cores.DataService.Repository.IRepository;
 using Cores.Utilities;
@@ -41,6 +42,7 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IEmailSender, FakeEmailSender>();
 builder.Services.AddScoped<IMailer, Mailer>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -66,6 +68,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+SeedDatabase(); // seed initial data
+
 app.MapRazorPages();
 
 app.UseSession();
@@ -77,3 +81,13 @@ app.MapControllerRoute(
 app.MapHub<ChatHub>("/chatHub");
 
 app.Run();
+
+return;
+
+
+void SeedDatabase()
+{
+    using var scope = app?.Services.CreateScope();
+    var dbInitializer = scope?.ServiceProvider.GetRequiredService<IDbInitializer>();
+    dbInitializer?.Initialize().GetAwaiter().GetResult();
+}

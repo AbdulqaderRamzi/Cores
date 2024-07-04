@@ -1,5 +1,4 @@
-﻿using System.Xml.Linq;
-using Cores.DataService.Repository.IRepository;
+﻿using Cores.DataService.Repository.IRepository;
 using Cores.Models.CRM;
 using Cores.Models.ViewModels;
 using Cores.Utilities;
@@ -14,6 +13,8 @@ namespace Cores.Web.Areas.CRM.Controllers;
 [Authorize(Roles = SD.CRM_ROLE + "," + SD.ADMIN_ROLE)]
 public class PurchaseController : Controller
 {
+
+    
     private readonly IUnitOfWork _unitOfWork;
 
     public PurchaseController(IUnitOfWork unitOfWork)
@@ -23,33 +24,33 @@ public class PurchaseController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var purchases = await _unitOfWork.Purchase.GetAll(includeProperties: "Customer,Orders");
+        var purchases = await _unitOfWork.Purchase.GetAll(includeProperties: "Contact,Orders");
         return View(purchases);
     }
 
-    public async Task<IActionResult> Upsert(int id, int customerId)
+    public async Task<IActionResult> Upsert(int id, int contactId)
     {
             var purchaseVm = new PurchaseVm { Purchase = new Purchase() };
 
         var products = await _unitOfWork.Product.GetAll();
         purchaseVm.Products = products.ToList();
 
-        if (customerId is not 0)
+        if (contactId is not 0)
         {
-            var customer = await _unitOfWork.Customer.Get(c => c.Id == customerId, isTracked: false) ?? new Customer();
-            purchaseVm.CustomerId = customer.Id;
-            purchaseVm.Customer = customer;
+            var contact = await _unitOfWork.Contact.Get(c => c.Id == contactId, isTracked: false) ?? new Contact();
+            purchaseVm.ContactId = contact.Id;
+            purchaseVm.Contact = contact;
         }
-        var customers = await _unitOfWork.Customer.GetAll();
-        var customerList = customers.Select(x => new SelectListItem
+        var contacts = await _unitOfWork.Contact.GetAll();
+        var contactList = contacts.Select(x => new SelectListItem
         {
             Text = string.Concat(x.FirstName, " ", x.LastName),
             Value = x.Id.ToString()
         }).ToList();
-        purchaseVm.Customers = customerList;
+        purchaseVm.Contacts = contactList;
 
         if (id is 0) return View(purchaseVm);
-        var purchase = await _unitOfWork.Purchase.Get(p => p.Id == id, isTracked: false, includeProperties: "Customer,Orders");
+        var purchase = await _unitOfWork.Purchase.Get(p => p.Id == id, isTracked: false, includeProperties: "Contact,Orders");
         if (purchase is null) return NotFound();
         /*purchaseVm.CustomerId = purchase.CustomerId;*/
         purchaseVm.Purchase = purchase;
@@ -60,13 +61,13 @@ public class PurchaseController : Controller
     [HttpPost]
     public async Task<IActionResult> Upsert(PurchaseVm purchaseVm)
     {
-        Customer? customer;
-        if (purchaseVm.CustomerId is not null)
-            customer = await _unitOfWork.Customer.Get(c => c.Id == purchaseVm.CustomerId, isTracked: false, includeProperties:"Purchases");
-        else if (purchaseVm.SelectedCustomerId is not null)
-            customer = await _unitOfWork.Customer.Get(c => c.Id == purchaseVm.SelectedCustomerId, isTracked: false, includeProperties:"Purchases");
+        Contact? contact;
+        if (purchaseVm.ContactId is not null)
+            contact = await _unitOfWork.Contact.Get(c => c.Id == purchaseVm.ContactId, isTracked: false, includeProperties:"Purchases");
+        else if (purchaseVm.SelectedContactId is not null)
+            contact = await _unitOfWork.Contact.Get(c => c.Id == purchaseVm.SelectedContactId, isTracked: false, includeProperties:"Purchases");
         else 
-            customer = await _unitOfWork.Customer.Get(c => c.Id == purchaseVm.Purchase.CustomerId, isTracked: false, includeProperties:"Purchases");
+            contact = await _unitOfWork.Contact.Get(c => c.Id == purchaseVm.Purchase.ContactId, isTracked: false, includeProperties:"Purchases");
         purchaseVm.Purchase.Orders.Clear();
         var orders = JsonConvert.DeserializeObject<List<Order>>(purchaseVm.SerializedProducts);
         decimal totalPrice = 0;
@@ -81,6 +82,8 @@ public class PurchaseController : Controller
                     Quantity = order.Quantity
                 };
                 
+                
+                
                 newOrder.TotalPrice = newOrder.UnitPrice * newOrder.Quantity;
                 totalPrice += newOrder.TotalPrice;
                 await _unitOfWork.Order.Add(newOrder);
@@ -89,8 +92,8 @@ public class PurchaseController : Controller
 
         await _unitOfWork.SaveAsync();
         purchaseVm.Purchase.PurchaseAmount = totalPrice;
-        purchaseVm.Purchase.CustomerId = customer.Id;
-        purchaseVm.Purchase.Customer = null; // reset the customer 
+        purchaseVm.Purchase.ContactId = contact.Id;
+        purchaseVm.Purchase.Contact = null; // reset the customer 
 
 
         bool isUpdate;
@@ -109,12 +112,12 @@ public class PurchaseController : Controller
         
         if (isUpdate)
         {
-            var purchaseToDelete = customer.Purchases.FirstOrDefault(p => p.Id == purchaseVm.Purchase.Id);
-            customer.Purchases.Remove(purchaseToDelete);
+            var purchaseToDelete = contact.Purchases.FirstOrDefault(p => p.Id == purchaseVm.Purchase.Id);
+            contact.Purchases.Remove(purchaseToDelete);
         }
         
-        customer.Purchases.Add(purchaseVm.Purchase);
-        await _unitOfWork.Customer.Update(customer, []);
+        contact.Purchases.Add(purchaseVm.Purchase);
+        await _unitOfWork.Contact.Update(contact, []);
         await _unitOfWork.SaveAsync();
 
         return RedirectToAction(nameof(Index));
@@ -124,10 +127,10 @@ public class PurchaseController : Controller
     #region API CALL
 
     [HttpGet]
-    public async Task<IActionResult> GetCustomerById(int id)
+    public async Task<IActionResult> GetContactById(int id)
     {
-        var customer = await _unitOfWork.Customer.Get(c => c.Id == id);
-        return Json(customer);
+        var contact = await _unitOfWork.Contact.Get(c => c.Id == id);
+        return Json(contact);
     }
 
 

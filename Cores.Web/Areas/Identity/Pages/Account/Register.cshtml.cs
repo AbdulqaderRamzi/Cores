@@ -108,14 +108,6 @@ public class RegisterModel : PageModel
 
     public async Task OnGetAsync(string returnUrl = null)
     {
-        if (!_roleManager.RoleExistsAsync(SD.ADMIN_ROLE).GetAwaiter().GetResult())
-        {
-            _roleManager.CreateAsync(new IdentityRole(SD.ADMIN_ROLE)).GetAwaiter().GetResult();
-            _roleManager.CreateAsync(new IdentityRole(SD.ACCOUNTING_ROLE)).GetAwaiter().GetResult();
-            _roleManager.CreateAsync(new IdentityRole(SD.HR_ROLE)).GetAwaiter().GetResult();
-            _roleManager.CreateAsync(new IdentityRole(SD.CRM_ROLE)).GetAwaiter().GetResult();
-        }
-
         Input = new InputModel
         {
             RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem

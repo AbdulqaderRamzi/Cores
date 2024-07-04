@@ -8,7 +8,7 @@ public class ProblemVm
 {
     public Problem Problem { get; set; }
     [ValidateNever]
-    public List<SelectListItem> Customers { get; set; }
+    public List<SelectListItem> Contacts { get; set; }
     [ValidateNever]
     public List<SelectListItem> ProblemTypes { get; set; }
 }
