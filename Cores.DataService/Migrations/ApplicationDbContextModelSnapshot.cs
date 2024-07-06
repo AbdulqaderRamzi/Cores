@@ -509,6 +509,54 @@ namespace Cores.DataService.Migrations
                     b.ToTable("MessagePayloads");
                 });
 
+            modelBuilder.Entity("Cores.Models.Todo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("LastUpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("NotificationDateTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Todos");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -817,7 +865,7 @@ namespace Cores.DataService.Migrations
                         .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("Cores.Models.CRM.Contact", "Contact")
-                        .WithMany()
+                        .WithMany("Events")
                         .HasForeignKey("ContactId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -899,6 +947,15 @@ namespace Cores.DataService.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
+            modelBuilder.Entity("Cores.Models.Todo", b =>
+                {
+                    b.HasOne("Cores.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.Navigation("ApplicationUser");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -952,6 +1009,8 @@ namespace Cores.DataService.Migrations
 
             modelBuilder.Entity("Cores.Models.CRM.Contact", b =>
                 {
+                    b.Navigation("Events");
+
                     b.Navigation("Purchases");
                 });
 

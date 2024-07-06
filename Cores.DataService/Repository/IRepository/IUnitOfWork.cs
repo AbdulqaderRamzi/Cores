@@ -19,6 +19,7 @@ public interface IUnitOfWork
     public IProblemTypeRepository ProblemType { get; }
     public IEventRepository Event { get; }
     public IEventTypeRepository EventType { get; }
+    public ITodoRepository Todo { get; }
 
     Task SaveAsync();
 }

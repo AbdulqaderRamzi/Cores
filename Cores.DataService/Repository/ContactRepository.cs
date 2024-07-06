@@ -53,6 +53,16 @@ public class ContactRepository : Repository<Contact>, IContactRepository
                 customerFromDb.Languages.Add(language);
             }
         }
-        
     }
+
+    public async Task<Contact?> GetEventWithRelatedData(int contactId)
+    {
+        return await _db.Contacts
+            .Include(c => c.Events).ThenInclude(e => e.EventType)
+            .Include(c => c.Events).ThenInclude(e => e.ApplicationUser)
+            .Include(c => c.Languages)
+            .Include(c => c.Tags)
+            //.Include(c => c.Purchases)
+            .FirstOrDefaultAsync(c => c.Id == contactId);
+    }   
 }

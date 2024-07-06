@@ -38,6 +38,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<ProblemType> ProblemTypes { get; set; }
     public DbSet<EventType> EventTypes { get; set; }
     public DbSet<Event> Events { get; set; }
+    public DbSet<Todo> Todos { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
         IHttpContextAccessor httpContextAccessor) : base(options)

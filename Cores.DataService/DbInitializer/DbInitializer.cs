@@ -24,7 +24,6 @@ public class DbInitializer : IDbInitializer
     public async Task Initialize()
     {
         // Apply migration if they are not applied 
-        // Apply migration if they are not applied 
         try
         {
             Console.WriteLine("Starting database initialization...");
@@ -55,28 +54,33 @@ public class DbInitializer : IDbInitializer
             await _roleManager.CreateAsync(new IdentityRole(SD.ACCOUNTING_ROLE));
             await _roleManager.CreateAsync(new IdentityRole(SD.HR_ROLE));
             await _roleManager.CreateAsync(new IdentityRole(SD.CRM_ROLE));
-            
-            // Create admin user
-            var adminUser = new ApplicationUser
-            {
-                UserName = "admin@cores.com",
-                Email = "admin@cores.com",
-                FirstName = "cores",
-                LastName = "admin",
-                PhoneNumber = "97595234",
-            };
 
-            var result = await _userManager.CreateAsync(adminUser, "Abood123!");
-            if (result.Succeeded)
+            // Check if admin user exists
+            var adminUser = await _userManager.FindByEmailAsync("admin@cores.com");
+            if (adminUser is null)
             {
-                await _userManager.AddToRoleAsync(adminUser, SD.ADMIN_ROLE);
-            }
-            else
-            {
-                // Log the error
-                foreach (var error in result.Errors)
+                // Create admin user
+                adminUser = new ApplicationUser
                 {
-                    Console.WriteLine($"Error creating admin user: {error.Description}");
+                    UserName = "admin@cores.com",
+                    Email = "admin@cores.com",
+                    FirstName = "cores",
+                    LastName = "admin",
+                    PhoneNumber = "97595234",
+                };
+
+                var result = await _userManager.CreateAsync(adminUser, "Abood123!");
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(adminUser, SD.ADMIN_ROLE);
+                }
+                else
+                {
+                    // Log the error
+                    foreach (var error in result.Errors)
+                    {
+                        Console.WriteLine($"Error creating admin user: {error.Description}");
+                    }
                 }
             }
         }

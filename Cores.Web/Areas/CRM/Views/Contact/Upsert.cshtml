@@ -192,6 +192,51 @@
                         </table>
                     </div>
                 }
+                @if (Model.Contact.Id is not 0)
+                {
+                    <div class="mt-5">
+                        <h2 class="text-dark">Events Info</h2>
+                        <table class="table table-bordered events" id="eventTable">
+                            <thead>
+                            <tr>
+                                <th>Events Date</th>
+                                <th>Event Type</th>
+                                <th>Assign To</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                               <th>Events Date</th>
+                              <th>Event Type</th>
+                              <th>Assign To</th>
+                              <th>Status</th>
+                              <th>Actions</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            @foreach (var eventModel in Model.Contact.Events)
+                            {
+                                <tr>
+                                    <td>@eventModel.DateTime.ToString("yyyy MMMM dd")</td>
+                                    <td>@eventModel.EventType.Type</td>
+                                    <td>@eventModel.ApplicationUser.FirstName</td>
+                                    <td>@eventModel.Status</td>
+                                    <td>
+                                        <a class="btn" asp-controller="Event" asp-action="Upsert" asp-route-id="@eventModel.Id" 
+                                           style="background-color: #f6a23e; color: #ffffff"
+                                           onmouseover="this.style.backgroundColor='#e78211';"
+                                           onmouseout="this.style.backgroundColor='#f6a23e'">
+                                            <i class="fas fa-info-circle"></i> Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                }
             </div>
     
             <div class="row">

@@ -324,6 +324,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcVXRpbGl0eVxWaWV3c1xNZXNzYWdlUGF5bG9hZFxTZW5kLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/Utility/Views/Todo/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcVXRpbGl0eVxWaWV3c1xUb2RvXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/Utility/Views/Todo/Upsert.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcVXRpbGl0eVxWaWV3c1xUb2RvXFVwc2VydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/Utility/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcVXRpbGl0eVxWaWV3c1xfVmlld0ltcG9ydHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

@@ -32,4 +32,5 @@ public class Contact
     public ICollection<Language> Languages { get; set; } = new Collection<Language>();
     public ICollection<Tag> Tags { get; set; } = new Collection<Tag>();
     public ICollection<Purchase> Purchases { get; set; } = new Collection<Purchase>();
+    public ICollection<Event> Events { get; set; } = new Collection<Event>();
 }

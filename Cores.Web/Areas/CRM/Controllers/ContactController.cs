@@ -50,7 +50,7 @@ public class ContactController : Controller
         var selectedTagIds = new List<int>();
         if (id is not 0)
         {
-            contact = await _unitOfWork.Contact.Get(u => u.Id == id, "Languages,Tags");
+            contact = await _unitOfWork.Contact.GetEventWithRelatedData(id);
             if (contact is null)
                 return RedirectToAction(nameof(Index)); 
             foreach (var lang in contact.Languages)
@@ -59,6 +59,7 @@ public class ContactController : Controller
             var purchases = await _unitOfWork.Purchase.GetAll(p => p.ContactId == contact.Id);
             purchasesList.AddRange(purchases);
         }
+        
         
         var contactVm = new ContactVm
         {

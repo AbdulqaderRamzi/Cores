@@ -23,6 +23,7 @@ public class UnitOfWork : IUnitOfWork
     public IProblemTypeRepository ProblemType { get; }
     public IEventRepository Event { get; }
     public IEventTypeRepository EventType { get; }
+    public ITodoRepository Todo { get; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
@@ -44,6 +45,7 @@ public class UnitOfWork : IUnitOfWork
         ProblemType = new ProblemTypeRepository(_db);
         Event = new EventRepository(_db);
         EventType = new EventTypeRepository(_db);
+        Todo = new TodoRepository(_db);
     }
 
     public async Task SaveAsync() => await _db.SaveChangesAsync();
