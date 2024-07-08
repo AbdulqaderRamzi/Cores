@@ -24,16 +24,15 @@ public class PurchaseController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var purchases = await _unitOfWork.Purchase.GetAll(includeProperties: "Contact,Orders");
+        var purchases = await _unitOfWork.Purchase.GetAll(includeProperties: "Contact,Orders,PaymentMethod");
         return View(purchases);
     }
 
     public async Task<IActionResult> Upsert(int id, int contactId)
     {
-            var purchaseVm = new PurchaseVm { Purchase = new Purchase() };
+        var purchaseVm = new PurchaseVm { Purchase = new Purchase() };
 
-        var products = await _unitOfWork.Product.GetAll();
-        purchaseVm.Products = products.ToList();
+        await FillSelectionData(purchaseVm);
 
         if (contactId is not 0)
         {
@@ -41,14 +40,7 @@ public class PurchaseController : Controller
             purchaseVm.ContactId = contact.Id;
             purchaseVm.Contact = contact;
         }
-        var contacts = await _unitOfWork.Contact.GetAll();
-        var contactList = contacts.Select(x => new SelectListItem
-        {
-            Text = string.Concat(x.FirstName, " ", x.LastName),
-            Value = x.Id.ToString()
-        }).ToList();
-        purchaseVm.Contacts = contactList;
-
+        
         if (id is 0) return View(purchaseVm);
         var purchase = await _unitOfWork.Purchase.Get(p => p.Id == id, isTracked: false, includeProperties: "Contact,Orders");
         if (purchase is null) return NotFound();
@@ -100,11 +92,13 @@ public class PurchaseController : Controller
         if (purchaseVm.Purchase.Id == 0)
         {
             await _unitOfWork.Purchase.Add(purchaseVm.Purchase);
+            TempData["success"] = "Purchase added successfully";
             isUpdate = false;
         }
         else
         {
             await _unitOfWork.Purchase.Update(purchaseVm.Purchase);
+            TempData["success"] = "Purchase apdated successfully";
             isUpdate = true;
         }
 
@@ -123,7 +117,55 @@ public class PurchaseController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    private async Task FillSelectionData(PurchaseVm purchaseVm)
+    {
+        var products = await _unitOfWork.Product.GetAll();
+        purchaseVm.Products = products.ToList();
+            
+        var contacts = await _unitOfWork.Contact.GetAll();
+        var contactList = contacts.Select(x => new SelectListItem
+        {
+            Text = string.Concat(x.FirstName, " ", x.LastName),
+            Value = x.Id.ToString()
+        }).ToList();
+        purchaseVm.Contacts = contactList;
+            
+        var paymentMethods = await _unitOfWork.PaymentMethod.GetAll();
+        var paymentMethodList = paymentMethods.Select(x => new SelectListItem
+        {
+            Text = x.Name,
+            Value = x.Id.ToString()
+        }).ToList();
+        purchaseVm.PaymentMethods = paymentMethodList;
 
+        var currencies = await _unitOfWork.Currency.GetAll();
+        var currencyList = currencies.Select(x => new SelectListItem
+        {
+            Text = $"{x.Name} ({x.Code})",
+            Value = x.Id.ToString()
+        }).ToList();
+        purchaseVm.Currencies = currencyList;
+    }
+
+   
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id is null)
+            return NotFound();
+        try
+        {
+            await _unitOfWork.Purchase.RemovePurchaseWithOrdersRaw(id);
+            TempData["success"] = "Purchase deleted successfully";
+        }
+        catch (Exception ex)
+        {
+            // Log the exception
+            TempData["error"] = "An error occurred while deleting the purchase and related orders";
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+    
     #region API CALL
 
     [HttpGet]

@@ -31,6 +31,9 @@ public class ChatController : Controller
     [HttpPost]
     public IActionResult JoinChat(UserConnection conn)
     {
+        /*  Specific case: when the name of the room contains '\', then it will introduce a wearied bug */
+            conn.ChatRoom = conn.ChatRoom.Replace('\\', '/');
+        
         if (ModelState.IsValid)
             return RedirectToAction(nameof(ChatRoom), conn);
         return View(nameof(JoinChat), conn);

@@ -38,7 +38,7 @@
                 @foreach (var customer in Model)
                 {
                     <tr>
-                        <td>@customer.PaymentMethod</td>
+                        <td>@customer.PaymentMethod.Name</td>
                         <td>@customer.Status</td>
                         <td>@customer.PurchaseAmount</td>
                         <td>@customer.PurchaseDate</td>
@@ -61,7 +61,7 @@
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';">
                                         <i class="fas fa-edit"></i> Update
                                     </a>
-                                    <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/CRM/Customer/Delete?id=@customer.Id')"
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/CRM/Purchase/Delete?id=@customer.Id')"
                                        onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';" style="cursor: pointer;">
                                         <i class="fas fa-trash"></i> Delete
@@ -69,7 +69,7 @@
                                     <a class="dropdown-item" asp-controller="Contact" asp-action="DownloadSummery" asp-route-id="@customer.Id"
                                        onmouseover="this.style.backgroundColor='#5c9eb8'; this.style.color='white';"
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';">
-                                        <i class="fas fa-edit"></i> PD4F
+                                        <i class="fas fa-edit"></i> PDF
                                     </a>
                                     
                                 </div>
@@ -82,3 +82,9 @@
         </div>
     </div>
 </div>
+
+
+@section Scripts {
+    <script src="~/js/delete.js"></script>
+
+}

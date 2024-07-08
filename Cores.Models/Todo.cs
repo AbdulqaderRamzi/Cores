@@ -28,7 +28,7 @@ public class Todo
     public DateTime DueDate { get; set; } = DateTime.Now;
     [DisplayName("Last Updated Date")]
     public DateTime? LastUpdatedDate { get; set; }
-    [DisplayName("Notification Date")]
+    [DisplayName("Notify Me At")]
     public DateTime? NotificationDateTime { get; set; }
     public string? Comment { get; set; }
 }

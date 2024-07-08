@@ -32,6 +32,22 @@ build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcSG9tZVxJ
 build_metadata.AdditionalFiles.CssScope = 
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/Accounting/Views/Currency/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWNjb3VudGluZ1xWaWV3c1xDdXJyZW5jeVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/Accounting/Views/Currency/Upsert.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWNjb3VudGluZ1xWaWV3c1xDdXJyZW5jeVxVcHNlcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/Accounting/Views/PaymentMethod/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWNjb3VudGluZ1xWaWV3c1xQYXltZW50TWV0aG9kXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/Accounting/Views/PaymentMethod/Upsert.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWNjb3VudGluZ1xWaWV3c1xQYXltZW50TWV0aG9kXFVwc2VydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/Accounting/Views/Product/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWNjb3VudGluZ1xWaWV3c1xQcm9kdWN0XEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -324,6 +340,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcVXRpbGl0eVxWaWV3c1xNZXNzYWdlUGF5bG9hZFxTZW5kLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/Utility/Views/Notification/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcVXRpbGl0eVxWaWV3c1xOb3RpZmljYXRpb25cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/Utility/Views/Todo/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcVXRpbGl0eVxWaWV3c1xUb2RvXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -346,6 +366,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Graduation-Project-Related-Things/Cores/Cores.Web/Views/Shared/Components/Message/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcTWVzc2FnZVxEZWZhdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Views/Shared/Components/Notification/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcTm90aWZpY2F0aW9uXERlZmF1bHQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Graduation-Project-Related-Things/Cores/Cores.Web/Views/Shared/Error.cshtml]

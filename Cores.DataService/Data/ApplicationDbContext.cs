@@ -17,6 +17,8 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     private readonly HashSet<string> _entitiesToSkip = [
                 "Cores.Models.MessagePayload", 
                 "Cores.Models.CheckBox", 
+                "Cores.Models.Notification",
+                "Cores.Models.CRM.Order",
                 "Cores.Models.ApplicationUser", 
                 "Microsoft.AspNetCore.Identity.IdentityUserRole`1[System.String]", 
                 "System.Collections.Generic.Dictionary`2[System.String,System.Object]"
@@ -31,7 +33,6 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<Product> Products { get; set; }
     public DbSet<Purchase> Purchases { get; set; }
     public DbSet<PaymentMethod> PaymentMethods { get; set; }
-    public DbSet<Status> Statuses { get; set; }
     public DbSet<Currency> Currencies { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Problem> Problems { get; set; }
@@ -39,6 +40,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<EventType> EventTypes { get; set; }
     public DbSet<Event> Events { get; set; }
     public DbSet<Todo> Todos { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
         IHttpContextAccessor httpContextAccessor) : base(options)

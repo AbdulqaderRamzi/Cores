@@ -1,7 +1,7 @@
 ﻿@model Todo
 
 <div class="container mt-5">
-    <h2 class="mb-4 text-center">Tasks Information</h2>
+    <h2 class="mb-4 text-center">Task Information</h2>
     <form method="POST" class="bg-white shadow-sm rounded p-4">
         <input asp-for="Id" hidden>
         <input asp-for="ApplicationUserId" hidden>
@@ -10,33 +10,54 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label asp-for="Title" class="form-label">Task Title</label>
-                    <input asp-for="Title" class="form-control" type="text">
+                    @if (!ViewBag.Details)
+                    {
+                        <input asp-for="Title" class="form-control" type="text">
+                    }
+                    else
+                    {
+                        <input asp-for="Title" class="form-control" type="text" readonly>
+                    }
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label asp-for="Status" class="form-label">Status</label>
-                    <select id="status" class="form-control select2" asp-for="Status" required>
-                        <option value="" disabled selected>-- Select Status --</option>
-                        <option value="Not Started">Not Started</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Complete">Complete</option>
-                        <option value="Failed">Failed</option>
-                    </select>
-                    <span class="text-danger" asp-validation-for="Status"></span>
+                    @if (!ViewBag.Details)
+                    {
+                        <select id="status" class="form-control select2" asp-for="Status" required>
+                            <option value="" disabled selected>-- Select Status --</option>
+                            <option value="Not Started">Not Started</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Complete">Complete</option>
+                            <option value="Failed">Failed</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="Status"></span>
+                    }
+                    else
+                    {
+                        <input asp-for="Status" class="form-control" type="text" readonly>
+                    }
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="form-group">
                     <label asp-for="Priority" class="form-label">Priority</label>
-                    <select id="priority" class="form-control select2" asp-for="Priority" required>
-                        <option value="" disabled selected>-- Select Priority --</option>
-                        <option value="Low">Low</option>
-                        <option value="Medium">Medium</option>
-                        <option value="High">High</option>
-                    </select>
-                    <span class="text-danger" asp-validation-for="Priority"></span>
+                    @if (!ViewBag.Details)
+                    {
+                        <select id="priority" class="form-control select2" asp-for="Priority" required>
+                            <option value="" disabled selected>-- Select Priority --</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="Priority"></span>
+                    }
+                    else
+                    {
+                        <input asp-for="Priority" class="form-control" type="text" readonly>
+                    }
                 </div>
             </div>
         </div>
@@ -48,7 +69,15 @@
                     <div class="form-group">
                         <label asp-for="DueDate" class="form-label"> </label>
                         <div class="input-group flatpickr">
-                            <input asp-for="DueDate" id="due-date" class="form-control" placeholder="Select Date and Time">
+                            @if (!ViewBag.Details)
+                            {
+                                <input asp-for="DueDate" id="due-date" class="form-control" placeholder="Select Date and Time">
+                            }
+                            else
+                            {
+                                <input asp-for="DueDate" class="form-control" readonly>
+
+                            }
                             <div class="input-group-append">
                                 <span class="input-group-text">
                                     <i class="fas fa-calendar-alt"></i>
@@ -62,7 +91,14 @@
                     <div class="form-group">
                         <label asp-for="NotificationDateTime" class="form-label"></label>
                         <div class="input-group flatpickr">
-                            <input asp-for="NotificationDateTime" id="notification-date" class="form-control" placeholder="Select Date and Time">
+                            @if (!ViewBag.Details)
+                            {
+                                <input asp-for="NotificationDateTime" id="notification-date" class="form-control" placeholder="Select Date and Time">
+                            }
+                            else
+                            {
+                                <input asp-for="NotificationDateTime" class="form-control" readonly>
+                            }
                             <div class="input-group-append">
                                 <span class="input-group-text">
                                     <i class="fas fa-calendar-alt"></i>
@@ -79,7 +115,15 @@
                     <div class="form-group">
                         <label asp-for="DueDate" class="form-label"> </label>
                         <div class="input-group flatpickr">
-                            <input asp-for="DueDate" id="due-date" class="form-control" placeholder="Select Date and Time">
+                            @if (!ViewBag.Details)
+                            {
+                                <input asp-for="DueDate" id="due-date" class="form-control" placeholder="Select Date and Time">
+                            }
+                            else
+                            {
+                                <input asp-for="DueDate" class="form-control" readonly>
+
+                            }
                             <div class="input-group-append">
                                 <span class="input-group-text">
                                     <i class="fas fa-calendar-alt"></i>
@@ -93,7 +137,14 @@
                     <div class="form-group">
                         <label asp-for="NotificationDateTime" class="form-label"></label>
                         <div class="input-group flatpickr">
-                            <input asp-for="NotificationDateTime" id="notification-date" class="form-control" placeholder="Select Date and Time">
+                            @if (!ViewBag.Details)
+                            {
+                                <input asp-for="NotificationDateTime" id="notification-date" class="form-control" placeholder="Select Date and Time">
+                            }
+                            else
+                            {
+                                <input asp-for="NotificationDateTime" class="form-control" readonly>
+                            }
                             <div class="input-group-append">
                                 <span class="input-group-text">
                                     <i class="fas fa-calendar-alt"></i>
@@ -106,8 +157,8 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="LastUpdatedDate" class="form-label"></label>
-                        <div class="input-group flatpickr">
-                            <input asp-for="LastUpdatedDate" id="notification-date" class="form-control" placeholder="Select Date and Time" readonly>
+                        <div class="input-group">
+                            <input asp-for="LastUpdatedDate" class="form-control" readonly>
                             <div class="input-group-append">
                                 <span class="input-group-text">
                                     <i class="fas fa-calendar-alt"></i>
@@ -124,16 +175,30 @@
             <div class="col-6">
                 <div class="form-group">
                     <label asp-for="Description" class="form-label">Task Description</label>
-                    <textarea class="form-control" asp-for="Description" rows="4"></textarea>
-                    <span class="text-danger" asp-validation-for="Description"></span>
+                    @if (!ViewBag.Details)
+                    {
+                        <textarea class="form-control" asp-for="Description" rows="4"></textarea>
+                        <span class="text-danger" asp-validation-for="Description"></span>
+                    }
+                    else
+                    {
+                        <textarea class="form-control" asp-for="Description" rows="4" readonly></textarea>
+                    }
                 </div>
             </div>
 
             <div class="col-6">
                 <div class="form-group">
                     <label asp-for="Comment" class="form-label">Comment</label>
-                    <textarea class="form-control" asp-for="Comment" rows="4"></textarea>
-                    <span class="text-danger" asp-validation-for="Comment"></span>
+                    @if (!ViewBag.Details)
+                    {
+                        <textarea class="form-control" asp-for="Comment" rows="4"></textarea>
+                        <span class="text-danger" asp-validation-for="Comment"></span>
+                    }
+                    else
+                    {
+                        <textarea class="form-control" asp-for="Comment" rows="4" readonly></textarea>
+                    }
                 </div>
             </div>
         </div>
@@ -142,9 +207,12 @@
                 <a asp-controller="Todo" asp-action="Index" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> Back
                 </a>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-check"></i> Submit
-                </button>
+                @if (!ViewBag.Details)
+                {
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Submit
+                    </button>
+                }
             </div>
         </div>
     </form>

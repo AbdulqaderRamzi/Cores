@@ -105,20 +105,34 @@
                     <div class="col-md-6">
                         <h4 class="text-dark mb-3">Payment Details</h4>
                         <div class="form-group">
-                            <label asp-for="Purchase.PaymentMethod">Payment Method</label>
-                            <input asp-for="Purchase.PaymentMethod" type="text" class="form-control">
+                           <label asp-for="Purchase.PaymentMethodId">Choose Customer</label>
+                           <select class="form-control select2" asp-for="Purchase.PaymentMethodId" asp-items="@Model.PaymentMethods">
+                                 <option value="" disabled selected>-- Select Payment Method --</option>
+                           </select>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Purchase.Status">Status</label>
-                            <input asp-for="Purchase.Status" type="text" class="form-control">
+                          <label asp-for="Purchase.Status">Status</label>
+                          <select class="form-control select2" asp-for="Purchase.Status" required>
+                              <option value="" disabled selected>-- Select Status --</option>
+                              <option value="Pending">Pending</option>
+                              <option value="Completed">Completed</option>
+                              <option value="Failed">Failed</option>
+                              <option value="Cancelled">Cancelled</option>
+                              <option value="Refunded">Refunded</option>
+                              <option value="Processing">Processing</option>
+                              <option value="On Hold">On Hold</option>
+                          </select>
                         </div>
                         <div class="form-group">
                             <label asp-for="Purchase.PurchaseAmount">Purchase Amount</label>
                             <input asp-for="Purchase.PurchaseAmount" type="text" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label asp-for="Purchase.Currency">Currency</label>
-                            <input asp-for="Purchase.Currency" type="text" class="form-control">
+                             <label asp-for="Purchase.CurrencyId">Choose Customer</label>
+                             <select class="form-control select2" asp-for="Purchase.CurrencyId" asp-items="@Model.Currencies">
+                                 <option value="" disabled selected>-- Select Currency --</option>
+                             </select>
+                             
                         </div>
                         <div class="form-group">
                             <label asp-for="Purchase.Note">Note</label>
@@ -172,6 +186,7 @@
 
 @section Scripts
 {
+    <partial name="_ValidationScriptsPartial"/>
     <script src="~/js/product.js"></script>
     <script src="~/js/select2.js"></script>
     <script>    
@@ -211,8 +226,8 @@
             });
         }
     </script>
-
 }
+
 
 
 

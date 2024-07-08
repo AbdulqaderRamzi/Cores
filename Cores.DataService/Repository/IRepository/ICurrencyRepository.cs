@@ -4,5 +4,5 @@ namespace Cores.DataService.Repository.IRepository;
 
 public interface ICurrencyRepository : IRepository<Currency>
 {
-    void Update(Currency currency);
+    Task Update(Currency currency);
 }

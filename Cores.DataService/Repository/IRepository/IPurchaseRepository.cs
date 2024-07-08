@@ -5,4 +5,5 @@ namespace Cores.DataService.Repository.IRepository;
 public interface IPurchaseRepository : IRepository<Purchase>
 {
     Task Update(Purchase purchase);
+    Task RemovePurchaseWithOrdersRaw(int? purchaseId);
 }

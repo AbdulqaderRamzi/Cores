@@ -36,7 +36,7 @@ public class TodoController : Controller
         return View(todoList);
     }
     
-    public async Task<IActionResult> Upsert(int id)
+    public async Task<IActionResult> Upsert(int id, bool details = false)
     {
       
         Todo? todo = new();
@@ -56,6 +56,7 @@ public class TodoController : Controller
         {
             return NotFound();
         }
+        ViewBag.Details = details;
         return View(todo);
     }
 
@@ -70,15 +71,50 @@ public class TodoController : Controller
         {
             todo.CreatedDate = DateTime.Now;
             await _unitOfWork.Todo.Add(todo);
+            await _unitOfWork.SaveAsync();
             TempData["success"] = "Todo created successfully";
+            
+            if (todo.NotificationDateTime is not null)
+            {
+                var notification = new Notification
+                {
+                    TodoId = todo.Id,
+                    DateTime = todo.NotificationDateTime,
+                    IsRead = false
+                };
+                await _unitOfWork.Notification.Add(notification);
+                await _unitOfWork.SaveAsync();
+            }
         }
         else
         {
             todo.LastUpdatedDate = DateTime.Now;
             await _unitOfWork.Todo.Update(todo);
+            await _unitOfWork.SaveAsync();
             TempData["success"] = "Todo updated successfully";
+            var notification = await _unitOfWork.Notification.Get(n => n.TodoId == todo.Id);
+            if (notification is not null)
+            {
+                if (!notification.DateTime.Equals(todo.NotificationDateTime))
+                {
+                    notification.IsRead = false;
+                    notification.DateTime = todo.NotificationDateTime;
+                }
+            }
+            else
+            {
+                var newNotification = new Notification
+                {
+                    TodoId = todo.Id,
+                    DateTime = todo.NotificationDateTime,
+                    IsRead = false
+                };
+                await _unitOfWork.Notification.Add(newNotification);
+            }
+            await _unitOfWork.SaveAsync();   
         }
-        await _unitOfWork.SaveAsync();
+       
+        
         return RedirectToAction(nameof(Index));
     }
     

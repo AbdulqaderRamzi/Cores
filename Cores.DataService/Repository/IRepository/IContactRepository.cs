@@ -6,5 +6,4 @@ public interface IContactRepository : IRepository<Contact>
 {
     Task Update(Contact contact, List<string> languages);
     Task<Contact?> GetEventWithRelatedData(int contactId);
- 
 }

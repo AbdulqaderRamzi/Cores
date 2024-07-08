@@ -15,7 +15,6 @@ public class UnitOfWork : IUnitOfWork
     public ILanguageRepository Language { get; }
     public IPurchaseRepository Purchase { get; }
     public IPaymentMethodRepository PaymentMethod { get; }
-    public IStatusRepository Status { get; }
     public ICurrencyRepository Currency { get; }
     public IProductRepository Product { get; }
     public IOrderRepository Order { get; }
@@ -24,6 +23,7 @@ public class UnitOfWork : IUnitOfWork
     public IEventRepository Event { get; }
     public IEventTypeRepository EventType { get; }
     public ITodoRepository Todo { get; }
+    public INotificationRepository Notification { get; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
@@ -37,7 +37,6 @@ public class UnitOfWork : IUnitOfWork
         Language = new LanguageRepository(_db);
         Purchase = new PurchaseRepository(_db);
         PaymentMethod = new PaymentMethodRepository(_db);
-        Status = new StatusRepository(_db);
         Currency = new CurrencyRepository(_db);
         Product = new ProductRepository(_db);
         Order = new OrderRepository(_db);
@@ -46,6 +45,8 @@ public class UnitOfWork : IUnitOfWork
         Event = new EventRepository(_db);
         EventType = new EventTypeRepository(_db);
         Todo = new TodoRepository(_db);
+        Notification = new NotificationRepository(_db);
+
     }
 
     public async Task SaveAsync() => await _db.SaveChangesAsync();

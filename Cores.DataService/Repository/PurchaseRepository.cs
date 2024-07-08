@@ -20,9 +20,9 @@ public class PurchaseRepository : Repository<Purchase>, IPurchaseRepository
         if (purchaseFromDb is null)
             return;
         purchaseFromDb.PurchaseAmount = purchase.PurchaseAmount;
-        purchaseFromDb.Currency = purchase.Currency;
         purchaseFromDb.Status = purchase.Status;
-        purchaseFromDb.PaymentMethod = purchase.PaymentMethod;
+        purchaseFromDb.CurrencyId = purchase.CurrencyId;
+        purchaseFromDb.PaymentMethodId = purchase.PaymentMethodId;
         purchaseFromDb.Note = purchase.Note;
         purchaseFromDb.ContactId = purchase.ContactId;
         purchaseFromDb.Contact = purchase.Contact;
@@ -30,6 +30,23 @@ public class PurchaseRepository : Repository<Purchase>, IPurchaseRepository
         foreach (var order in purchase.Orders)
         {
             purchaseFromDb.Orders.Add(order);
+        }
+    }
+
+    public async Task RemovePurchaseWithOrdersRaw(int? purchaseId)
+    {
+        await _db.Database.BeginTransactionAsync();
+        try
+        {
+            await _db.Database.ExecuteSqlInterpolatedAsync(
+                $"DELETE FROM Orders WHERE PurchaseId = {purchaseId}; DELETE FROM Purchases WHERE Id = {purchaseId}"
+            );
+            await _db.Database.CommitTransactionAsync();
+        }
+        catch
+        {
+            await _db.Database.RollbackTransactionAsync();
+            throw;
         }
     }
 }

@@ -125,23 +125,6 @@ namespace Cores.DataService.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Cores.Models.Accounting.Status", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Statuses");
-                });
-
             modelBuilder.Entity("Cores.Models.ActivityLog", b =>
                 {
                     b.Property<int>("Id")
@@ -412,16 +395,14 @@ namespace Cores.DataService.Migrations
                     b.Property<int>("ContactId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Note")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("PaymentMethodId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("PurchaseAmount")
                         .HasColumnType("decimal(65,30)");
@@ -436,6 +417,10 @@ namespace Cores.DataService.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ContactId");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.HasIndex("PaymentMethodId");
 
                     b.ToTable("Purchases");
                 });
@@ -507,6 +492,31 @@ namespace Cores.DataService.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("MessagePayloads");
+                });
+
+            modelBuilder.Entity("Cores.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("DateTime")
+                        .IsRequired()
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("TodoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TodoId");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Cores.Models.Todo", b =>
@@ -903,7 +913,7 @@ namespace Cores.DataService.Migrations
                         .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("Cores.Models.CRM.Contact", "Contact")
-                        .WithMany()
+                        .WithMany("Problems")
                         .HasForeignKey("ContactId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -935,7 +945,23 @@ namespace Cores.DataService.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Cores.Models.Accounting.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cores.Models.Accounting.PaymentMethod", "PaymentMethod")
+                        .WithMany()
+                        .HasForeignKey("PaymentMethodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Contact");
+
+                    b.Navigation("Currency");
+
+                    b.Navigation("PaymentMethod");
                 });
 
             modelBuilder.Entity("Cores.Models.MessagePayload", b =>
@@ -945,6 +971,17 @@ namespace Cores.DataService.Migrations
                         .HasForeignKey("SenderId");
 
                     b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Cores.Models.Notification", b =>
+                {
+                    b.HasOne("Cores.Models.Todo", "Todo")
+                        .WithMany()
+                        .HasForeignKey("TodoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Todo");
                 });
 
             modelBuilder.Entity("Cores.Models.Todo", b =>
@@ -1010,6 +1047,8 @@ namespace Cores.DataService.Migrations
             modelBuilder.Entity("Cores.Models.CRM.Contact", b =>
                 {
                     b.Navigation("Events");
+
+                    b.Navigation("Problems");
 
                     b.Navigation("Purchases");
                 });

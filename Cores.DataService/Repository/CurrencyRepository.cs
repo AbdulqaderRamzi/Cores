@@ -1,6 +1,7 @@
 ﻿using Cores.DataService.Data;
 using Cores.DataService.Repository.IRepository;
 using Cores.Models.Accounting;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cores.DataService.Repository;
 
@@ -12,8 +13,12 @@ public class CurrencyRepository : Repository<Currency>, ICurrencyRepository
         _db = db;
     }
 
-    public void Update(Currency currency)
+    public async Task Update(Currency currency)
     {
-        _db.Currencies.Update(currency);
+        var currencyFromDb = await _db.Currencies.FirstOrDefaultAsync(c => c.Id == currency.Id);
+        if (currencyFromDb is null)
+            return;
+        currencyFromDb.Name = currency.Name;
+        currencyFromDb.Code = currency.Code;
     }
 }

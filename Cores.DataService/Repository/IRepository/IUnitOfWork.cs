@@ -11,7 +11,6 @@ public interface IUnitOfWork
     ILanguageRepository Language { get; }
     IPurchaseRepository Purchase { get; }
     IPaymentMethodRepository PaymentMethod { get; }
-    IStatusRepository Status { get; }
     ICurrencyRepository Currency { get; }
     public IProductRepository Product { get; }
     public IOrderRepository Order { get; }
@@ -20,6 +19,7 @@ public interface IUnitOfWork
     public IEventRepository Event { get; }
     public IEventTypeRepository EventType { get; }
     public ITodoRepository Todo { get; }
+    public INotificationRepository Notification { get; }
 
     Task SaveAsync();
 }

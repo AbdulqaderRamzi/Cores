@@ -33,4 +33,5 @@ public class Contact
     public ICollection<Tag> Tags { get; set; } = new Collection<Tag>();
     public ICollection<Purchase> Purchases { get; set; } = new Collection<Purchase>();
     public ICollection<Event> Events { get; set; } = new Collection<Event>();
+    public ICollection<Problem> Problems { get; set; } = new Collection<Problem>();
 }

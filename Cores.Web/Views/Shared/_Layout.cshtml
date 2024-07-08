@@ -63,29 +63,31 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
+                @* Sub-Section's Title *@
                 @if (User.IsInRole(SD.ADMIN_ROLE))
                 {
                     <h6 class="collapse-header">CRM</h6>
                 }
-                <a class="collapse-item" asp-area="CRM" asp-controller="Tag" asp-action="Index">Tags</a>
-                <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index">Customers</a>
-                <a class="collapse-item" asp-area="CRM" asp-controller="Purchase" asp-action="Index">Purchases</a>
-                <a class="collapse-item" asp-area="CRM" asp-controller="Problem" asp-action="Index">Problems</a>
-                <a class="collapse-item" asp-area="CRM" asp-controller="Event" asp-action="Index">Event</a>
-                <a class="collapse-item" asp-area="CRM" asp-controller="ProblemType" asp-action="Index">Problems Types</a>
-                <a class="collapse-item" asp-area="CRM" asp-controller="EventType" asp-action="Index">Event Types</a>
+                @if (User.IsInRole(SD.ADMIN_ROLE) || User.IsInRole(SD.CRM_ROLE))
+                {
+                    <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index">Contacts</a>
+                    <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index">Customers</a>
+                    <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index">Leads</a>
+                    <a class="collapse-item" asp-area="CRM" asp-controller="Purchase" asp-action="Index">Purchases</a>
+                    <a class="collapse-item" asp-area="CRM" asp-controller="Problem" asp-action="Index">Problems</a>
+                    <a class="collapse-item" asp-area="CRM" asp-controller="Event" asp-action="Index">Event</a>
+                }
 
-
+                @* Sub-Section's Title *@
                 @if (User.IsInRole(SD.ADMIN_ROLE))
                 {
                     <h6 class="collapse-header">Accounting</h6>
                 }
-                <a class="collapse-item" asp-area="Accounting" asp-controller="Product" asp-action="Index">Products</a>
-                
 
-                @*<a class="collapse-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Products Table</a>*@
-                @*<a class="collapse-item" asp-area="Admin" asp-controller="Employee" asp-action="Index">Employees Table</a>*@
-                <a class="collapse-item" href="#">Example 4</a>
+                @if (User.IsInRole(SD.ADMIN_ROLE) || User.IsInRole(SD.ACCOUNTING_ROLE))
+                {
+                    // something here 
+                }
             </div>
         </div>
     </li>
@@ -100,17 +102,18 @@
              data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Custom Utilities:</h6>
-                @if (User.IsInRole(SD.ADMIN_ROLE))
-                {
-                    <a class="collapse-item" asp-area="Admin" asp-controller="ActivityLog" asp-action="Index">Activity Logs</a>
-                    <a class="collapse-item" asp-area="Admin" asp-controller="Employee" asp-action="Index">Employees</a>
-                }
-
-                <a class="collapse-item" asp-area="Utility" asp-controller="Todo" asp-action="Index">Tasks</a>
-                @*@if (User.IsInRole(SD.ADMIN_ROLE)) {*@
-                @*<a class="collapse-item"  asp-area="Admin" asp-controller="EmployeeAccount" asp-action="Index">Employees</a>*@
-
-                @*}*@
+                  @if (User.IsInRole(SD.ADMIN_ROLE) || User.IsInRole(SD.CRM_ROLE))
+                  {
+                    <a class="collapse-item" asp-area="CRM" asp-controller="Tag" asp-action="Index">Tags</a>
+                    <a class="collapse-item" asp-area="CRM" asp-controller="ProblemType" asp-action="Index">Problems Types</a>
+                    <a class="collapse-item" asp-area="CRM" asp-controller="EventType" asp-action="Index">Event Types</a>
+                  }
+                  @if (User.IsInRole(SD.ADMIN_ROLE) ||   User.IsInRole(SD.ACCOUNTING_ROLE))
+                  {
+                    <a class="collapse-item" asp-area="Accounting" asp-controller="Product" asp-action="Index">Products</a>
+                    <a class="collapse-item" asp-area="Accounting" asp-controller="Currency" asp-action="Index">Currencies</a>
+                    <a class="collapse-item" asp-area="Accounting" asp-controller="PaymentMethod" asp-action="Index">Payment Methods</a>
+                  }
             </div>
         </div>
     </li>
@@ -122,38 +125,52 @@
     </div>
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseWorks"
+           aria-expanded="true" aria-controls="collapsePages">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Works</span>
+        </a>
+        <div id="collapseWorks" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">To-do list</h6>
+                <a class="collapse-item" asp-area="Utility" asp-controller="Todo" asp-action="Index">Tasks</a>
+            </div>
+        </div>
+    </li>
+    <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
            aria-expanded="true" aria-controls="collapsePages">
             <i class="fas fa-fw fa-folder"></i>
-            <span>Chatting</span>
+            <span>Communications</span>
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Text</h6>
                 <a class="collapse-item" asp-area="Utility" asp-controller="MessagePayload" asp-action="Send">Private Message</a>
-                <a class="collapse-item" asp-area="Utility" asp-controller="Chat" asp-action="JoinChat">Public Chat</a>
+                <a class="collapse-item" asp-area="Utility" asp-controller="Chat" asp-action="JoinChat">Chat rooms</a>
                 <a class="collapse-item" asp-area="Utility" asp-controller="Mailer" asp-action="Index">Send Email</a>
                 <div class="collapse-divider"></div>
                 <h6 class="collapse-header">Video</h6>
-                <a class="collapse-item" href="http://localhost:9000/create" target="_blank">Video</a>
-                <h6 class="collapse-header">Voice</h6>
+                <a class="collapse-item" href="http://localhost:9000/create" target="_blank">Video rooms</a>
+                <h6 class="collapse-header">Audio</h6>
+                <a class="collapse-item" href="#" target="_blank">Audio rooms</a>
+                
             </div>
         </div>
     </li>
-    <!-- Nav Item - Charts -->
     <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Something</span>
-        </a>
-    </li>
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" asp-area="Admin" asp-controller="ActivityLog" asp-action="Index">
             <i class="fas fa-fw fa-table"></i>
-            <span>Something</span>
+            <span>Activity Logs</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Admin" asp-controller="Employee" asp-action="Index">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Employees</span>
+        </a>
+    </li>
+    
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
     <!-- Sidebar Toggler (Sidebar) -->
@@ -213,51 +230,12 @@
                     </li>
                     <!-- Nav Item - Alerts -->
                     <li class="nav-item dropdown no-arrow mx-1">
-                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-bell fa-fw"></i>
-                            <!-- Counter - Alerts -->
-                            <span class="badge badge-danger badge-counter">3+</span>
-                        </a>
                         <!-- Dropdown - Alerts -->
-                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                             aria-labelledby="alertsDropdown">
-                            <h6 class="dropdown-header">Alerts Center</h6>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-primary">
-                                        <i class="fas fa-file-alt text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">December 12, 2019</div>
-                                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-success">
-                                        <i class="fas fa-donate text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">December 7, 2019</div>
-                                    $290.29 has been deposited into your account!
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-warning">
-                                        <i class="fas fa-exclamation-triangle text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">December 2, 2019</div>
-                                    Spending Alert: We've noticed unusually high spending for your account.
-                                </div>
-                            </a>
-                            <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                        </div>
+                        @{
+                            var alertsClaimsIdentity = (ClaimsIdentity)User.Identity!;
+                            var Id = alertsClaimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                            @(await Component.InvokeAsync("Notification", new { userId = Id }))
+                        }
                     </li>
                     <!-- Nav Item - Messages -->
                     <li class="nav-item dropdown no-arrow mx-1">

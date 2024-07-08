@@ -1,6 +1,7 @@
 ﻿using Cores.DataService.Data;
 using Cores.DataService.Repository.IRepository;
 using Cores.Models.Accounting;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cores.DataService.Repository;
 
@@ -13,8 +14,11 @@ public class PaymentMethodRepository : Repository<PaymentMethod>, IPaymentMethod
         _db = db;
     }
 
-    public void Update(PaymentMethod paymentMethod)
+    public async Task Update(PaymentMethod paymentMethod)
     {
-        _db.PaymentMethods.Update(paymentMethod);
+        var paymentMethodFromDb = await _db.PaymentMethods.FirstOrDefaultAsync(pm => pm.Id == paymentMethod.Id);
+        if (paymentMethodFromDb is null)
+            return;
+        paymentMethodFromDb.Name = paymentMethod.Name;
     }
 }
