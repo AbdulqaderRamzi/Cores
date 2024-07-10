@@ -2,6 +2,7 @@
 using Cores.Models;
 using Cores.Models.Accounting;
 using Cores.Models.CRM;
+using Cores.Models.HR;
 using Cores.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -41,12 +42,23 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<Event> Events { get; set; }
     public DbSet<Todo> Todos { get; set; }
     public DbSet<Notification> Notifications { get; set; }
+    public DbSet<Department> Departments { get; set; }
+    public DbSet<Position> Positions { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
         IHttpContextAccessor httpContextAccessor) : base(options)
     {
         _httpContextAccessor = httpContextAccessor;
     }
+
+
+    /*
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+       
+        base.OnModelCreating(modelBuilder);
+    }
+    */
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
 {

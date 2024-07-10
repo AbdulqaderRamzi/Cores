@@ -48,6 +48,7 @@ public class TodoController : Controller
             var employee = await _unitOfWork.ApplicationUser.Get(a => a.Id == employeeId);
             todo.ApplicationUserId = employeeId;
             todo.ApplicationUser = employee;
+            ViewBag.Details = details;
             return View(todo);
         }
 

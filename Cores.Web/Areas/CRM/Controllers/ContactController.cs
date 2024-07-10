@@ -34,7 +34,7 @@ public class ContactController : Controller
     {
         var tags = await _unitOfWork.Tag.GetAll();
         var tagsSelectItems = tags.Select(t => new SelectListItem
-        {
+        {   
             Text = t.Name,
             Value = t.Id.ToString()
         }).ToList();

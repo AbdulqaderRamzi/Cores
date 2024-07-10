@@ -80,6 +80,9 @@ public class RegisterModel : PageModel
 
         [Required] public string Role { get; set; }
         public IEnumerable<SelectListItem> RoleList { get; set; }
+        public List<SelectListItem> Employees { get; set; }
+        public List<SelectListItem> Departments { get; set; }
+        public List<SelectListItem> Positions { get; set; }
 
         [Required] public string FirstName { get; set; }
         [Required] public string LastName { get; set; }
@@ -103,11 +106,18 @@ public class RegisterModel : PageModel
         public string State { get; set; } = string.Empty;
         public string StreetAddress { get; set; } = string.Empty;
         public string ImageUrl { get; set; } = string.Empty;
+        public string ManagerId { get; set; }
+        public int DepartmentId { get; set; }
+        public int PositionId { get; set; }
+        
     }
 
 
     public async Task OnGetAsync(string returnUrl = null)
     {
+        var employees = await _unitOfWork.ApplicationUser.GetAll();
+        var departments = await _unitOfWork.Department.GetAll();
+        var positions = await _unitOfWork.Position.GetAll();
         Input = new InputModel
         {
             RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
@@ -121,7 +131,23 @@ public class RegisterModel : PageModel
                 new CheckBox { Value = "Arabic", isChecked = false },
                 new CheckBox { Value = "Spanish", isChecked = false },
                 new CheckBox { Value = "French", isChecked = false }
-            ]
+            ],
+            Employees = employees.Select(e => new SelectListItem
+            {
+                Text = $"{e.FirstName} {e.LastName}",
+                Value = e.Id
+            }).ToList(),
+            Departments = departments.Select(d => new SelectListItem
+            {
+                Text = d.Name,
+                Value = d.Id.ToString()
+            }).ToList(),
+            Positions = positions.Select(p => new SelectListItem
+            {
+                Text = p.Title,
+                Value = p.Id.ToString()
+            }).ToList(),
+            
         };
 
         ReturnUrl = returnUrl;
@@ -149,6 +175,9 @@ public class RegisterModel : PageModel
             user.StreetAddress = Input.StreetAddress;
             user.PhoneNumber = Input.PhoneNumber;
             user.DateOfBirth = Input.DateOfBirth;
+            user.ManagerID = Input.ManagerId;
+            user.DepartmentId = Input.DepartmentId;
+            user.PositionID = Input.PositionId;
             // Fetching the image and save it
             var wwwRootPath = _webHostEnvironment.WebRootPath;
             if (file is not null)

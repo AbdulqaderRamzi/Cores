@@ -1,6 +1,7 @@
 ﻿using Cores.DataService.Data;
 using Cores.DataService.Repository.IRepository;
 using Cores.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cores.DataService.Repository;
 
@@ -15,4 +16,6 @@ public class ApplicationUserRepository : Repository<ApplicationUser>, IApplicati
     {
         _db.Update(applicationUser);
     }
+
+  
 }

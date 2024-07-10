@@ -24,8 +24,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Areas\HR\Controllers\"/>
-        <Folder Include="Areas\HR\Views\"/>
         <Folder Include="wwwroot\images\contacts\" />
     </ItemGroup>
 

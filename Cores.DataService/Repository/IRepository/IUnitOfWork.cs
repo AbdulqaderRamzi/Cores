@@ -20,6 +20,8 @@ public interface IUnitOfWork
     public IEventTypeRepository EventType { get; }
     public ITodoRepository Todo { get; }
     public INotificationRepository Notification { get; }
+    public IDepartmentRepository Department { get; }
+    public IPositionRepository Position { get; }
 
     Task SaveAsync();
 }

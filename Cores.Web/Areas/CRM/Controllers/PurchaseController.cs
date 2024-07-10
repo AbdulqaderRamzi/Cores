@@ -14,7 +14,6 @@ namespace Cores.Web.Areas.CRM.Controllers;
 public class PurchaseController : Controller
 {
 
-    
     private readonly IUnitOfWork _unitOfWork;
 
     public PurchaseController(IUnitOfWork unitOfWork)

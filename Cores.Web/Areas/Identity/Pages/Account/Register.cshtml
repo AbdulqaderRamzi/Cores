@@ -4,233 +4,313 @@
     ViewData["Title"] = "Register";
 }
 
-<form method="POST" enctype="multipart/form-data">
-    <h2 class="mb-2 text-gray-800">Create a new account</h2>
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="form-group">
-                <label asp-for="Input.FirstName" class="text-gray-800">First Name</label>
-                <input asp-for="Input.FirstName" class="form-control" autocomplete="new-password" aria-required="true" placeholder="First Name">
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-            </div>
+<div class="container">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <fieldset>
+                            <legend>Personal Information</legend>
+                            <div class="form-group">
+                                <label asp-for="Input.FirstName">First Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    </div>
+                                    <input asp-for="Input.FirstName" class="form-control" autocomplete="new-password" aria-required="true" placeholder="First Name">
+                                </div>
+                                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                            </div>
 
-            <div class="form-group">
-                <label asp-for="Input.LastName" class="text-gray-800">Last Name</label>
-                <input asp-for="Input.LastName" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Last Name">
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Email" class="text-gray-800">Email</label>
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter email">
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Password" class="text-gray-800">Password</label>
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Password">
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.ConfirmPassword" class="text-gray-800">Confirm Password</label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Confirm Password">
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Career" class="text-gray-800">Career</label>
-                <input asp-for="Input.Career" class="form-control" autocomplete="username" aria-required="true" placeholder="Career">
-                <span asp-validation-for="Input.Career" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Salary" class="text-gray-800">Salary</label>
-                <input asp-for="Input.Salary" class="form-control" autocomplete="username" aria-required="true" placeholder="Career">
-                <span asp-validation-for="Input.Salary" class="text-danger"></span>
-            </div>
+                            <div class="form-group">
+                                <label asp-for="Input.LastName">Last Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    </div>
+                                    <input asp-for="Input.LastName" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Last Name">
+                                </div>
+                                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                            </div>
 
-            <div class="form-group">
-                <label asp-for="Input.PhoneNumber" class="text-gray-800"></label>
-                <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="username" aria-required="true" placeholder="Phone Number">
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.City" class="text-gray-800">City</label>
-                <input asp-for="Input.City" class="form-control" autocomplete="username" aria-required="true" placeholder="City">
-                <span asp-validation-for="Input.City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.State" class="text-gray-800">State</label>
-                <input asp-for="Input.State" class="form-control" autocomplete="username" aria-required="true" placeholder="State">
-                <span asp-validation-for="Input.State" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.StreetAddress" class="text-gray-800">Street Address</label>
-                <input asp-for="Input.StreetAddress" class="form-control" autocomplete="username" aria-required="true" placeholder="Street Address">
-                <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
-            </div>
-            <div class="flatpickr">
-                <label asp-for="Input.DateOfBirth" class="text-gray-800">Date of Birth</label>
-                <input asp-for="Input.DateOfBirth" id="dateOfBirth" class="form-control" placeholder="Date of Birth">
-                <a class="input-button" title="toggle" data-toggle>
-                    <i class="icon-calendar"></i>
-                </a>
+                            <div class="form-group">
+                                <label asp-for="Input.Email">Email</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    </div>
+                                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter email">
+                                </div>
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
 
-                <a class="input-button" title="clear" data-clear>
-                    <i class="icon-close"></i>
-                </a>
-                <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
-            </div>
+                            <div class="form-group">
+                                <label asp-for="Input.Password">Password</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    </div>
+                                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Password">
+                                </div>
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
 
-            <div class="form-group">
-                <label class="form-check-label text-gray-800" for="english">Choose Role</label>
-                <select class="form-control" aria-required="true" asp-for="Input.Role" asp-items="@Model.Input.RoleList"></select>
-            </div>
+                            <div class="form-group">
+                                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    </div>
+                                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Confirm Password">
+                                </div>
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
 
-            <!-- Add other form fields here, e.g., Phone Number, Street Address, City, State, Postal Code, etc. -->
-        </div>
-        <div class="col-lg-6">
-            <div class="profile-image">
-                <img src="@Model.Input.ImageUrl" alt="" id="profile-pic">
-            </div>
+                            <div class="form-group">
+                                <label asp-for="Input.PhoneNumber">Phone Number</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    </div>
+                                    <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="username" aria-required="true" placeholder="Phone Number">
+                                </div>
+                                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                            </div>
 
-            <div class="form-group form-upload">
-                <label for="fileInput" class="btn-upload">
-                    <i class="fas fa-camera"></i> Upload Image
-                    <input id="fileInput" asp-for="Input.ImageUrl" name="file" type="file" style="display: none;">
-                </label>
-            </div>
-
-            <div class="row mx-5">
-                <div class="form-group mr-lg-5">
-                    <label class="text-gray-800">Gender:</label><br>
-                    <div class="form-check">
-                        <input class="form-check-input text-gray-800" type="radio" asp-for="Input.Gender" value="Male">
-                        <label class="form-check-label text-gray-800">Male</label>
+                            <div class="form-group">
+                                <label asp-for="Input.DateOfBirth">Date of Birth</label>
+                                <div class="input-group flatpickr">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    </div>
+                                    <input asp-for="Input.DateOfBirth" id="dateOfBirth" class="form-control" placeholder="Date of Birth">
+                                </div>
+                                <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
+                            </div>
+                        </fieldset>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input text-gray-800" type="radio" asp-for="Input.Gender" value="Female">
-                        <label class="form-check-label text-gray-800">Female</label>
+                    <div class="col-lg-4">
+                        <fieldset>
+                            <legend>Work Information</legend>
+                            <div class="form-group">
+                                <label asp-for="Input.Career">Career</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-briefcase"></i></span>
+                                    </div>
+                                    <input asp-for="Input.Career" class="form-control" autocomplete="username" aria-required="true" placeholder="Career">
+                                </div>
+                                <span asp-validation-for="Input.Career" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Input.DepartmentId">Department</label>
+                                <select class="custom-select" aria-required="true" asp-for="Input.DepartmentId" asp-items="@Model.Input.Departments">
+                                    <option value="" disabled selected>-- Select Department --</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Input.PositionId">Position</label>
+                                <select id="position" class="custom-select" aria-required="true" asp-for="Input.PositionId" asp-items="@Model.Input.Positions">
+                                    <option value="" disabled selected>-- Select Position --</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Input.Salary">Salary</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                    </div>
+                                    <input asp-for="Input.Salary" id="position-salary" class="form-control" autocomplete="username" aria-required="true" placeholder="Salary">
+                                </div>
+                                <span asp-validation-for="Input.Salary" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Input.Role">Role</label>
+                                <select class="custom-select" aria-required="true" asp-for="Input.Role" asp-items="@Model.Input.RoleList">
+                                    <option value="" disabled selected>-- Select Role --</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Input.ManagerId">Manager</label>
+                                <select class="custom-select" aria-required="true" asp-for="Input.ManagerId" asp-items="@Model.Input.Employees">
+                                    <option value="" disabled selected>-- Select Manager --</option>
+                                </select>
+                            </div>
+                        </fieldset>
                     </div>
-                </div>
-                <div class="form-group mr-lg-5">
-                    <label class="text-gray-800">Languages:</label><br>
-                    @foreach (var checkbox in Model.Input.LanguagesOptions)
-                    {
-                        <div class="form-check">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   value="@checkbox.Value"
-                                   name="languages"
-                                   id="lan_@checkbox.Value"
-                                   @(checkbox.isChecked ? "checked" : "")>
-                            <label class="form-check-label text-gray-800" for="lan_@checkbox.Value">@checkbox.Value</label>
+                    <div class="col-lg-4">
+                        <div class="profile-image mb-4">
+                            <img src="@Model.Input.ImageUrl" alt="" id="profile-pic">
                         </div>
-                    }
-                    <!-- Add more checkboxes as needed -->
+                        <div class="form-group text-center mb-4">
+                            <label for="fileInput" class="btn btn-primary">
+                                <i class="fas fa-camera"></i> Upload Image
+                                <input id="fileInput" asp-for="Input.ImageUrl" name="file" type="file" style="display: none;">
+                            </label>
+                        </div>
+                        
+                      <fieldset>
+                          @*<legend>Additional Information</legend>*@
+                          <div class="row">
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Gender</label>
+                                      <div>
+                                          <div class="custom-control custom-radio custom-control-inline">
+                                              <input class="custom-control-input" type="radio" asp-for="Input.Gender" id="male" value="Male">
+                                              <label class="custom-control-label" for="male">Male</label>
+                                          </div>
+                                          <div class="custom-control custom-radio custom-control-inline">
+                                              <input class="custom-control-input" type="radio" asp-for="Input.Gender" id="female" value="Female">
+                                              <label class="custom-control-label" for="female">Female</label>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label>Languages</label>
+                                      <div>
+                                          @foreach (var checkbox in Model.Input.LanguagesOptions)
+                                          {
+                                              <div class="custom-control custom-checkbox custom-control-inline">
+                                                  <input class="custom-control-input"
+                                                         type="checkbox"
+                                                         value="@checkbox.Value"
+                                                         name="languages"
+                                                         id="lan_@checkbox.Value"
+                                                         @(checkbox.isChecked ? "checked" : "")>
+                                                  <label class="custom-control-label" for="lan_@checkbox.Value">@checkbox.Value</label>
+                                              </div>
+                                          }
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </fieldset>
+                    </div>
                 </div>
-
-
-            </div>
-            <div class="row mx-5">
-            </div>
-        </div>
-        <div class="row">
-            <a asp-area="Admin" asp-controller="Employee" asp-action="Index" class="btn btn-dark ml-2 mt-5">
-                <i class="fas fa-arrow-left"></i> Back
-            </a>
-            <button type="submit" class="btn btn-success ml-4 mt-5">
-                <i class="fas fa-solid fa-check"></i> Register
-            </button>
+                <div class="form-group mt-4 text-center">
+                    <a asp-area="Admin" asp-controller="Employee" asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Register
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
-</form>
+</div>
 
 <style>
-.profile-image {
-    width: 250px;
-    height: 250px;
-    margin: 0 auto 20px;
-    border-radius: 50%;
-    overflow: hidden;
-    background-color: #ccc;
-    position: relative;
-    border: 4px solid #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease-in-out;
-}
-
-.profile-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.profile-image:hover {
-    transform: scale(1.05);
-}
-
- /* Remove display: none from input[type="file"] */
- input[type="file"] {
-     position: absolute;
-     cursor: pointer;
-     padding-left: 5px;
- }
- 
- /* Adjust styling of the upload button */
- .btn-upload {
-     display: inline-block;
-     padding: 10px 20px;
-     background-color: #007bff;
-     color: #fff;
-     text-align: center;
-     border: none;
-     border-radius: 4px;
-     cursor: pointer;
-     transition: background-color 0.3s ease;
- }
- 
- .btn-upload:hover {
-     background-color: #0056b3;
- }
- 
- .btn-upload i {
-     margin-right: 5px;
- }
-
-  .form-upload, 
-  .row {
-    display: flex;
-    justify-content: space-around;
-    font-size: large;
-  } 
- .form-check-input {
-   width: 18px;
-   height: 18px;
- }
-
- .form-check-label {
-   margin-left: 8px;
- }
-   </style>
-
-@section Scripts{
-    @{
-        <script>
-            document.getElementById('fileInput').addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                const reader = new FileReader();
-                const img = document.getElementById('profile-pic');
-
-                reader.onload = function(e) {
-                    img.src = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            });
-           document.addEventListener("DOMContentLoaded", function() {
-               flatpickr("#dateOfBirth", {
-                   altInput: true,
-                   altFormat: "F j, Y",
-                   dateFormat: "Y-m-d"
-               });
-           });
-        </script>
-        <partial name="_ValidationScriptsPartial"/>
+    .card {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
     }
+
+    .profile-image {
+        width: 250px;
+        height: 250px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #ccc;
+        position: relative;
+        border: 4px solid #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .profile-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .profile-image:hover {
+        transform: scale(1.05);
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .custom-control-input {
+        width: 18px;
+        height: 18px;
+    }
+
+    .custom-control-label {
+        margin-left: 8px;
+    }
+
+    .text-danger {
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+    .custom-control-inline {
+        margin-right: 1rem;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            const img = document.getElementById('profile-pic');
+
+            reader.onload = function(e) {
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#dateOfBirth", {
+                altInput: true,
+                altFormat: "F j, Y",
+                dateFormat: "Y-m-d"
+            });
+        });
+
+        $(document).ready(function () {
+            $("#position").on("change", loadPositionDate);
+            loadPositionDate();
+        });
+
+        function loadPositionDate() {
+            let positionId = $("#position").val();
+            if (positionId) {
+                $("#position-salary").val('Loading...');
+                loadPositionSalary(positionId);
+            }
+        }
+
+        function loadPositionSalary(positionId) {
+            $.ajax({
+                url: `/HR/Position/GetPositionById/${positionId}`,
+                type: "GET",
+                data: { id: positionId },
+                success: function (position) {
+                    if (position) {
+                        $("#position-salary").val(position.salaryRange);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching position details:", error);
+                    alert('Failed to fetch position details. Please try again or contact support.');
+                    $("#position-salary").val('');
+                }
+            });
+        }
+    </script>
 }

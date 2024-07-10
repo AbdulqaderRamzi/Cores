@@ -24,6 +24,8 @@ public class UnitOfWork : IUnitOfWork
     public IEventTypeRepository EventType { get; }
     public ITodoRepository Todo { get; }
     public INotificationRepository Notification { get; }
+    public IDepartmentRepository Department { get; }
+    public IPositionRepository Position { get; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
@@ -46,6 +48,8 @@ public class UnitOfWork : IUnitOfWork
         EventType = new EventTypeRepository(_db);
         Todo = new TodoRepository(_db);
         Notification = new NotificationRepository(_db);
+        Department = new DepartmentRepository(_db);
+        Position = new PositionRepository(_db);
 
     }
 

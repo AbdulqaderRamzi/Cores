@@ -88,6 +88,19 @@
                 {
                     // something here 
                 }
+                
+                  @* Sub-Section's Title *@
+                @if (User.IsInRole(SD.ADMIN_ROLE))
+                {
+                    <h6 class="collapse-header">HR</h6>
+                }
+
+                @if (User.IsInRole(SD.ADMIN_ROLE) || User.IsInRole(SD.HR_ROLE))
+                {
+                    <a class="collapse-item" asp-area="HR" asp-controller="Department" asp-action="Index">Departments</a>
+                    <a class="collapse-item" asp-area="HR" asp-controller="Position" asp-action="Index">Positions</a>
+                }
+                                
             </div>
         </div>
     </li>

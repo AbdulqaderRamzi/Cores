@@ -445,6 +445,59 @@ namespace Cores.DataService.Migrations
                     b.ToTable("Tags");
                 });
 
+            modelBuilder.Entity("Cores.Models.HR.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DepartmentHeadId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentHeadId");
+
+                    b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("Cores.Models.HR.Position", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("JobDescription")
+                        .HasColumnType("longtext");
+
+                    b.Property<decimal>("SalaryRange")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("Positions");
+                });
+
             modelBuilder.Entity("Cores.Models.Language", b =>
                 {
                     b.Property<int>("Id")
@@ -786,6 +839,12 @@ namespace Cores.DataService.Migrations
                     b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("date");
 
+                    b.Property<DateOnly>("DateOfJoining")
+                        .HasColumnType("date");
+
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -800,14 +859,30 @@ namespace Cores.DataService.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Salary")
+                    b.Property<string>("ManagerID")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int?>("PositionID")
+                        .IsRequired()
                         .HasColumnType("int");
+
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("State")
                         .HasColumnType("longtext");
 
                     b.Property<string>("StreetAddress")
                         .HasColumnType("longtext");
+
+                    b.Property<string>("employmentStatus")
+                        .HasColumnType("longtext");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("ManagerID");
+
+                    b.HasIndex("PositionID");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -964,6 +1039,26 @@ namespace Cores.DataService.Migrations
                     b.Navigation("PaymentMethod");
                 });
 
+            modelBuilder.Entity("Cores.Models.HR.Department", b =>
+                {
+                    b.HasOne("Cores.Models.ApplicationUser", "DepartmentHead")
+                        .WithMany()
+                        .HasForeignKey("DepartmentHeadId");
+
+                    b.Navigation("DepartmentHead");
+                });
+
+            modelBuilder.Entity("Cores.Models.HR.Position", b =>
+                {
+                    b.HasOne("Cores.Models.HR.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
             modelBuilder.Entity("Cores.Models.MessagePayload", b =>
                 {
                     b.HasOne("Cores.Models.ApplicationUser", "ApplicationUser")
@@ -1044,6 +1139,27 @@ namespace Cores.DataService.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Cores.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("Cores.Models.HR.Department", null)
+                        .WithMany("Employees")
+                        .HasForeignKey("DepartmentId");
+
+                    b.HasOne("Cores.Models.ApplicationUser", "Manager")
+                        .WithMany("Subordinates")
+                        .HasForeignKey("ManagerID");
+
+                    b.HasOne("Cores.Models.HR.Position", "Position")
+                        .WithMany("Employees")
+                        .HasForeignKey("PositionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Manager");
+
+                    b.Navigation("Position");
+                });
+
             modelBuilder.Entity("Cores.Models.CRM.Contact", b =>
                 {
                     b.Navigation("Events");
@@ -1056,6 +1172,21 @@ namespace Cores.DataService.Migrations
             modelBuilder.Entity("Cores.Models.CRM.Purchase", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Cores.Models.HR.Department", b =>
+                {
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("Cores.Models.HR.Position", b =>
+                {
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("Cores.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Subordinates");
                 });
 #pragma warning restore 612, 618
         }

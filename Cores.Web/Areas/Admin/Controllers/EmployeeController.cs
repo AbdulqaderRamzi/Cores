@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cores.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
-[Authorize(Roles = SD.ADMIN_ROLE)]
+[Authorize(Roles = SD.ADMIN_ROLE + "," + SD.HR_ROLE)]
 public class EmployeeController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
