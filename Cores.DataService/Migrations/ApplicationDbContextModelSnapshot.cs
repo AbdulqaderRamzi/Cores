@@ -445,6 +445,37 @@ namespace Cores.DataService.Migrations
                     b.ToTable("Tags");
                 });
 
+            modelBuilder.Entity("Cores.Models.HR.Attendance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<TimeOnly?>("TimeIn")
+                        .HasColumnType("time(6)");
+
+                    b.Property<TimeOnly?>("TimeOut")
+                        .HasColumnType("time(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Attendances");
+                });
+
             modelBuilder.Entity("Cores.Models.HR.Department", b =>
                 {
                     b.Property<int>("Id")
@@ -468,6 +499,62 @@ namespace Cores.DataService.Migrations
                     b.HasIndex("DepartmentHeadId");
 
                     b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("Cores.Models.HR.LeaveRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("LeaveStatus")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("LeaveTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("LeaveTypeId");
+
+                    b.ToTable("LeaveRequests");
+                });
+
+            modelBuilder.Entity("Cores.Models.HR.LeaveType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LeaveTypes");
                 });
 
             modelBuilder.Entity("Cores.Models.HR.Position", b =>
@@ -1039,6 +1126,17 @@ namespace Cores.DataService.Migrations
                     b.Navigation("PaymentMethod");
                 });
 
+            modelBuilder.Entity("Cores.Models.HR.Attendance", b =>
+                {
+                    b.HasOne("Cores.Models.ApplicationUser", "Employee")
+                        .WithMany("Attendances")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("Cores.Models.HR.Department", b =>
                 {
                     b.HasOne("Cores.Models.ApplicationUser", "DepartmentHead")
@@ -1046,6 +1144,25 @@ namespace Cores.DataService.Migrations
                         .HasForeignKey("DepartmentHeadId");
 
                     b.Navigation("DepartmentHead");
+                });
+
+            modelBuilder.Entity("Cores.Models.HR.LeaveRequest", b =>
+                {
+                    b.HasOne("Cores.Models.ApplicationUser", "Employee")
+                        .WithMany("LeaveRequests")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cores.Models.HR.LeaveType", "LeaveType")
+                        .WithMany()
+                        .HasForeignKey("LeaveTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("LeaveType");
                 });
 
             modelBuilder.Entity("Cores.Models.HR.Position", b =>
@@ -1186,6 +1303,10 @@ namespace Cores.DataService.Migrations
 
             modelBuilder.Entity("Cores.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("Attendances");
+
+                    b.Navigation("LeaveRequests");
+
                     b.Navigation("Subordinates");
                 });
 #pragma warning restore 612, 618

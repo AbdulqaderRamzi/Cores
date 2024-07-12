@@ -99,8 +99,10 @@
                 {
                     <a class="collapse-item" asp-area="HR" asp-controller="Department" asp-action="Index">Departments</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="Position" asp-action="Index">Positions</a>
+                    <a class="collapse-item" asp-area="HR" asp-controller="LeaveRequest" asp-action="Index">Leave Requests</a>
+                    <a class="collapse-item" asp-area="HR" asp-controller="LeaveType" asp-action="Index">Leave Types</a>
+                    <a class="collapse-item" asp-area="HR" asp-controller="Attendance" asp-action="HrAttendance">Attendances</a>
                 }
-                                
             </div>
         </div>
     </li>
@@ -146,7 +148,12 @@
         <div id="collapseWorks" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">To-do list</h6>
-                <a class="collapse-item" asp-area="Utility" asp-controller="Todo" asp-action="Index">Tasks</a>
+                <a class="collapse-item" asp-area="Utility" asp-controller="Todo" asp-action="Index">Tasks</a>  
+                @if (User.IsInRole(SD.EMPLOYEE_ROLE))
+                {
+                    <a class="collapse-item" asp-area="HR" asp-controller="Attendance" asp-action="EmployeeAttendance">Attendances</a>
+                    <a class="collapse-item" asp-area="HR" asp-controller="Attendance" asp-action="Sign">Record Attendance</a>
+                }
             </div>
         </div>
     </li>

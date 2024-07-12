@@ -26,6 +26,9 @@ public class UnitOfWork : IUnitOfWork
     public INotificationRepository Notification { get; }
     public IDepartmentRepository Department { get; }
     public IPositionRepository Position { get; }
+    public ILeaveTypeRepository LeaveType { get; }
+    public ILeaveRequestRepository LeaveRequest { get; }
+    public IAttendanceRepository Attendance { get; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
@@ -50,7 +53,9 @@ public class UnitOfWork : IUnitOfWork
         Notification = new NotificationRepository(_db);
         Department = new DepartmentRepository(_db);
         Position = new PositionRepository(_db);
-
+        LeaveType = new LeaveTypeRepository(_db);
+        LeaveRequest = new LeaveRequestRepository(_db);
+        Attendance = new AttendanceRepository(_db);
     }
 
     public async Task SaveAsync() => await _db.SaveChangesAsync();

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Security.Claims;
 using Cores.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,9 @@ public class HomeController : Controller
     [AllowAnonymous]
     public IActionResult Welcome()
     {
-        if (User.Identity is { IsAuthenticated: true })
+        var claimsIdentity = (ClaimsIdentity)User.Identity!;
+        var employeeId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (employeeId is not null)
             return RedirectToAction(nameof(Index));
         return RedirectToPage("/Account/Login", new { area = "Identity" });
     }

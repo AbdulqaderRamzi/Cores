@@ -44,6 +44,9 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<Department> Departments { get; set; }
     public DbSet<Position> Positions { get; set; }
+    public DbSet<LeaveType> LeaveTypes { get; set; }
+    public DbSet<LeaveRequest> LeaveRequests { get; set; }
+    public DbSet<Attendance> Attendances { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
         IHttpContextAccessor httpContextAccessor) : base(options)

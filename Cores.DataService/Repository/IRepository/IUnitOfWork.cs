@@ -22,6 +22,9 @@ public interface IUnitOfWork
     public INotificationRepository Notification { get; }
     public IDepartmentRepository Department { get; }
     public IPositionRepository Position { get; }
+    public ILeaveTypeRepository LeaveType { get; }
+    public ILeaveRequestRepository LeaveRequest { get; }
+    public IAttendanceRepository Attendance { get; }
 
     Task SaveAsync();
 }

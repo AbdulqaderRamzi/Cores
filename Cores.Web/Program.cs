@@ -12,7 +12,10 @@ using QuestPDF.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+/*builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add(new Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter());
+});*/
 
 // Connect TO MySQL
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -25,12 +28,15 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkSto
 
 // overwrite the default identity path
 builder.Services.ConfigureApplicationCookie(options =>
-    {
-        options.LoginPath = $"/Identity/Account/Login";
-        options.LogoutPath = $"/Identity/Account/Logout";
-        options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
-    }
-);
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+    /*options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+    options.SlidingExpiration = true;
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;*/
+});
 
 // Add Session 
 builder.Services.AddDistributedMemoryCache();

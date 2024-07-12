@@ -46,7 +46,7 @@ public class DbInitializer : IDbInitializer
             Console.WriteLine($"An error occurred during database initialization: {e.Message}");
             Console.WriteLine($"Stack trace: {e.StackTrace}");
         }
-        
+
         // Create roles if they are not created 
         if (!await _roleManager.RoleExistsAsync(SD.ADMIN_ROLE))
         {
@@ -54,6 +54,8 @@ public class DbInitializer : IDbInitializer
             await _roleManager.CreateAsync(new IdentityRole(SD.ACCOUNTING_ROLE));
             await _roleManager.CreateAsync(new IdentityRole(SD.HR_ROLE));
             await _roleManager.CreateAsync(new IdentityRole(SD.CRM_ROLE));
+            await _roleManager.CreateAsync(new IdentityRole(SD.EMPLOYEE_ROLE));
+
 
             // Check if admin user exists
             var adminUser = await _userManager.FindByEmailAsync("admin@cores.com");

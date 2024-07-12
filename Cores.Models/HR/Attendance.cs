@@ -9,14 +9,13 @@ public class Attendance
     public int Id { get; set; }
 
     public DateOnly Date { get; set; }
-    public TimeOnly TimeIn { get; set; }
-    public TimeOnly TimeOut { get; set; }
-    [Required]
-    public string Status { get; set; }
+    public TimeOnly? TimeIn { get; set; }
+    public TimeOnly? TimeOut { get; set; }
+    public string? Status { get; set; }
     
     [Required]
-    public string EmployeeID { get; set; }
-    [ForeignKey("EmployeeID")]
+    public string? EmployeeId { get; set; }
+    [ForeignKey("EmployeeId")]
     [ValidateNever]
     public ApplicationUser Employee { get; set; }
 }

@@ -57,8 +57,9 @@ public class ApplicationUser : IdentityUser
    
     public ICollection<Language> Languages { get; set; } = new List<Language>();
     public ICollection<ApplicationUser> Subordinates { get; set; } = new List<ApplicationUser>();
+    public ICollection<LeaveRequest> LeaveRequests { get; set; } = new Collection<LeaveRequest>();
+    public ICollection<Attendance> Attendances { get; set; } = new Collection<Attendance>();
+    
     //public ICollection<Salary> Salaries { get; set; } = new Collection<Salary>();
-    //public ICollection<Attendance> Attendances { get; set; } = new Collection<Attendance>();
-    //public ICollection<LeaveRequest> LeaveRequests { get; set; } = new Collection<LeaveRequest>();
     
 }
