@@ -111,8 +111,7 @@ public class RegisterModel : PageModel
         public int PositionId { get; set; }
         
     }
-
-
+    
     public async Task OnGetAsync(string returnUrl = null)
     {
         var employees = await _unitOfWork.ApplicationUser.GetAll();

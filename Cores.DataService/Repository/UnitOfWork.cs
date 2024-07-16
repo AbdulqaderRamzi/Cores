@@ -29,6 +29,9 @@ public class UnitOfWork : IUnitOfWork
     public ILeaveTypeRepository LeaveType { get; }
     public ILeaveRequestRepository LeaveRequest { get; }
     public IAttendanceRepository Attendance { get; }
+    public IRecruitmentRepository Recruitment { get; }
+    public IJobApplicationRepository JobApplication { get; }
+    public ISalaryRepository Salary { get; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
@@ -56,6 +59,9 @@ public class UnitOfWork : IUnitOfWork
         LeaveType = new LeaveTypeRepository(_db);
         LeaveRequest = new LeaveRequestRepository(_db);
         Attendance = new AttendanceRepository(_db);
+        Recruitment = new RecruitmentRepository(_db);
+        JobApplication = new JobApplicationRepository(_db);
+        Salary = new SalaryRepository(_db);
     }
 
     public async Task SaveAsync() => await _db.SaveChangesAsync();

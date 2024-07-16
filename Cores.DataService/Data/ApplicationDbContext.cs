@@ -47,6 +47,9 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<LeaveType> LeaveTypes { get; set; }
     public DbSet<LeaveRequest> LeaveRequests { get; set; }
     public DbSet<Attendance> Attendances { get; set; }
+    public DbSet<Recruitment> Recruitments { get; set; }
+    public DbSet<JobApplication> JobApplications { get; set; }
+    public DbSet<Salary> Salaries { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
         IHttpContextAccessor httpContextAccessor) : base(options)

@@ -12,19 +12,22 @@ public interface IUnitOfWork
     IPurchaseRepository Purchase { get; }
     IPaymentMethodRepository PaymentMethod { get; }
     ICurrencyRepository Currency { get; }
-    public IProductRepository Product { get; }
-    public IOrderRepository Order { get; }
-    public IProblemRepository Problem { get; }
-    public IProblemTypeRepository ProblemType { get; }
-    public IEventRepository Event { get; }
-    public IEventTypeRepository EventType { get; }
-    public ITodoRepository Todo { get; }
-    public INotificationRepository Notification { get; }
-    public IDepartmentRepository Department { get; }
-    public IPositionRepository Position { get; }
-    public ILeaveTypeRepository LeaveType { get; }
-    public ILeaveRequestRepository LeaveRequest { get; }
-    public IAttendanceRepository Attendance { get; }
+    IProductRepository Product { get; }
+    IOrderRepository Order { get; }
+    IProblemRepository Problem { get; }
+    IProblemTypeRepository ProblemType { get; }
+    IEventRepository Event { get; }
+    IEventTypeRepository EventType { get; }
+    ITodoRepository Todo { get; }
+    INotificationRepository Notification { get; }
+    IDepartmentRepository Department { get; }
+    IPositionRepository Position { get; }
+    ILeaveTypeRepository LeaveType { get; }
+    ILeaveRequestRepository LeaveRequest { get; }
+    IAttendanceRepository Attendance { get; }
+    IRecruitmentRepository Recruitment{ get; }
+    IJobApplicationRepository JobApplication { get; }
+    ISalaryRepository Salary { get; }
 
     Task SaveAsync();
 }

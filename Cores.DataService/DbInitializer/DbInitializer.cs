@@ -56,7 +56,6 @@ public class DbInitializer : IDbInitializer
             await _roleManager.CreateAsync(new IdentityRole(SD.CRM_ROLE));
             await _roleManager.CreateAsync(new IdentityRole(SD.EMPLOYEE_ROLE));
 
-
             // Check if admin user exists
             var adminUser = await _userManager.FindByEmailAsync("admin@cores.com");
             if (adminUser is null)

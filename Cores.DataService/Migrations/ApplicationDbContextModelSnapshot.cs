@@ -501,6 +501,45 @@ namespace Cores.DataService.Migrations
                     b.ToTable("Departments");
                 });
 
+            modelBuilder.Entity("Cores.Models.HR.JobApplication", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly>("ApplicationDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("RecruitmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Resume")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecruitmentId");
+
+                    b.ToTable("JobApplications");
+                });
+
             modelBuilder.Entity("Cores.Models.HR.LeaveRequest", b =>
                 {
                     b.Property<int>("Id")
@@ -583,6 +622,74 @@ namespace Cores.DataService.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Positions");
+                });
+
+            modelBuilder.Entity("Cores.Models.HR.Recruitment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("ClosingDate")
+                        .IsRequired()
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("JobDescription")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("JobTitle")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("NumberOfVacancies")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("PostingDate")
+                        .IsRequired()
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("Recruitments");
+                });
+
+            modelBuilder.Entity("Cores.Models.HR.Salary", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("BaseSalary")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal?>("Bonuses")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal?>("Deductions")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime?>("EffectiveDate")
+                        .IsRequired()
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Salaries");
                 });
 
             modelBuilder.Entity("Cores.Models.Language", b =>
@@ -1146,6 +1253,17 @@ namespace Cores.DataService.Migrations
                     b.Navigation("DepartmentHead");
                 });
 
+            modelBuilder.Entity("Cores.Models.HR.JobApplication", b =>
+                {
+                    b.HasOne("Cores.Models.HR.Recruitment", "Recruitment")
+                        .WithMany("JobApplications")
+                        .HasForeignKey("RecruitmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recruitment");
+                });
+
             modelBuilder.Entity("Cores.Models.HR.LeaveRequest", b =>
                 {
                     b.HasOne("Cores.Models.ApplicationUser", "Employee")
@@ -1174,6 +1292,28 @@ namespace Cores.DataService.Migrations
                         .IsRequired();
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("Cores.Models.HR.Recruitment", b =>
+                {
+                    b.HasOne("Cores.Models.HR.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("Cores.Models.HR.Salary", b =>
+                {
+                    b.HasOne("Cores.Models.ApplicationUser", "Employee")
+                        .WithMany("Salaries")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("Cores.Models.MessagePayload", b =>
@@ -1301,11 +1441,18 @@ namespace Cores.DataService.Migrations
                     b.Navigation("Employees");
                 });
 
+            modelBuilder.Entity("Cores.Models.HR.Recruitment", b =>
+                {
+                    b.Navigation("JobApplications");
+                });
+
             modelBuilder.Entity("Cores.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Attendances");
 
                     b.Navigation("LeaveRequests");
+
+                    b.Navigation("Salaries");
 
                     b.Navigation("Subordinates");
                 });

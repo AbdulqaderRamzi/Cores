@@ -30,6 +30,7 @@
 <body id="page-top">
 <!-- Page Wrapper -->
 <div id="wrapper">
+
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
@@ -88,8 +89,8 @@
                 {
                     // something here 
                 }
-                
-                  @* Sub-Section's Title *@
+
+                @* Sub-Section's Title *@
                 @if (User.IsInRole(SD.ADMIN_ROLE))
                 {
                     <h6 class="collapse-header">HR</h6>
@@ -102,6 +103,9 @@
                     <a class="collapse-item" asp-area="HR" asp-controller="LeaveRequest" asp-action="Index">Leave Requests</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="LeaveType" asp-action="Index">Leave Types</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="Attendance" asp-action="HrAttendance">Attendances</a>
+                    <a class="collapse-item" asp-area="HR" asp-controller="Recruitment" asp-action="Index">Recruitments</a>
+                    <a class="collapse-item" asp-area="HR" asp-controller="JobApplication" asp-action="Index">JobApplications</a>
+                    <a class="collapse-item" asp-area="HR" asp-controller="Salary" asp-action="Index">Salaries</a>
                 }
             </div>
         </div>
@@ -117,18 +121,18 @@
              data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Custom Utilities:</h6>
-                  @if (User.IsInRole(SD.ADMIN_ROLE) || User.IsInRole(SD.CRM_ROLE))
-                  {
+                @if (User.IsInRole(SD.ADMIN_ROLE) || User.IsInRole(SD.CRM_ROLE))
+                {
                     <a class="collapse-item" asp-area="CRM" asp-controller="Tag" asp-action="Index">Tags</a>
                     <a class="collapse-item" asp-area="CRM" asp-controller="ProblemType" asp-action="Index">Problems Types</a>
                     <a class="collapse-item" asp-area="CRM" asp-controller="EventType" asp-action="Index">Event Types</a>
-                  }
-                  @if (User.IsInRole(SD.ADMIN_ROLE) ||   User.IsInRole(SD.ACCOUNTING_ROLE))
-                  {
+                }
+                @if (User.IsInRole(SD.ADMIN_ROLE) || User.IsInRole(SD.ACCOUNTING_ROLE))
+                {
                     <a class="collapse-item" asp-area="Accounting" asp-controller="Product" asp-action="Index">Products</a>
                     <a class="collapse-item" asp-area="Accounting" asp-controller="Currency" asp-action="Index">Currencies</a>
                     <a class="collapse-item" asp-area="Accounting" asp-controller="PaymentMethod" asp-action="Index">Payment Methods</a>
-                  }
+                }
             </div>
         </div>
     </li>
@@ -148,7 +152,7 @@
         <div id="collapseWorks" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">To-do list</h6>
-                <a class="collapse-item" asp-area="Utility" asp-controller="Todo" asp-action="Index">Tasks</a>  
+                <a class="collapse-item" asp-area="Utility" asp-controller="Todo" asp-action="Index">Tasks</a>
                 @if (User.IsInRole(SD.EMPLOYEE_ROLE))
                 {
                     <a class="collapse-item" asp-area="HR" asp-controller="Attendance" asp-action="EmployeeAttendance">Attendances</a>
@@ -174,7 +178,7 @@
                 <a class="collapse-item" href="http://localhost:9000/create" target="_blank">Video rooms</a>
                 <h6 class="collapse-header">Audio</h6>
                 <a class="collapse-item" href="#" target="_blank">Audio rooms</a>
-                
+
             </div>
         </div>
     </li>
@@ -190,7 +194,7 @@
             <span>Employees</span>
         </a>
     </li>
-    
+
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
     <!-- Sidebar Toggler (Sidebar) -->
