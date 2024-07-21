@@ -1,0 +1,34 @@
+﻿@model ArchiveType
+<form method="POST">
+    <h2 class="mb-2 text-gray-800">Archive Types</h2>
+    <input hidden asp-for="Id">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label asp-for="Name" class="text-gray-800"></label>
+                <input asp-for="Name" class="form-control">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="text-gray-800"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <a asp-controller="ArchiveType" asp-action="Index"
+           class="btn btn-dark mt-5">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+        <button type="submit" class="btn btn-success ml-4 mt-5">
+            <i class="fas fa-solid fa-check"></i> Create
+        </button>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}

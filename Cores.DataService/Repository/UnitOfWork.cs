@@ -32,6 +32,10 @@ public class UnitOfWork : IUnitOfWork
     public IRecruitmentRepository Recruitment { get; }
     public IJobApplicationRepository JobApplication { get; }
     public ISalaryRepository Salary { get; }
+    public IBenefitRepository Benefit { get; }
+    public IEmployeeBenefitRepository EmployeeBenefit { get; }
+    public IArchiveRepository Archive { get; }
+    public IArchiveTypeRepository ArchiveType { get; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
@@ -62,6 +66,10 @@ public class UnitOfWork : IUnitOfWork
         Recruitment = new RecruitmentRepository(_db);
         JobApplication = new JobApplicationRepository(_db);
         Salary = new SalaryRepository(_db);
+        Benefit = new BenefitRepository(_db);
+        EmployeeBenefit = new EmployeeBenefitRepository(_db);
+        Archive = new ArchiveRepository(_db);
+        ArchiveType = new ArchiveTypeRepository(_db);
     }
 
     public async Task SaveAsync() => await _db.SaveChangesAsync();

@@ -28,6 +28,10 @@ public interface IUnitOfWork
     IRecruitmentRepository Recruitment{ get; }
     IJobApplicationRepository JobApplication { get; }
     ISalaryRepository Salary { get; }
+    IBenefitRepository Benefit { get; }
+    IEmployeeBenefitRepository  EmployeeBenefit{ get; }
+    IArchiveRepository  Archive { get; }
+    IArchiveTypeRepository  ArchiveType { get; }
 
     Task SaveAsync();
 }

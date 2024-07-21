@@ -1,0 +1,276 @@
+﻿@model ArchiveVm
+
+<div class="container mt-5">
+    <h2 class="mb-4">@(Model.Archive.Id == 0 ? "Upload New Document" : "Update Document")</h2>
+    <form method="POST" enctype="multipart/form-data" class="bg-white shadow-sm rounded p-4">
+        <input asp-for="Archive.Id" type="hidden">
+        <input asp-for="IsRemoved" type="hidden" id="isRemovedInput">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Archive.ArchiveTypeId">Job Title</label>
+                    <select class="form-control select2" asp-for="Archive.ArchiveTypeId" asp-items="@Model.ArchiveTypes">
+                        <option value="" disabled selected>-- Select Job Title --</option>
+                    </select>
+                    <span asp-validation-for="Archive.ArchiveTypeId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Archive.EmployeeId">Full Name</label>
+                    <select class="form-control select2" asp-for="Archive.EmployeeId" asp-items="@Model.Employees">
+                        <option value="" disabled selected>-- Select Job Title --</option>
+                    </select>
+                    <span asp-validation-for="Archive.EmployeeId" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Archive.UploadDate" class="form-label">Upload Date</label>
+                    <div class="input-group">
+                        <input asp-for="Archive.UploadDate" value="@Model.Archive.UploadDate.ToString("yyyy MMMM dd")" class="form-control" placeholder="Select Date" readonly>
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Archive.UploadDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Archive.ExpiryDate" class="form-label">Expiry Date</label>
+                    <div class="input-group flatpickr">
+                        <input asp-for="Archive.ExpiryDate" id="expiry-date" class="form-control" placeholder="Select Date">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Archive.ExpiryDate" class="text-danger"></span>
+                </div>
+            </div>
+                    
+        </div>
+        
+        
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="file">Upload Document</label>
+                    <div class="custom-file">
+                        <input type="file" name="file" class="custom-file-input" id="file" accept="image/*,application/pdf">
+                        <label class="custom-file-label" for="file">
+                            @(!string.IsNullOrEmpty(Model.Archive.Path) ? "Choose new file" : "Choose file")
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group mt-3">
+                    <div class="dropzone" id="myDropzone">
+                        <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                        <span class="dropzone-text">Drag and drop files here</span>
+                    </div>
+                    <p class="mt-2 text-muted">
+                        <small>Accepted file types: Images and PDF documents.</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div id="currentDocument" class="text-center mt-4" style="display: none;">
+                    <i id="fileIcon" class="fas fa-file fa-5x mb-3"></i>
+                    <p id="fileName" class="mb-3"></p>
+                    <div>
+                        @if (!string.IsNullOrEmpty(Model.Archive.Path))
+                        {
+                            <a href="@Url.Action("DownloadDocument", "Archive", new { id = Model.Archive.Id })"
+                               class="btn btn-info btn-sm" id="downloadDocument" download>
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        }
+                        <button type="button" class="btn btn-danger btn-sm ml-2" id="removeDocument">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <a asp-controller="Archive" asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i> @(Model.Archive.Id == 0 ? "Upload Document" : "Update Document")
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-group label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+    .dropzone {
+        border: 2px dashed #007bff;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: center;
+        color: #007bff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .dropzone:hover {
+        background-color: #f8f9fa;
+    }
+    .dropzone i {
+        font-size: 50px;
+        margin-bottom: 10px;
+    }
+    .dropzone-text {
+        font-size: 16px;
+        display: block;
+    }
+    #currentDocument {
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        padding: 20px;
+    }
+</style>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/delete.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+             $("#expiry-date").flatpickr({
+                dateFormat: "Y-m-d"
+              });
+                      
+            let droppedFile = null;
+             function displayFileInfo(file) {
+                                let fileName = file.name;
+                                let fileExtension = fileName.split('.').pop().toLowerCase();
+                        
+                                $('#fileName').text(fileName);
+                        
+                                // Set appropriate icon based on file type
+                                if (fileExtension === 'pdf') {
+                                    $('#fileIcon').removeClass().addClass('fas fa-file-pdf fa-5x mb-3 text-danger');
+                                } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                                    $('#fileIcon').removeClass().addClass('fas fa-file-image fa-5x mb-3 text-primary');
+                                } else {
+                                    $('#fileIcon').removeClass().addClass('fas fa-file fa-5x mb-3 text-secondary');
+                                }
+                        
+                                $('#currentDocument').show();
+                            }
+                        
+                            $('.custom-file-input').on('change', function(e) {
+                                let fileInput = $(this);
+                                let fileName = fileInput.val().split('\\').pop();
+                        
+                                if (fileName) {
+                                    // Set isRemoved to false
+                                     $('#isRemovedInput').val('false'); 
+                                    fileInput.next('.custom-file-label').html("Choose new file");
+                                    if (this.files && this.files[0]) {
+                                        droppedFile = this.files[0];
+                                        displayFileInfo(droppedFile);
+                                        $('#downloadDocument').hide();
+                                    }
+                                } else {
+                                    if (!$('#currentDocument').is(':visible')) {
+                                        fileInput.next('.custom-file-label').html('Choose file');
+                                        $('#currentDocument').hide();
+                                    }
+                                }
+                            });
+                        
+                            $('#myDropzone').on('dragover', function(e) {
+                                e.preventDefault();
+                                $(this).addClass('dropzone-active');
+                            }).on('dragleave', function() {
+                                $(this).removeClass('dropzone-active');
+                            }).on('drop', function(e) {
+                                e.preventDefault();
+                                // Set isRemoved to false
+                                 $('#isRemovedInput').val('false'); 
+                                $(this).removeClass('dropzone-active');
+                                droppedFile = e.originalEvent.dataTransfer.files[0];
+                                $('#file').prop('files', e.originalEvent.dataTransfer.files);
+                                $('.custom-file-label').html("Choose new file");
+                                displayFileInfo(droppedFile);
+                                $('#downloadDocument').hide();
+                            });
+                        
+                            // Display existing document if available
+                            if ('@Model.Archive.Path' !== '') {    
+                                let fileName = '@Model.Archive.Path'.split('/').pop();
+                                $('#fileName').text(fileName);
+                                $('.custom-file-label').html('Choose new file');
+                                let fileExtension = fileName.split('.').pop().toLowerCase();
+                                if (fileExtension === 'pdf') {
+                                    $('#fileIcon').removeClass().addClass('fas fa-file-pdf fa-5x mb-3 text-danger');
+                                } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                                    $('#fileIcon').removeClass().addClass('fas fa-file-image fa-5x mb-3 text-primary');
+                                } else {
+                                    $('#fileIcon').removeClass().addClass('fas fa-file fa-5x mb-3 text-secondary');
+                                }
+                                $('#currentDocument').show();
+                                $('#downloadDocument').show();
+                            } else {
+                                $('#currentDocument').hide();
+                                $('#downloadDocument').hide();
+                            }
+                        
+                            function removeFile() {
+                                $('#file').val('');
+                                $('.custom-file-label').html('Choose file');
+                                $('#currentDocument').hide();
+                                $('#downloadDocument').hide();
+                                droppedFile = null;
+                                
+                                 // Set isRemoved to true
+                                $('#isRemovedInput').val('true');
+                            }
+                        
+                            // Add click event for remove button
+                            $('#removeDocument').on('click', removeFile);
+                        
+                            $('form').on('submit', function() {
+                                if (droppedFile) {
+                                    let dataTransfer = new DataTransfer();
+                                    dataTransfer.items.add(droppedFile);
+                                    $('#file').prop('files', dataTransfer.files);
+                                }
+                            });
+            
+        });
+    </script>
+}

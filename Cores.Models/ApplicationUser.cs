@@ -59,6 +59,11 @@ public class ApplicationUser : IdentityUser
     public ICollection<ApplicationUser> Subordinates { get; set; } = new List<ApplicationUser>();
     public ICollection<LeaveRequest> LeaveRequests { get; set; } = new Collection<LeaveRequest>();
     public ICollection<Attendance> Attendances { get; set; } = new Collection<Attendance>();
-    public ICollection<Salary> Salaries { get; set; } = new Collection<Salary>();
+   // public ICollection<Salary> Salaries { get; set; } = new Collection<Salary>();
+   // public ICollection<PerformanceReview> PerformanceReviews { get; set; } = new Collection<PerformanceReview>();
+   // public ICollection<EmployeeTraining> EmployeeTrainings { get; set; } = new Collection<EmployeeTraining>();
+    public ICollection<EmployeeBenefit> EmployeeBenefits { get; set; } = new Collection<EmployeeBenefit>();
+   // public ICollection<Archive> Documents { get; set; } = new Collection<Archive>();
+
     
 }

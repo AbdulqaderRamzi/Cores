@@ -160,6 +160,22 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRW1wbG95ZWVcVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/HR/Views/ArchiveType/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSFJcVmlld3NcQXJjaGl2ZVR5cGVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/HR/Views/ArchiveType/Upsert.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSFJcVmlld3NcQXJjaGl2ZVR5cGVcVXBzZXJ0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/HR/Views/Archive/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSFJcVmlld3NcQXJjaGl2ZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/HR/Views/Archive/Upsert.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSFJcVmlld3NcQXJjaGl2ZVxVcHNlcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/HR/Views/Attendance/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSFJcVmlld3NcQXR0ZW5kYW5jZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -172,12 +188,28 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSFJcVmlld3NcQXR0ZW5kYW5jZVxVcHNlcnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/HR/Views/Benefit/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSFJcVmlld3NcQmVuZWZpdFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/HR/Views/Benefit/Upsert.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSFJcVmlld3NcQmVuZWZpdFxVcHNlcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/HR/Views/Department/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSFJcVmlld3NcRGVwYXJ0bWVudFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/HR/Views/Department/Upsert.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSFJcVmlld3NcRGVwYXJ0bWVudFxVcHNlcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/HR/Views/EmployeeBenefit/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSFJcVmlld3NcRW1wbG95ZWVCZW5lZml0XEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/HR/Views/EmployeeBenefit/Upsert.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSFJcVmlld3NcRW1wbG95ZWVCZW5lZml0XFVwc2VydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Graduation-Project-Related-Things/Cores/Cores.Web/Areas/HR/Views/JobApplication/Index.cshtml]
