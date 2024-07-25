@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "VOgxHOJdU6jluY8kQhF6Gg/T6s9ixX+YWhpy3F7L66M=",
+  "Hash": "oemo0nFAQQEZNanQNVteLLjb9os8V1k/IJVBIdmsHxU=",
   "Source": "Cores.Web",
   "BasePath": "_content/Cores.Web",
   "Mode": "Default",
@@ -1651,12 +1651,12 @@
       "OriginalItemSpec": "wwwroot\\images\\applicants\\fa7505a0-d874-4024-8dde-db0f3bc1c0b1.pdf"
     },
     {
-      "Identity": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\images\\archives\\1037654d-aae4-4806-8e55-a1d2972391b6.pdf",
+      "Identity": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\images\\archives\\639530a4-3b71-4008-8fcb-4a4b213d536a.jpg",
       "SourceId": "Cores.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\",
       "BasePath": "_content/Cores.Web",
-      "RelativePath": "images/archives/1037654d-aae4-4806-8e55-a1d2972391b6.pdf",
+      "RelativePath": "images/archives/639530a4-3b71-4008-8fcb-4a4b213d536a.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1667,7 +1667,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\archives\\1037654d-aae4-4806-8e55-a1d2972391b6.pdf"
+      "OriginalItemSpec": "wwwroot\\images\\archives\\639530a4-3b71-4008-8fcb-4a4b213d536a.jpg"
     },
     {
       "Identity": "D:\\Graduation-Project-Related-Things\\Cores\\Cores.Web\\wwwroot\\images\\archives\\9fc84c3c-1fd9-43a8-9509-c4c5219e8417.jpg",

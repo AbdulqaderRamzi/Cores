@@ -32,6 +32,9 @@ public interface IUnitOfWork
     IEmployeeBenefitRepository  EmployeeBenefit{ get; }
     IArchiveRepository  Archive { get; }
     IArchiveTypeRepository  ArchiveType { get; }
+    ITrainingRepository Training { get; }
+    IEmployeeTrainingRepository  EmployeeTraining { get; }
+    PerformanceReviewRepository  PerformanceReview{ get; }
 
     Task SaveAsync();
 }

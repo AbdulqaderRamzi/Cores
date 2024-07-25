@@ -18,8 +18,7 @@ public class PerformanceReview
     [ValidateNever]
     public ApplicationUser Reviewer { get; set; }
 
-    [Required]
-    public DateTime? ReviewDate { get; set; }
+    public DateOnly ReviewDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
     [Required]
     public int? PerformanceScore { get; set; }
     public string? Comments { get; set; }

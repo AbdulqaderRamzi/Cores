@@ -36,6 +36,9 @@ public class UnitOfWork : IUnitOfWork
     public IEmployeeBenefitRepository EmployeeBenefit { get; }
     public IArchiveRepository Archive { get; }
     public IArchiveTypeRepository ArchiveType { get; }
+    public ITrainingRepository Training { get; }
+    public IEmployeeTrainingRepository EmployeeTraining { get; }
+    public PerformanceReviewRepository PerformanceReview { get; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
@@ -70,6 +73,9 @@ public class UnitOfWork : IUnitOfWork
         EmployeeBenefit = new EmployeeBenefitRepository(_db);
         Archive = new ArchiveRepository(_db);
         ArchiveType = new ArchiveTypeRepository(_db);
+        Training = new TrainingRepository(_db);
+        EmployeeTraining = new EmployeeTrainingRepository(_db);
+        PerformanceReview = new PerformanceReviewRepository(_db);
     }
 
     public async Task SaveAsync() => await _db.SaveChangesAsync();

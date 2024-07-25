@@ -1,0 +1,106 @@
+﻿@model TrainingVm
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">@(Model.Training.Id != 0 ? "Edit" : "Create") Training</h2>
+    <form method="post" class="bg-white shadow-sm rounded p-4">
+        <input asp-for="Training.Id" hidden />
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Training.Name" class="form-label">Name</label>
+                    <input asp-for="Training.Name" class="form-control" />
+                    <span asp-validation-for="Training.Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Training.Description" class="form-label">Description</label>
+                    <textarea asp-for="Training.Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Training.Description" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Training.TrainingDate" class="form-label">Training Date</label>
+                    <div class="input-group flatpickr">
+                        <input asp-for="Training.TrainingDate" id="training-date" class="form-control" placeholder="Select Date">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Training.TrainingDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Training.TrainerId" class="form-label">Trainer</label>
+                    <select class="form-control select2" asp-for="Training.TrainerId" asp-items="@Model.Employees">
+                        <option value="" disabled selected>-- Select Trainer --</option>
+                    </select>
+                    <span asp-validation-for="Training.TrainerId" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i> @(Model.Training.Id != 0 ? "Update" : "Create")
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .input-group-text {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+    }
+   
+   #training-date {
+        background-color: #ffffff !important;
+   }
+</style>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+            $("#training-date").flatpickr({dateFormat: "Y-m-d"});
+          });
+    </script>
+}

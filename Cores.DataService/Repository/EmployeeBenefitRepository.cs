@@ -1,8 +1,9 @@
 ﻿using Cores.DataService.Data;
+using Cores.DataService.Repository.IRepository;
 using Cores.Models.HR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cores.DataService.Repository.IRepository;
+namespace Cores.DataService.Repository;
 
 public class EmployeeBenefitRepository : Repository<EmployeeBenefit>, IEmployeeBenefitRepository
 {

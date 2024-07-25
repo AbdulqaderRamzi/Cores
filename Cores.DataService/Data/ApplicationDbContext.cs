@@ -54,7 +54,10 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<EmployeeBenefit> EmployeeBenefit { get; set; }
     public DbSet<Archive> Archives { get; set; }
     public DbSet<ArchiveType> ArchiveTypes { get; set; }
-
+    public DbSet<Training> Trainings { get; set; }
+    public DbSet<EmployeeTraining> EmployeeTrainings { get; set; }
+    public DbSet<PerformanceReview> PerformanceReviews { get; set; }
+    
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
         IHttpContextAccessor httpContextAccessor) : base(options)
     {
