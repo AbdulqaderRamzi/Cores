@@ -18,30 +18,36 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
-                    <th>PaymentMethod</th>
+                    <th>Id</th> 
+                    <th>Payment Method</th>
                     <th>Status</th>
-                    <th>PurchaseAmount</th>
-                    <th>PurchaseDate</th>
-                    <th class="no-print">Actions</th>
+                    <th>Amount</th>
+                    <th>Created At</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                     <th>PaymentMethod</th>
-                     <th>Status</th>
-                     <th>PurchaseAmount</th>
-                     <th>PurchaseDate</th>
-                    <th class="no-print">Actions</th>
+                    <th>Id</th>
+                    <th>Payment Method</th>
+                    <th>Status</th>
+                    <th>Amount</th>
+                    <th>Created At</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
                 </tr>
                 </tfoot>
                 <tbody class="text-dark">
-                @foreach (var customer in Model)
+                @foreach (var purchase in Model)
                 {
                     <tr>
-                        <td>@customer.PaymentMethod.Name</td>
-                        <td>@customer.Status</td>
-                        <td>@customer.PurchaseAmount</td>
-                        <td>@customer.PurchaseDate</td>
+                        <td>@purchase.Id</td>
+                        <td>@purchase.PaymentMethod.Name</td>
+                        <td>@purchase.Status</td>
+                        <td>@purchase.PurchaseAmount.ToString("F2")</td>
+                        <td>@purchase.PurchaseDate.ToString("yyyy MMMM dd")</td>
+                        <td>@purchase.InvoiceEndDate.ToString("yyyy MMMM dd")</td>
                         <td class="no-print">
                             <div class="dropdown">
                                 <button class="btn btn-primary dropdown-toggle" type="button"
@@ -56,22 +62,22 @@
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';">
                                         <i class="fas fa-info-circle"></i> Details
                                     </a>
-                                    <a class="dropdown-item" asp-controller="Purchase" asp-action="Upsert" asp-route-id="@customer.Id"
+                                    <a class="dropdown-item" asp-controller="Purchase" asp-action="Upsert" asp-route-id="@purchase.Id"
                                        onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';">
                                         <i class="fas fa-edit"></i> Update
                                     </a>
-                                    <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/CRM/Purchase/Delete?id=@customer.Id')"
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/CRM/Purchase/Delete?id=@purchase.Id')"
                                        onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';" style="cursor: pointer;">
                                         <i class="fas fa-trash"></i> Delete
                                     </a>
-                                    <a class="dropdown-item" asp-controller="Contact" asp-action="DownloadSummery" asp-route-id="@customer.Id"
+                                    <a class="dropdown-item" asp-controller="Contact" asp-action="DownloadSummery" asp-route-id="@purchase.Id"
                                        onmouseover="this.style.backgroundColor='#5c9eb8'; this.style.color='white';"
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';">
                                         <i class="fas fa-edit"></i> PDF
                                     </a>
-                                    
+
                                 </div>
                             </div>
                         </td>

@@ -45,11 +45,22 @@ public class ProductController : Controller
         {
             await _unitOfWork.Product.Update(product);
             TempData["success"] = "Product Updated Successfully";
-
         }
 
         await _unitOfWork.SaveAsync();
         return RedirectToAction(nameof(Index));
     }
     
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id is null)
+            return NotFound();
+        var product = await _unitOfWork.Product.Get(t => t.Id == id);
+        if (product is null)
+            return NotFound();
+        _unitOfWork.Product.Remove(product);
+        await _unitOfWork.SaveAsync();
+        TempData["success"] = "Product deleted successfully";
+        return RedirectToAction(nameof(Index));
+    }
 }

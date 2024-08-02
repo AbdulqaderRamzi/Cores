@@ -38,7 +38,14 @@ public class UnitOfWork : IUnitOfWork
     public IArchiveTypeRepository ArchiveType { get; }
     public ITrainingRepository Training { get; }
     public IEmployeeTrainingRepository EmployeeTraining { get; }
-    public PerformanceReviewRepository PerformanceReview { get; }
+    public IPerformanceReviewRepository PerformanceReview { get; }
+    public IVendorRepository Vendor { get; }
+    public ITransactionRepository Transaction { get; }
+    public IAccountRepository Account { get; }
+    public IAccountTypeRepository AccountType { get; }
+    public IJournalRepository Journal { get; }
+    public IJournalEntryRepository JournalEntry { get; }
+    public IJournalTypeRepository JournalType { get; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
@@ -76,6 +83,13 @@ public class UnitOfWork : IUnitOfWork
         Training = new TrainingRepository(_db);
         EmployeeTraining = new EmployeeTrainingRepository(_db);
         PerformanceReview = new PerformanceReviewRepository(_db);
+        Vendor = new VendorRepository(_db);
+        Transaction = new TransactionRepository(_db);
+        Account = new AccountRepository(_db);
+        AccountType = new AccountTypeRepository(_db);
+        Journal = new JournalRepository(_db);
+        JournalEntry = new JournalEntryRepository(_db);
+        JournalType = new JournalTypeRepository(_db);
     }
 
     public async Task SaveAsync() => await _db.SaveChangesAsync();

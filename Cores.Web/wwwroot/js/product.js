@@ -6,7 +6,7 @@
                 data: 'name',
                 render: function (data, type, row) {
                     let options = products.map(product => {
-                        console.log(product.name);
+                        console.log(product.name);  
                         return `<option value="${product.name}" data-unit-price="${product.unitPrice}" ${product.name === row.name ? 'selected' : ''}>${product.name}</option>`;
                     }).join('');
                     return `
@@ -71,11 +71,8 @@
 
     // Add new product
     $('#addProductBtn').click(function () {
-        try {
-            saveAllUnsavedRows();
-        } catch (error) {
-            return;
-        }
+        saveAllUnsavedRows();
+        
 
         let emptyRow = table.rows().data().toArray().find(row => !row.name);
         if (emptyRow) {
@@ -93,9 +90,32 @@
 
         let addedRow = table.row.add(newRow).draw(false);
         let $addedRow = $(addedRow.node());
+        
+
+        // Make only the new row editable
+        table.rows().every(function() {
+            makeRowReadonly($(this.node()));
+        });
         makeRowEditable($addedRow);
-        setSaveButton($addedRow);
+
+        // Calculate the page of the newly added row
+        let info = table.page.info();
+        let rowIndex = table.rows().nodes().indexOf(addedRow.node());
+        let pageOfNewRow = Math.floor(rowIndex / info.length);
+
+        // Move to the page of the new row
+        table.page(pageOfNewRow).draw('page');
+        
+        // Focus on the first input of the new row
         $addedRow.find('.product-name').focus();
+
+        makeRowEditable($addedRow);
+
+        $addedRow.find('.edit-product')
+            .html('<i class="fas fa-save"></i> Save')
+            .removeClass('edit-product btn-outline-primary')
+            .addClass('save-product btn-outline-success');
+            
         updateGrandTotal();
     });
 
@@ -110,13 +130,6 @@
         updateRowData($row);
     });
 
-    function setSaveButton($row) {
-        $row.find('.edit-product')
-            .html('<i class="fas fa-save"></i> Save')
-            .removeClass('edit-product btn-outline-primary')
-            .addClass('save-product btn-outline-success');
-    }
-
     // Delete product
     $('#productTable').on('click', '.delete-product', function () {
         if (confirm('Are you sure you want to delete this product?')) {
@@ -129,17 +142,16 @@
     $('#productTable').on('click', '.edit-product, .save-product', function () {
         let $row = $(this).closest('tr');
         let $button = $(this);
-
         if ($button.hasClass('edit-product')) {
             makeRowEditable($row);
-            setSaveButton($row);
-        } else {
-            if (validateRow($row)) {
+            $button.removeClass('btn-outline-primary edit-product')
+                .addClass('btn-outline-success save-product')
+                .html('<i class="fas fa-save"></i> Save');
+        } else if ($button.hasClass('save-product')) {
+            if (saveRow($row)) {
                 makeRowReadonly($row);
-                $button.html('<i class="fas fa-edit"></i> Edit')
-                    .removeClass('save-product btn-outline-success')
-                    .addClass('edit-product btn-outline-primary');
-                updateRowData($row);
+                // The button state is already changed in saveRow function
+                updateGrandTotal();
             }
         }
     });
@@ -148,8 +160,14 @@
         let $row = $(this).closest('tr');
         updateTotalPrice($row);
         validateInput($(this));
+        updateGrandTotal();
+    });
+
+    $('#productTable').on('change', '.product-quantity', function () {
+        let $row = $(this).closest('tr');
         updateRowData($row);
     });
+
 
     function makeRowEditable($row) {
         $row.find('.product-name').prop('disabled', false);
@@ -158,18 +176,32 @@
 
     function makeRowReadonly($row) {
         $row.find('.product-name').prop('disabled', true);
-        $row.find('input').prop('readonly', true);
+        $row.find('.product-quantity').prop('readonly', true);
     }
 
     function updateRowData($row) {
+        let name = '';
+        if ($row.find('.product-name option:selected').text() !== "Select Product") {
+            name = $row.find('.product-name option:selected').text();
+        }
         let rowData = {
             id: $row.attr('data-id'),
-            name: $row.find('.product-name option:selected').text(),
+            name: name,
             quantity: parseInt($row.find('.product-quantity').val()) || 0,
             unitPrice: parseFloat($row.find('.product-unit-price').val()) || 0,
             totalPrice: parseFloat($row.find('.product-total-price').val()) || 0
         };
+        // Store the current button state
+        let $button = $row.find('.edit-product, .save-product');
+        let buttonHtml = $button.html();
+        let buttonClasses = $button.attr('class');
+        
         table.row($row).data(rowData).draw(false);
+
+        // Restore the button state
+        $row.find('.edit-product, .save-product')
+            .html(buttonHtml)
+            .attr('class', buttonClasses);
         updateGrandTotal();
     }
 
@@ -178,6 +210,7 @@
         let unitPrice = parseFloat($row.find('.product-unit-price').val()) || 0;
         let totalPrice = (quantity * unitPrice).toFixed(2);
         $row.find('.product-total-price').val(totalPrice);
+        
     }
 
     function validateInput($input) {
@@ -200,18 +233,23 @@
             $productSelect.removeClass('is-invalid');
         }
 
-        $row.find('input').not('.product-total-price').not('.product-unit-price').each(function() {
-            validateInput($(this));
-            if ($(this).hasClass('is-invalid')) {
-                isValid = false;
-            }
-        });
+        let $quantity = $row.find('.product-quantity');
+        if ($quantity.val() === "" || parseInt($quantity.val()) < 1) {
+            $quantity.addClass('is-invalid');
+            isValid = false;
+        } else {
+            $quantity.removeClass('is-invalid');
+        }
+
         return isValid;
     }
 
     function updateGrandTotal() {
         let total = table.column(3).data().reduce((acc, val) => acc + parseFloat(val), 0);
-        $('#grandTotal').text('Grand Total: $' + total.toFixed(2));
+        let formattedTotal = total.toFixed(2);
+        $('#grandTotal').text('Grand Total: $' + formattedTotal);
+        // Update the Purchase Amount field
+        $('#purchaseAmount').val(formattedTotal);
     }
 
     function saveAllUnsavedRows() {
@@ -219,19 +257,24 @@
             let $row = $(this.node());
             let $saveButton = $row.find('.save-product');
             if ($saveButton.length > 0) {
-                if (validateRow($row)) {
-                    makeRowReadonly($row);
-                    $saveButton.html('<i class="fas fa-edit"></i> Edit')
-                        .removeClass('save-product btn-outline-success')
-                        .addClass('edit-product btn-outline-primary');
-                    updateRowData($row);
-                } else {
-                    alert("Please fill in all required fields correctly before adding a new product.");
-                    $row.find('.product-name').focus();
-                    throw new Error("Validation failed");
-                }
+                saveRow($row);
             }
         });
+    }
+
+    function saveRow($row) {
+        if (validateRow($row)) {
+            makeRowReadonly($row);
+            updateRowData($row);
+            $row.find('.save-product')
+                .removeClass('btn-outline-success save-product')
+                .addClass('btn-outline-primary edit-product')
+                .html('<i class="fas fa-edit"></i> Edit');
+            return true;
+        } else {
+            alert('Please fill in all required fields correctly.');
+            return false;
+        }
     }
 
     $('form').on('submit', function(e) {
@@ -244,7 +287,6 @@
                 let { id, ...productWithoutId } = product;
                 return productWithoutId;
             });
-    
             $('#serializedProducts').val(JSON.stringify(productsWithoutId));
         } catch (error) {
             e.preventDefault();
@@ -257,4 +299,7 @@
         table.rows.add(existingProducts).draw();
         updateGrandTotal();
     }
+    updateGrandTotal();
 }
+
+

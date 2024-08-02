@@ -57,6 +57,13 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<Training> Trainings { get; set; }
     public DbSet<EmployeeTraining> EmployeeTrainings { get; set; }
     public DbSet<PerformanceReview> PerformanceReviews { get; set; }
+    public DbSet<Vendor> Vendors { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<Account> Accounts { get; set; }
+    public DbSet<AccountType> AccountTypes { get; set; }
+    public DbSet<Journal> Journals { get; set; }
+    public DbSet<JournalEntry> JournalEntries { get; set; }
+    public DbSet<JournalType> JournalTypes { get; set; }
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
         IHttpContextAccessor httpContextAccessor) : base(options)

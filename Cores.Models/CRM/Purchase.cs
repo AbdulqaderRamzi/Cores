@@ -10,6 +10,7 @@ public class Purchase
 {
     public int Id { get; set; }
     public DateTime PurchaseDate { get; set; } = DateTime.Now;
+    public DateTime InvoiceEndDate { get; set; } = DateTime.Now.AddDays(14);
     [ValidateNever]
     public decimal PurchaseAmount { get; set; }
 

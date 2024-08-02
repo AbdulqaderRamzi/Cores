@@ -1,6 +1,14 @@
-﻿namespace Cores.Models.Accounting;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class Tax
+namespace Cores.Models.Accounting;
+
+public class TaxRate
 {
-    
+    public int Id { get; set; }
+    [Required]
+    public string Name { get; set; }
+    [Required]
+    public decimal? Rate { get; set; }
+    [Required]
+    public bool IsActive { get; set; }
 }

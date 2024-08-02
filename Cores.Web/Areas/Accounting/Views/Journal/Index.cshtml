@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Journal>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Journals</h6>
+            <a class="btn btn-primary" asp-action="Upsert">
+                <i class="fas fa-plus-circle"></i> Create Journal
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Journal Type</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Date</th>
+                        <th>Journal Type</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (var journal in Model)
+                    {
+                        <tr>
+                            <td>@journal.Date?.ToString("yyyy MMMM dd")</td>
+                            <td>@journal.JournalType.Type</td>
+                            <td>@journal.Description</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        Actions
+                                    </button>
+                                    <div class="dropdown-menu animated--fade-in"
+                                         aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" asp-controller="Journal" asp-action="Upsert" asp-route-id="@journal.Id"
+                                           onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-info-circle"></i> Details
+                                        </a>
+                                        <a class="dropdown-item" asp-controller="Journal" asp-action="Upsert" asp-route-id="@journal.Id"
+                                           onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-edit"></i> Update
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/Accounting/Account/Delete?id=@journal.Id')"
+                                           onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';" style="cursor: pointer;">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    <script src="~/js/delete.js"></script>
+}

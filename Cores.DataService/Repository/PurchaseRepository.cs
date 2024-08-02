@@ -21,6 +21,8 @@ public class PurchaseRepository : Repository<Purchase>, IPurchaseRepository
             return;
         purchaseFromDb.PurchaseAmount = purchase.PurchaseAmount;
         purchaseFromDb.Status = purchase.Status;
+        purchaseFromDb.PurchaseDate = purchase.PurchaseDate;
+        purchaseFromDb.InvoiceEndDate = purchase.InvoiceEndDate;
         purchaseFromDb.CurrencyId = purchase.CurrencyId;
         purchaseFromDb.PaymentMethodId = purchase.PaymentMethodId;
         purchaseFromDb.Note = purchase.Note;

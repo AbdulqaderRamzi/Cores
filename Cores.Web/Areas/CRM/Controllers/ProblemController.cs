@@ -22,6 +22,7 @@ public class ProblemController : Controller
     
     public async Task<IActionResult> Index()
     {
+        
         var problems = await _unitOfWork.Problem.GetAll(includeProperties:"Contact,ApplicationUser,ProblemType");
         return View(problems);
     }

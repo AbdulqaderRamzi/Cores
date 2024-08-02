@@ -114,6 +114,25 @@
                     <a class="collapse-item" asp-area="HR" asp-controller="EmployeeTraining" asp-action="Index">Employee Training</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="PerformanceReview" asp-action="Index">Performance Review</a>
                 }
+                
+                @* Sub-Section's Title *@
+                @if (User.IsInRole(SD.ADMIN_ROLE))
+                {
+                    <h6 class="collapse-header">HR</h6>
+                }
+                
+                @if (User.IsInRole(SD.ADMIN_ROLE) || User.IsInRole(SD.ACCOUNTING_ROLE))
+                {
+                    <a class="collapse-item" asp-area="CRM" asp-controller="Purchase" asp-action="Index">Invoices</a>  
+                    <a class="collapse-item" asp-area="Accounting" asp-controller="Vendor" asp-action="Index">Vendors</a>  
+                    <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index">Customers</a>  
+                    <a class="collapse-item" asp-area="Accounting" asp-controller="Transaction" asp-action="Index">Transactions</a>  
+                    <a class="collapse-item" asp-area="Accounting" asp-controller="Account" asp-action="Index">Accounts</a>  
+                    <a class="collapse-item" asp-area="Accounting" asp-controller="AccountType" asp-action="Index">Account Types</a>  
+                    <a class="collapse-item" asp-area="Accounting" asp-controller="JournalEntry" asp-action="Index">Journal Entries</a>  
+                    <a class="collapse-item" asp-area="Accounting" asp-controller="Journal" asp-action="Index">Journals</a>  
+                    <a class="collapse-item" asp-area="Accounting" asp-controller="JournalType" asp-action="Index">Journal Types</a>  
+                }
             </div>
         </div>
     </li>

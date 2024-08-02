@@ -34,14 +34,12 @@
                             </tbody>
                             <tfoot>
                                 <tr class="font-weight-bold">
-                                    <td colspan="4" class="text-right"></td>
-                                    <td id="grandTotal">0.00</td>
+                                    <td id="grandTotal" colspan="5" class="text-left">Grand Total: $0.00</td>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
                 </div>
-
                 <!-- Purchase Details Section -->
                 <div class="row">
                     <div class="col-md-6">
@@ -105,7 +103,7 @@
                     <div class="col-md-6">
                         <h4 class="text-dark mb-3">Payment Details</h4>
                         <div class="form-group">
-                           <label asp-for="Purchase.PaymentMethodId">Choose Customer</label>
+                           <label asp-for="Purchase.PaymentMethodId">Choose Payment Method</label>
                            <select class="form-control select2" asp-for="Purchase.PaymentMethodId" asp-items="@Model.PaymentMethods">
                                  <option value="" disabled selected>-- Select Payment Method --</option>
                            </select>
@@ -125,14 +123,33 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="Purchase.PurchaseAmount">Purchase Amount</label>
-                            <input asp-for="Purchase.PurchaseAmount" type="text" class="form-control">
+                            <input asp-for="Purchase.PurchaseAmount" type="text" id="purchaseAmount" class="form-control">
                         </div>
                         <div class="form-group">
-                             <label asp-for="Purchase.CurrencyId">Choose Customer</label>
+                             <label asp-for="Purchase.CurrencyId">Choose Currency</label>
                              <select class="form-control select2" asp-for="Purchase.CurrencyId" asp-items="@Model.Currencies">
                                  <option value="" disabled selected>-- Select Currency --</option>
                              </select>
-                             
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Purchase.PurchaseDate" class="form-label">Purchase Date</label>
+                            <div class="input-group flatpickr">
+                                <input asp-for="Purchase.PurchaseDate" id="purchase-date" class="form-control" placeholder="Select Date and Time">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Purchase.PurchaseDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Purchase.InvoiceEndDate" class="form-label">Invoice End Date</label>
+                            <div class="input-group flatpickr">
+                                <input asp-for="Purchase.InvoiceEndDate" id="invoice-end-date" class="form-control" placeholder="Select Date and Time">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Purchase.InvoiceEndDate" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="Purchase.Note">Note</label>
@@ -182,6 +199,11 @@
     .btn {
         border-radius: 0.25rem;
     }
+    #grandTotal {
+        font-size: 1.1em;
+        font-weight: bold;
+        padding-left: 15px;
+    }
 </style>
 
 @section Scripts
@@ -191,6 +213,9 @@
     <script src="~/js/select2.js"></script>
     <script>    
         $(document).ready(function () {
+           $("#purchase-date, #invoice-end-date").flatpickr({
+               dateFormat: "Y-m-d"
+            });                   
             // Initialize product table
             let existingProducts = @Html.Raw(Json.Serialize(Model.Purchase.Orders));
             let products = @Html.Raw(Json.Serialize(Model.Products));

@@ -33,8 +33,15 @@ public interface IUnitOfWork
     IArchiveRepository  Archive { get; }
     IArchiveTypeRepository  ArchiveType { get; }
     ITrainingRepository Training { get; }
-    IEmployeeTrainingRepository  EmployeeTraining { get; }
-    PerformanceReviewRepository  PerformanceReview{ get; }
-
+    IEmployeeTrainingRepository EmployeeTraining { get; }
+    IPerformanceReviewRepository PerformanceReview{ get; }
+    IVendorRepository Vendor{ get; } 
+    ITransactionRepository Transaction { get; }
+    IAccountRepository Account { get; }
+    IAccountTypeRepository AccountType { get; }
+    IJournalRepository Journal { get; }
+    IJournalEntryRepository JournalEntry { get; }
+    IJournalTypeRepository JournalType { get; }
+    
     Task SaveAsync();
 }
