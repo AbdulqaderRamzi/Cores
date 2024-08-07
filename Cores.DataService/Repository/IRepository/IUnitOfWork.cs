@@ -42,6 +42,7 @@ public interface IUnitOfWork
     IJournalRepository Journal { get; }
     IJournalEntryRepository JournalEntry { get; }
     IJournalTypeRepository JournalType { get; }
+    ITaxRepository Tax { get; }
     
     Task SaveAsync();
 }

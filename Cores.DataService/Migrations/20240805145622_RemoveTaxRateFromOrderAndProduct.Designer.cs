@@ -4,6 +4,7 @@ using Cores.DataService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cores.DataService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240805145622_RemoveTaxRateFromOrderAndProduct")]
+    partial class RemoveTaxRateFromOrderAndProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -267,30 +270,6 @@ namespace Cores.DataService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("Cores.Models.Accounting.Tax", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<decimal>("Rate")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Taxes");
                 });
 
             modelBuilder.Entity("Cores.Models.Accounting.Transaction", b =>
@@ -662,9 +641,6 @@ namespace Cores.DataService.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("TaxId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ContactId");
@@ -672,8 +648,6 @@ namespace Cores.DataService.Migrations
                     b.HasIndex("CurrencyId");
 
                     b.HasIndex("PaymentMethodId");
-
-                    b.HasIndex("TaxId");
 
                     b.ToTable("Purchases");
                 });
@@ -1767,17 +1741,11 @@ namespace Cores.DataService.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cores.Models.Accounting.Tax", "Tax")
-                        .WithMany()
-                        .HasForeignKey("TaxId");
-
                     b.Navigation("Contact");
 
                     b.Navigation("Currency");
 
                     b.Navigation("PaymentMethod");
-
-                    b.Navigation("Tax");
                 });
 
             modelBuilder.Entity("Cores.Models.HR.Archive", b =>

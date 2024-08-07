@@ -46,6 +46,7 @@ public class UnitOfWork : IUnitOfWork
     public IJournalRepository Journal { get; }
     public IJournalEntryRepository JournalEntry { get; }
     public IJournalTypeRepository JournalType { get; }
+    public ITaxRepository Tax { get; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
@@ -90,6 +91,7 @@ public class UnitOfWork : IUnitOfWork
         Journal = new JournalRepository(_db);
         JournalEntry = new JournalEntryRepository(_db);
         JournalType = new JournalTypeRepository(_db);
+        Tax = new TaxRepository(_db);
     }
 
     public async Task SaveAsync() => await _db.SaveChangesAsync();

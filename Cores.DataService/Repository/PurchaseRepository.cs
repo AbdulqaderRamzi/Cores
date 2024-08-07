@@ -28,6 +28,7 @@ public class PurchaseRepository : Repository<Purchase>, IPurchaseRepository
         purchaseFromDb.Note = purchase.Note;
         purchaseFromDb.ContactId = purchase.ContactId;
         purchaseFromDb.Contact = purchase.Contact;
+        purchaseFromDb.TaxId = purchase.TaxId;
         purchaseFromDb.Orders.Clear();
         foreach (var order in purchase.Orders)
         {

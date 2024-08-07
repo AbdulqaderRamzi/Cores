@@ -64,6 +64,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<Journal> Journals { get; set; }
     public DbSet<JournalEntry> JournalEntries { get; set; }
     public DbSet<JournalType> JournalTypes { get; set; }
+    public DbSet<Tax> Taxes { get; set; }
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
         IHttpContextAccessor httpContextAccessor) : base(options)
