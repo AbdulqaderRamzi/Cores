@@ -61,8 +61,8 @@ public class PurchaseController : Controller
             contact = await _unitOfWork.Contact.Get(c => c.Id == purchaseVm.Purchase.ContactId, isTracked: false, includeProperties:"Purchases");
         purchaseVm.Purchase.Orders.Clear();
         var orders = JsonConvert.DeserializeObject<List<Order>>(purchaseVm.SerializedProducts);
+        
         decimal totalPrice = 0;
-
         if (orders is not null)
             foreach (var order in orders)
             {
@@ -70,11 +70,8 @@ public class PurchaseController : Controller
                 {
                     Name = order.Name,
                     UnitPrice = order.UnitPrice,
-                    Quantity = order.Quantity
+                    Quantity = order.Quantity,
                 };
-                
-                
-                
                 newOrder.TotalPrice = newOrder.UnitPrice * newOrder.Quantity;
                 totalPrice += newOrder.TotalPrice;
                 await _unitOfWork.Order.Add(newOrder);
@@ -82,11 +79,19 @@ public class PurchaseController : Controller
             }
 
         await _unitOfWork.SaveAsync();
+        if (purchaseVm.Purchase.TaxId.HasValue)
+        {
+            var tax = await _unitOfWork.Tax.Get(t => t.Id == purchaseVm.Purchase.TaxId);
+            if (tax is null)
+                return NotFound();
+            var taxRate = tax.Rate / 100;
+            var taxAmount = totalPrice * taxRate;
+            totalPrice += taxAmount; 
+        }
         purchaseVm.Purchase.PurchaseAmount = totalPrice;
         purchaseVm.Purchase.ContactId = contact.Id;
         purchaseVm.Purchase.Contact = null; // reset the customer 
-
-
+        
         bool isUpdate;
         if (purchaseVm.Purchase.Id == 0)
         {
@@ -144,9 +149,16 @@ public class PurchaseController : Controller
             Value = x.Id.ToString()
         }).ToList();
         purchaseVm.Currencies = currencyList;
+        
+        var taxes = await _unitOfWork.Tax.GetAll();
+        var taxList = taxes.Select(t => new SelectListItem
+        {
+            Text = $"{t.Name} ({t.Rate:F2})",
+            Value = t.Id.ToString()
+        }).ToList();
+        purchaseVm.Taxes = taxList;
     }
-
-   
+    
     public async Task<IActionResult> Delete(int? id)
     {
         if (id is null)

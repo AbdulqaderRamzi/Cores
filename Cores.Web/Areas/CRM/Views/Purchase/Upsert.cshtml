@@ -34,7 +34,7 @@
                             </tbody>
                             <tfoot>
                                 <tr class="font-weight-bold">
-                                    <td id="grandTotal" colspan="5" class="text-left">Grand Total: $0.00</td>
+                                    <td id="grandTotal" colspan="5" class="text-right">Grand Total: $0.00</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -44,19 +44,39 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h3 class="text-dark mb-3">Customer Information</h3>
-                        @if (Model.ContactId is not null)
-                        {
+                      @if (Model.ContactId is not null)
+                        {  
                             <label asp-for="SelectedContactId">Choose Customer</label>
                             <select class="form-control select2" asp-for="SelectedContactId" asp-items="@Model.Contacts" id="customerSelect">
-                                <option selected>@Model.Contact.FirstName</option>
+                                <option selected>@($"{Model.Contact.FirstName} {Model.Contact.LastName}")</option>
                             </select>
-                            <div class="form-group">
+                            <div class="form-group mt-3">
                                 <label asp-for="Contact.PhoneNumber">Customer Phone Number</label>
                                 <input asp-for="Contact.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mt-3">
                                 <label asp-for="Contact.Email">Customer Email</label>
                                 <input asp-for="Contact.Email" type="text" class="form-control" id="customerEmail" readonly>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label asp-for="Contact.Gender">Customer Gender</label>
+                                <input asp-for="Contact.Gender" type="text" class="form-control" id="customerGender" readonly>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label asp-for="Contact.Status">Customer Status</label>
+                                <input asp-for="Contact.Status" type="text" class="form-control" id="customerStatus" readonly>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label asp-for="Contact.State">Customer State</label>
+                                <input asp-for="Contact.State" type="text" class="form-control" id="customerState" readonly>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label asp-for="Contact.City">Customer City</label>
+                                <input asp-for="Contact.City" type="text" class="form-control" id="customerCity" readonly>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label asp-for="Contact.StreetAddress">Customer Street Address</label>
+                                <input asp-for="Contact.StreetAddress" type="text" class="form-control" id="customerStreetAddress" readonly>
                             </div>
                         }
                         else
@@ -65,15 +85,35 @@
                             {
                                 <label asp-for="SelectedContactId">Choose Customer</label>
                                 <select class="form-control select2" asp-for="SelectedContactId" asp-items="@Model.Contacts" id="customerSelect">
-                                    <option  asp-for="Purchase.Customer.PhoneNumber" selected>@Model.Purchase.Contact.FirstName</option>
+                                    <option  selected>@($"{Model.Purchase.Contact.FirstName} {Model.Purchase.Contact.LastName}")</option>
                                 </select>
-                                <div class="form-group">
+                                <div class="form-group mt-3">
                                     <label asp-for="Purchase.Contact.PhoneNumber">Customer Phone Number</label>
                                     <input asp-for="Purchase.Contact.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group mt-3">
                                     <label asp-for="Purchase.Contact.Email">Customer Email</label>
                                     <input asp-for="Purchase.Contact.Email" type="text" class="form-control" id="customerEmail" readonly>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label asp-for="Purchase.Contact.Gender">Customer Gender</label>
+                                    <input asp-for="Purchase.Contact.Gender" type="text" class="form-control" id="customerGender" readonly>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label asp-for="Purchase.Contact.Status">Customer Status</label>
+                                    <input asp-for="Purchase.Contact.Status" type="text" class="form-control" id="customerStatus" readonly>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label asp-for="Purchase.Contact.State">Customer State</label>
+                                    <input asp-for="Purchase.Contact.State" type="text" class="form-control" id="customerState" readonly>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label asp-for="Purchase.Contact.City">Customer City</label>
+                                    <input asp-for="Purchase.Contact.City" type="text" class="form-control" id="customerCity" readonly>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label asp-for="Purchase.Contact.StreetAddress">Customer Street Address</label>
+                                    <input asp-for="Purchase.Contact.StreetAddress" type="text" class="form-control" id="customerStreetAddress" readonly>
                                 </div>
                             }
                             else
@@ -86,13 +126,33 @@
                                     
                                    <!-- Customer Info Section -->
                                    <div id="customer-info" style="display: none">
-                                       <div class="form-group">
+                                       <div class="form-group mt-3">
                                            <label asp-for="Purchase.Contact.PhoneNumber">Phone Number</label>
                                            <input asp-for="Purchase.Contact.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>
                                        </div>
-                                       <div class="form-group">
+                                       <div class="form-group mt-3">
                                            <label asp-for="Purchase.Contact.Email">Email</label>
                                            <input asp-for="Purchase.Contact.Email" type="text" class="form-control" id="customerEmail" readonly>
+                                       </div>
+                                       <div class="form-group mt-3">
+                                           <label asp-for="Purchase.Contact.Gender">Customer Gender</label>
+                                           <input asp-for="Purchase.Contact.Gender" type="text" class="form-control" id="customerGender" readonly>
+                                       </div>
+                                       <div class="form-group mt-3">
+                                           <label asp-for="Purchase.Contact.Status">Customer Status</label>
+                                           <input asp-for="Purchase.Contact.Status" type="text" class="form-control" id="customerStatus" readonly>
+                                       </div>
+                                       <div class="form-group mt-3">
+                                           <label asp-for="Purchase.Contact.State">Customer State</label>
+                                           <input asp-for="Purchase.Contact.State" type="text" class="form-control" id="customerState" readonly>
+                                       </div>
+                                       <div class="form-group mt-3">
+                                           <label asp-for="Purchase.Contact.City">Customer City</label>
+                                           <input asp-for="Purchase.Contact.City" type="text" class="form-control" id="customerCity" readonly>
+                                       </div>
+                                       <div class="form-group mt-3">
+                                           <label asp-for="Purchase.Contact.StreetAddress">Customer Street Address</label>
+                                           <input asp-for="Purchase.    Contact.StreetAddress" type="text" class="form-control" id="customerStreetAddress" readonly>
                                        </div>
                                    </div>
                                 </div>
@@ -109,17 +169,23 @@
                            </select>
                         </div>
                         <div class="form-group">
-                          <label asp-for="Purchase.Status">Status</label>
-                          <select class="form-control select2" asp-for="Purchase.Status" required>
-                              <option value="" disabled selected>-- Select Status --</option>
-                              <option value="Pending">Pending</option>
-                              <option value="Completed">Completed</option>
-                              <option value="Failed">Failed</option>
-                              <option value="Cancelled">Cancelled</option>
-                              <option value="Refunded">Refunded</option>
-                              <option value="Processing">Processing</option>
-                              <option value="On Hold">On Hold</option>
-                          </select>
+                            <label asp-for="Purchase.Status">Status</label>
+                            <select class="form-control select2" asp-for="Purchase.Status" required>
+                                <option value="" disabled selected>-- Select Status --</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Failed">Failed</option>
+                                <option value="Cancelled">Cancelled</option>
+                                <option value="Refunded">Refunded</option>
+                                <option value="Processing">Processing</option>
+                                <option value="On Hold">On Hold</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                             <label asp-for="Purchase.TaxId">Choose Tax</label>
+                            <select class="form-control select2" id="Purchase_TaxId" asp-for="Purchase.TaxId" asp-items="@Model.Taxes">
+                                <option value="" disabled selected>-- Select Tax --</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label asp-for="Purchase.PurchaseAmount">Purchase Amount</label>
@@ -242,6 +308,11 @@
                         $('#customerName').val(customer.firstName);
                         $('#customerPhone').val(customer.phoneNumber);
                         $('#customerEmail').val(customer.email);
+                        $('#customerGender').val(customer.gender);
+                        $('#customerStatus').val(customer.status);
+                        $('#customerState').val(customer.state);
+                        $('#customerCity').val(customer.city);
+                        $('#customerStreetAddress').val(customer.streetAddress);
                         $('#customer-info').show();
                     }
                 },

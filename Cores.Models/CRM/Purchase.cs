@@ -13,12 +13,14 @@ public class Purchase
     public DateTime InvoiceEndDate { get; set; } = DateTime.Now.AddDays(14);
     [ValidateNever]
     public decimal PurchaseAmount { get; set; }
-
+    
+    [Required]
     public int CurrencyId { get; set; }
     [ForeignKey("CurrencyId")]
     [ValidateNever]
     public Currency Currency { get; set; }
 
+    [Required]
     public int PaymentMethodId { get; set; }
     [ForeignKey("PaymentMethodId")]
     [ValidateNever]
@@ -26,7 +28,15 @@ public class Purchase
     
     [Required]
     public string Status { get; set; }
+
+    public int? TaxId { get; set; }
+    [ForeignKey("TaxId")]
+    [ValidateNever]
+    public Tax Tax { get; set; }
+    
     public string? Note { get; set; }
+    
+    [Required]
     public int ContactId { get; set; }
     [ForeignKey("ContactId")]
     [ValidateNever]

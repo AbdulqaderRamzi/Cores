@@ -244,14 +244,40 @@
         return isValid;
     }
 
-    function updateGrandTotal() {
+  /*  function updateGrandTotal() {
         let total = table.column(3).data().reduce((acc, val) => acc + parseFloat(val), 0);
         let formattedTotal = total.toFixed(2);
         $('#grandTotal').text('Grand Total: $' + formattedTotal);
         // Update the Purchase Amount field
         $('#purchaseAmount').val(formattedTotal);
-    }
+    }*/
 
+    function updateGrandTotal() {
+        let subtotal = table.column(3).data().reduce((acc, val) => acc + parseFloat(val), 0);
+        let formattedSubtotal = subtotal.toFixed(2);
+        $('#grandTotal').text('Subtotal: $' + formattedSubtotal);
+
+        let taxAmount = calculateTax(subtotal);
+        let total = subtotal + taxAmount;
+
+        $('#purchaseAmount').val(total.toFixed(2)); 
+    }
+    
+    $('#Purchase_TaxId').on('change', function() {
+        updateGrandTotal();
+    });
+
+    function calculateTax(subtotal) {
+        let taxRateText = $('#Purchase_TaxId option:selected').text();
+        // Extract the number in parentheses
+        let match = taxRateText.match(/\((\d+(?:\.\d+)?)\)/);
+        let taxRate = 0;
+        if (match) {
+            taxRate = parseFloat(match[1]) / 100;
+        }
+        return subtotal * taxRate;
+    }
+    
     function saveAllUnsavedRows() {
         table.rows().every(function() {
             let $row = $(this.node());

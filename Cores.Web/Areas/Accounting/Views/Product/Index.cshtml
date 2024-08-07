@@ -11,7 +11,6 @@
                 </a>
             </div>
         </div>
-
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -20,15 +19,14 @@
                 <tr>
                     <th>Name</th>
                     <th>PurchaseDate</th>
-                    <th >Actions</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                       <th>Name</th>
-                        <th>PurchaseDate</th>
-                        <th >Actions</th>
-                                        
+                    <th>Name</th>
+                    <th>PurchaseDate</th>
+                    <th>Actions</th>
                 </tr>
                 </tfoot>
                 <tbody class="text-dark">
@@ -36,7 +34,7 @@
                 {
                     <tr>
                         <td>@product.Name</td>
-                        <td>@product.UnitPrice</td>
+                        <td>@product.UnitPrice.ToString("F2")</td>
                         <td class="no-print">
                             <div class="dropdown">
                                 <button class="btn btn-primary dropdown-toggle" type="button"
@@ -46,12 +44,12 @@
                                 </button>
                                 <div class="dropdown-menu animated--fade-in"
                                      aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" asp-controller="Contact" asp-action="Upsert" asp-route-id="@product.Id"
+                                    <a class="dropdown-item" asp-controller="Product" asp-action="Upsert" asp-route-id="@product.Id"
                                        onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';">
                                         <i class="fas fa-edit"></i> Update
                                     </a>
-                                    <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/CRM/Customer/Delete?id=@product.Id')"
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/Accounting/Product/Delete?id=@product.Id')"
                                        onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';" style="cursor: pointer;">
                                         <i class="fas fa-trash"></i> Delete
@@ -66,3 +64,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/delete.js"></script>
+}

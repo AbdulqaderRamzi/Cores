@@ -28,6 +28,9 @@ public class PurchaseVm
     // Customers Dropdown list 
     public List<SelectListItem>? Currencies { get; set; }
     
+    // Taxes Dropdown list
+    public List<SelectListItem>? Taxes { get; set; }
+    
     // taking the orders list to HttpPost
     public string SerializedProducts { get; set; }
     

@@ -8,5 +8,7 @@ public class Product
     [Required]
     public string Name { get; set; }
     [Required]
+    [Display(Name = "Unit Price")]
     public decimal UnitPrice { get; set; }
+    
 }
