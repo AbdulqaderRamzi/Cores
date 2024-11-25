@@ -1,0 +1,109 @@
+﻿@model AccountVm
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Account Information</h2>
+    <form method="POST" class="bg-white shadow-sm rounded p-4">
+        <input asp-for="Account.Id" hidden>
+        <input asp-for="Account.CreatedAt" hidden>
+        <input asp-for="Account.CreatedBy" hidden>
+        <input asp-for="Account.Balance" hidden>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Account.Code" class="form-label">Account Code</label>
+                    <input asp-for="Account.Code" class="form-control" readonly>
+                    <span asp-validation-for="Account.Code" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Account.Name" class="form-label">Account Name</label>
+                    <input asp-for="Account.Name" class="form-control">
+                    <span asp-validation-for="Account.Name" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Account.Type" class="form-label">Account Type</label>
+                    <select class="form-control select2" asp-for="Account.Type" asp-items="Model.AccountTypes">
+                        <option value="">-- Select Account Type --</option>
+                    </select>
+                    <span asp-validation-for="Account.Type" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Account.Category" class="form-label">Account Category</label>
+                    <select class="form-control select2" asp-for="Account.Category" asp-items="Model.AccountCategories">
+                        <option value="">-- Select Account Category --</option>
+                    </select>
+                    <span asp-validation-for="Account.Category" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" asp-for="Account.IsActive" id="isActive">
+                        <label class="custom-control-label" for="isActive">Is Active</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <a asp-controller="Account" asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i> Submit
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow,
+    .form-control {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                theme: 'bootstrap4'
+            });
+        });
+    </script>
+}

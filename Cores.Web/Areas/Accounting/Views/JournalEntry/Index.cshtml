@@ -1,0 +1,85 @@
+﻿@model IEnumerable<JournalEntry>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Journal Entries</h6>
+            <a class="btn btn-secondary" asp-controller="JournalEntry" asp-action="Upsert" asp-route-journalId="@ViewBag.JournalId">
+                <i class="fas fa-plus-circle"></i> Create Entry
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>Entry Number</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Created By</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody class="text-dark">
+                @foreach (var entry in Model)
+                {
+                    <tr>
+                        <td>@entry.EntryNumber</td>
+                        <td>@entry.EntryDate.ToString("yyyy MMMM dd")</td>
+                        <td>@entry.Description</td>
+                        <td>@entry.Details.Sum(d => d.DebitAmount).ToString("C")</td>
+                        <td>
+                            @if (entry.IsPosted)
+                            {
+                                <span class="badge badge-success">Posted</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-warning">Draft</span>
+                            }
+                        </td>
+                        <td>@entry.CreatedBy</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    Actions
+                                </button>
+                                <div class="dropdown-menu animated--fade-in"
+                                     aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" asp-controller="JournalEntry" asp-action="Upsert" asp-route-id="@entry.Id"
+                                       onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
+                                       onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                    @if (!entry.IsPosted)
+                                    {
+                                        <a class="dropdown-item" asp-controller="JournalEntry" asp-action="Upsert" asp-route-id="@entry.Id"
+                                           onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/Accounting/JournalEntry/Delete?id=@entry.Id')"
+                                           onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/delete.js"></script>
+}

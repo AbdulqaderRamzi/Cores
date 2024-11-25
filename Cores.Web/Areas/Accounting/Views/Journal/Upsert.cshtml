@@ -1,0 +1,103 @@
+﻿@model JournalVm
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Journal Information</h2>
+    <form method="POST" class="bg-white shadow-sm rounded p-4">
+        <input asp-for="Journal.Id" hidden>
+        <input asp-for="Journal.CreatedAt" hidden>
+        <input asp-for="Journal.CreatedBy" hidden>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Journal.Name" class="form-label">Journal Name</label>
+                    <input asp-for="Journal.Name" class="form-control">
+                    <span asp-validation-for="Journal.Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Journal.Type" class="form-label">Journal Type</label>
+                    <select class="form-control select2" asp-for="Journal.Type" asp-items="Model.JournalTypes">
+                        <option value="">-- Select Journal Type --</option>
+                    </select>
+                    <span asp-validation-for="Journal.Type" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="form-group">
+                    <label asp-for="Journal.Description" class="form-label">Description</label>
+                    <textarea asp-for="Journal.Description" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Journal.Description" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" asp-for="Journal.IsActive" id="isActive">
+                        <label class="custom-control-label" for="isActive">Is Active</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <a asp-controller="Journal" asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i> Submit
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow,
+    .form-control {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    textarea.form-control {
+        height: auto;
+        line-height: 1.5;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                theme: 'bootstrap4'
+            });
+        });
+    </script>
+}

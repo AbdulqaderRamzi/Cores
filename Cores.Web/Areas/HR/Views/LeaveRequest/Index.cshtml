@@ -1,0 +1,128 @@
+﻿@using System.Security.Claims
+@model IEnumerable<LeaveRequest>
+
+<!-- DataTale -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Leave Requests</h6>
+            <a class="btn btn-secondary" asp-controller="LeaveRequest" asp-action="Upsert" asp-route-isFromGetById="@ViewBag.IsFromGetById">
+                <i class="fas fa-plus-circle"></i> Create Leave Requests
+            </a>
+            @*<a class="btn btn-secondary" asp-controller="LeaveRequest" asp-action="Calculate">
+                <i class="fas fa-plus-circle"></i> Leave Request Calculator
+            </a>*@
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>Leave Type</th>
+                    <th>Employee Name</th>
+                    <th>Request Date</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>No. Days</th>
+                    <th>Manager</th>
+                    <th>Hr</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                   <th>Leave Type</th>
+                   <th>Employee Name</th>
+                   <th>Request Date</th>
+                   <th>Start Date</th>
+                   <th>End Date</th>
+                   <th>No. Days</th>
+                   <th>Manager</th>
+                   <th>Hr</th>
+                   <th>Actions</th>
+                </tr>
+                </tfoot>
+                <tbody class="text-dark">
+                @foreach (var leaveRequest in Model)
+                {
+                    <tr>
+                        <td>@leaveRequest.LeaveType.Name</td>
+                        <td>@($"{leaveRequest.Employee.FirstName} {leaveRequest.Employee.LastName}")</td>
+                        <td>@leaveRequest.RequestDate.ToString("yyyy MMMM dd")</td>
+                        <td>@leaveRequest.StartDate.ToString("yyyy MMMM dd")</td>
+                        <td>@leaveRequest.EndDate.ToString("yyyy MMMM dd")</td>
+                        <td>@leaveRequest.NumberOfDays</td>
+                        <td>
+                            @(leaveRequest.ManagerResponse switch
+                            {
+                                true => "Accepted",
+                                false => "Rejected",
+                                _ => "Pending"
+                            })
+                        </td>
+                        <td>
+                            @(leaveRequest.HrResponse switch
+                            {
+                                true => "Accepted",
+                                false => "Rejected",
+                                _ => "Pending"
+                            })
+                        </td>
+                        
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    Actions
+                                </button>
+                                <div class="dropdown-menu animated--fade-in"
+                                     aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item"  asp-action="Upsert" asp-route-id="@leaveRequest.Id" asp-route-isFromGetById="@ViewBag.IsFromGetById"
+                                       onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
+                                       onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                    
+                                    @if (((User.IsInRole(SD.HR_ROLE) || User.IsInRole(SD.ADMIN_ROLE))
+                                        && leaveRequest.EmployeeId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+                                        || leaveRequest is { IsDeducted: false, ManagerResponse: null })
+                                    {
+                                       
+                                            <a class="dropdown-item" asp-action="Upsert" asp-route-id="@leaveRequest.Id" asp-route-isFromGetById="@ViewBag.IsFromGetById"
+                                           onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-edit"></i> Update
+                                        </a>
+                                        
+                                        <a class="dropdown-item" onclick="deleteObj('/HR/LeaveRequest/Delete?id=@leaveRequest.Id')"
+                                           onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';" style="cursor: pointer;">
+                                            <i class="fas fa-trash"></i> Cancel
+                                        </a>
+                                    }
+                                    else if ((leaveRequest.ManagerResponse is not null || leaveRequest.HrResponse is not null) 
+                                            && !leaveRequest.IsDeducted)
+                                    {
+                                        <a class="dropdown-item" onclick="deleteObj('/HR/LeaveRequest/Delete?id=@leaveRequest.Id')"
+                                           onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';" style="cursor: pointer;">
+                                            <i class="fas fa-trash"></i> Cancel
+                                        </a>
+                                    }
+                                    
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/delete.js"></script>
+}

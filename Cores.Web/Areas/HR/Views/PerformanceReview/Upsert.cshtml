@@ -1,0 +1,113 @@
+﻿@model PerformanceReviewVm
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">@(Model.PerformanceReview.Id != 0 ? "Edit" : "Create") Performance Review</h2>
+    <form method="post" class="bg-white shadow-sm rounded p-4">
+        <input asp-for="PerformanceReview.Id" hidden />
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PerformanceReview.EmployeeId" class="form-label">Employee</label>
+                    <select class="form-control select2" asp-for="PerformanceReview.EmployeeId" asp-items="@Model.Employees">
+                        <option value="" disabled selected>-- Select Employee --</option>
+                    </select>
+                    <span asp-validation-for="PerformanceReview.EmployeeId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PerformanceReview.ReviewerId" class="form-label">Reviewer</label>   
+                    <select class="form-control select2" asp-for="PerformanceReview.ReviewerId" asp-items="@Model.Employees">
+                        <option value="" disabled selected>-- Select Reviewer --</option>
+                    </select>
+                    <span asp-validation-for="PerformanceReview.ReviewerId" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PerformanceReview.ReviewDate" class="form-label">Review Date</label>
+                    <input asp-for="PerformanceReview.ReviewDate" class="form-control" readonly/>
+                    <span asp-validation-for="PerformanceReview.ReviewDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PerformanceReview.PerformanceScore" class="form-label">Performance Score</label>
+                    <input asp-for="PerformanceReview.PerformanceScore" class="form-control" type="number" min="1" max="10" />
+                    <span asp-validation-for="PerformanceReview.PerformanceScore" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="form-group">
+                    <label asp-for="PerformanceReview.Comments" class="form-label">Comments</label>
+                    <textarea asp-for="PerformanceReview.Comments" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="PerformanceReview.Comments" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i> @(Model.PerformanceReview.Id != 0 ? "Update" : "Create")
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .input-group-text {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+    }
+   
+   #completion-date{
+        background-color: #ffffff !important;
+   }
+</style>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+    </script>
+}

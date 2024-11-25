@@ -1,0 +1,110 @@
+﻿@model List<Notification>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Notifications</h6>
+            <a class="btn btn-secondary" asp-controller="Todo" asp-action="Upsert">
+                <i class="fas fa-plus-circle"></i> Create Task
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>To-Do Item</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>Date</th>
+                    <th>Task</th>
+                    <th>Status</th>
+                    <th>Action</th>
+
+                </tr>
+                </tfoot>
+                <tbody class="text-dark">
+                @foreach (var notification in Model)
+                {
+                    <tr>
+                        <td>@notification.DateTime?.ToString("MMM dd, yyyy HH:mm")</td>
+                        <td>@notification.Todo.Title</td>
+                        <td>@(notification.IsRead ? "Read" : "Unread")</td>
+                        <td>
+                            
+                            <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        Actions
+                                    </button>
+                                    <div class="dropdown-menu animated--fade-in"
+                                         aria-labelledby="dropdownMenuButton">
+                                          @if (!notification.IsRead)
+                                            {
+                                                <a class="dropdown-item" onclick="markAsRead(@notification.Id)"
+                                                   onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
+                                                   onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                                    <i class="fas fa-edit"></i> Mark As Read
+                                                </a>
+                                            }
+                                            <a class="dropdown-item" asp-controller="Todo" asp-action="Upsert" asp-route-id="@notification.TodoId"
+                                               onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
+                                               onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                                <i class="fas fa-info-circle"></i> Details
+                                            </a>
+                                     
+                                    </div>
+                                </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@*
+<div class="row ml-1">
+        <div class="col-12">
+            <a asp-controller="Notification" asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+            
+        </div>
+    </div>
+    *@
+
+
+@section Scripts {
+    <script>
+    
+    function markAsRead(id) {
+        $.ajax({
+            url: `/Utility/Notification/MarkAsRead/${id}`,
+            type: 'POST',
+            data: { notificationId : id},
+            success: function () {
+              location.reload();
+                
+            }
+        })
+    }
+    
+      /*  $(function () {
+            $('.mark-as-read').click(function () {
+                var notificationId = $(this).data('notification-id');
+                $.post()
+                    .done(function () {
+                        location.reload();
+                    });
+            });
+        });*/
+    </script>
+}

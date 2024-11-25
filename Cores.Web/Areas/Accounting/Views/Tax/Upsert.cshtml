@@ -1,0 +1,79 @@
+﻿@model Tax
+<div class="container mt-5">
+    <form method="POST" class="bg-white shadow-sm rounded p-4">
+        <h2 class="mb-4 text-center">Event Type Information</h2>
+        <input hidden asp-for="Id">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="form-label">Name</label>
+                    <input asp-for="Name" class="form-control">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group mb-3">
+                    <label asp-for="Status" class="form-label">Journal Type</label>
+                    <select asp-for="Status" class="form-control select2">
+                        <option value="" selected disabled>-- Select Status --</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group mb-3">
+                    <label asp-for="Rate" class="form-label">Rate %</label>
+                    <input asp-for="Rate" value="@(Model.Rate.ToString("F2")!)" class="form-control" type="number" min="0" max="100" step="0.01">
+                    <span asp-validation-for="Rate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <a asp-controller="Tax" asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back
+            </a>
+            <button type="submit" class="btn btn-primary ms-2">
+                <i class="fas fa-check me-2"></i> Submit
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+    .input-group-text {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+    }
+   
+   #transaction-date {
+        background-color: #ffffff !important;
+   }
+</style>  
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/select2.js"></script>
+}

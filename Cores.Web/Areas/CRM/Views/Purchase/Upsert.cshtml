@@ -1,0 +1,329 @@
+﻿@model PurchaseVm
+
+<div class="container mt-5">
+    <div class="card shadow">   
+        <div class="card-body">
+            <form method="POST">
+                <input type="hidden" id="serializedProducts" name="SerializedProducts" />
+                <input type="hidden" asp-for="ContactId"/>
+                <input type="hidden" asp-for="Purchase.Id"/>
+                <input type="hidden" asp-for="Purchase.ContactId"/>
+                
+                <!-- Product Table Section -->
+                <div class="mb-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="text-dark m-0">Products</h3>
+                        <button type="button" class="btn btn-primary" id="addProductBtn">
+                            <i class="fas fa-plus"></i> Add Product
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="productTable">
+                            <thead class="thead-dark">
+                                <tr>
+                                     <th>Product Name</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Total Price</th>
+                                    <th>Actions</th>
+                                            
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Rows will be dynamically added here -->
+                            </tbody>
+                            <tfoot>
+                                <tr class="font-weight-bold">
+                                    <td id="grandTotal" colspan="5" class="text-right">Grand Total: $0.00</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <!-- Purchase Details Section -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="text-dark mb-3">Customer Information</h3>
+                      @if (Model.ContactId is not null)
+                        {  
+                            <label asp-for="SelectedContactId">Choose Customer</label>
+                            <select class="form-control select2" asp-for="SelectedContactId" asp-items="@Model.Contacts" id="customerSelect">
+                                <option selected>@($"{Model.Contact.FirstName} {Model.Contact.LastName}")</option>
+                            </select>
+                            <div class="form-group mt-3">
+                                <label asp-for="Contact.PhoneNumber">Customer Phone Number</label>
+                                <input asp-for="Contact.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label asp-for="Contact.Email">Customer Email</label>
+                                <input asp-for="Contact.Email" type="text" class="form-control" id="customerEmail" readonly>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label asp-for="Contact.Gender">Customer Gender</label>
+                                <input asp-for="Contact.Gender" type="text" class="form-control" id="customerGender" readonly>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label asp-for="Contact.Status">Customer Status</label>
+                                <input asp-for="Contact.Status" type="text" class="form-control" id="customerStatus" readonly>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label asp-for="Contact.State">Customer State</label>
+                                <input asp-for="Contact.State" type="text" class="form-control" id="customerState" readonly>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label asp-for="Contact.City">Customer City</label>
+                                <input asp-for="Contact.City" type="text" class="form-control" id="customerCity" readonly>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label asp-for="Contact.StreetAddress">Customer Street Address</label>
+                                <input asp-for="Contact.StreetAddress" type="text" class="form-control" id="customerStreetAddress" readonly>
+                            </div>
+                        }
+                        else
+                        {
+                            if (Model.Purchase.ContactId is not 0)
+                            {
+                                <label asp-for="SelectedContactId">Choose Customer</label>
+                                <select class="form-control select2" asp-for="SelectedContactId" asp-items="@Model.Contacts" id="customerSelect">
+                                    <option  selected>@($"{Model.Purchase.Contact.FirstName} {Model.Purchase.Contact.LastName}")</option>
+                                </select>
+                                <div class="form-group mt-3">
+                                    <label asp-for="Purchase.Contact.PhoneNumber">Customer Phone Number</label>
+                                    <input asp-for="Purchase.Contact.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label asp-for="Purchase.Contact.Email">Customer Email</label>
+                                    <input asp-for="Purchase.Contact.Email" type="text" class="form-control" id="customerEmail" readonly>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label asp-for="Purchase.Contact.Gender">Customer Gender</label>
+                                    <input asp-for="Purchase.Contact.Gender" type="text" class="form-control" id="customerGender" readonly>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label asp-for="Purchase.Contact.Status">Customer Status</label>
+                                    <input asp-for="Purchase.Contact.Status" type="text" class="form-control" id="customerStatus" readonly>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label asp-for="Purchase.Contact.State">Customer State</label>
+                                    <input asp-for="Purchase.Contact.State" type="text" class="form-control" id="customerState" readonly>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label asp-for="Purchase.Contact.City">Customer City</label>
+                                    <input asp-for="Purchase.Contact.City" type="text" class="form-control" id="customerCity" readonly>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label asp-for="Purchase.Contact.StreetAddress">Customer Street Address</label>
+                                    <input asp-for="Purchase.Contact.StreetAddress" type="text" class="form-control" id="customerStreetAddress" readonly>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <label asp-for="SelectedContactId">Choose Customer</label>
+                                    <select class="form-control select2" asp-for="SelectedContactId" asp-items="@Model.Contacts" id="customerSelect">
+                                        <option value="">-- Select a Customer --</option>
+                                    </select>
+                                    
+                                   <!-- Customer Info Section -->
+                                   <div id="customer-info" style="display: none">
+                                       <div class="form-group mt-3">
+                                           <label asp-for="Purchase.Contact.PhoneNumber">Phone Number</label>
+                                           <input asp-for="Purchase.Contact.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>
+                                       </div>
+                                       <div class="form-group mt-3">
+                                           <label asp-for="Purchase.Contact.Email">Email</label>
+                                           <input asp-for="Purchase.Contact.Email" type="text" class="form-control" id="customerEmail" readonly>
+                                       </div>
+                                       <div class="form-group mt-3">
+                                           <label asp-for="Purchase.Contact.Gender">Customer Gender</label>
+                                           <input asp-for="Purchase.Contact.Gender" type="text" class="form-control" id="customerGender" readonly>
+                                       </div>
+                                       <div class="form-group mt-3">
+                                           <label asp-for="Purchase.Contact.Status">Customer Status</label>
+                                           <input asp-for="Purchase.Contact.Status" type="text" class="form-control" id="customerStatus" readonly>
+                                       </div>
+                                       <div class="form-group mt-3">
+                                           <label asp-for="Purchase.Contact.State">Customer State</label>
+                                           <input asp-for="Purchase.Contact.State" type="text" class="form-control" id="customerState" readonly>
+                                       </div>
+                                       <div class="form-group mt-3">
+                                           <label asp-for="Purchase.Contact.City">Customer City</label>
+                                           <input asp-for="Purchase.Contact.City" type="text" class="form-control" id="customerCity" readonly>
+                                       </div>
+                                       <div class="form-group mt-3">
+                                           <label asp-for="Purchase.Contact.StreetAddress">Customer Street Address</label>
+                                           <input asp-for="Purchase.    Contact.StreetAddress" type="text" class="form-control" id="customerStreetAddress" readonly>
+                                       </div>
+                                   </div>
+                                </div>
+                            }
+                        }
+                        
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="text-dark mb-3">Payment Details</h4>
+                        <div class="form-group">
+                           <label asp-for="Purchase.PaymentMethodId">Choose Payment Method</label>
+                           <select class="form-control select2" asp-for="Purchase.PaymentMethodId" asp-items="@Model.PaymentMethods">
+                                 <option value="" disabled selected>-- Select Payment Method --</option>
+                           </select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Purchase.Status">Status</label>
+                            <select class="form-control select2" asp-for="Purchase.Status" required>
+                                <option value="" disabled selected>-- Select Status --</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Failed">Failed</option>
+                                <option value="Cancelled">Cancelled</option>
+                                <option value="Refunded">Refunded</option>
+                                <option value="Processing">Processing</option>
+                                <option value="On Hold">On Hold</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                             <label asp-for="Purchase.TaxId">Choose Tax</label>
+                            <select class="form-control select2" id="Purchase_TaxId" asp-for="Purchase.TaxId" asp-items="@Model.Taxes">
+                                <option value="" disabled selected>-- Select Tax --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Purchase.PurchaseAmount">Purchase Amount</label>
+                            <input asp-for="Purchase.PurchaseAmount" type="text" id="purchaseAmount" class="form-control">
+                        </div>
+                        <div class="form-group">
+                             <label asp-for="Purchase.CurrencyId">Choose Currency</label>
+                             <select class="form-control select2" asp-for="Purchase.CurrencyId" asp-items="@Model.Currencies">
+                                 <option value="" disabled selected>-- Select Currency --</option>
+                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Purchase.PurchaseDate" class="form-label">Purchase Date</label>
+                            <div class="input-group flatpickr">
+                                <input asp-for="Purchase.PurchaseDate" id="purchase-date" class="form-control" placeholder="Select Date and Time">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Purchase.PurchaseDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Purchase.InvoiceEndDate" class="form-label">Invoice End Date</label>
+                            <div class="input-group flatpickr">
+                                <input asp-for="Purchase.InvoiceEndDate" id="invoice-end-date" class="form-control" placeholder="Select Date and Time">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Purchase.InvoiceEndDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Purchase.Note">Note</label>
+                            <textarea asp-for="Purchase.Note" class="form-control" rows="4"></textarea>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                   
+                    <div class="col-md-6">
+                       
+                    </div>
+                </div>
+
+                <div class="mt-5 text-right">
+                    <a asp-controller="Purchase" asp-action="Index" class="btn btn-secondary mr-2">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Create Purchase
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .select2-container .select2-selection--single {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 36px;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .form-control {
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+    }
+    #grandTotal {
+        font-size: 1.1em;
+        font-weight: bold;
+        padding-left: 15px;
+    }
+</style>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial"/>
+    <script src="~/js/product.js"></script>
+    <script src="~/js/select2.js"></script>
+    <script>    
+        $(document).ready(function () {
+           $("#purchase-date, #invoice-end-date").flatpickr({
+               dateFormat: "Y-m-d"
+            });                   
+            // Initialize product table
+            let existingProducts = @Html.Raw(Json.Serialize(Model.Purchase.Orders));
+            let products = @Html.Raw(Json.Serialize(Model.Products));
+            initializeProductTable(existingProducts, products);
+    
+            // Event listener for customer selection
+            $('#customerSelect').on('change', function () {
+                let customerId = $(this).val();
+                if (customerId) {
+                    showCustomerInfo(customerId);
+                } else {
+                    $('#customer-info').hide();
+                }
+            });
+        });
+    
+        function showCustomerInfo(customerId) {
+            $.ajax({
+                url: '@Url.Action("GetContactById", "Purchase")' + '?id=' + customerId,
+                type: 'GET',
+                data: { id: customerId },
+                success: function (customer) {
+                    if (customer) {
+                        $('#customerName').val(customer.firstName);
+                        $('#customerPhone').val(customer.phoneNumber);
+                        $('#customerEmail').val(customer.email);
+                        $('#customerGender').val(customer.gender);
+                        $('#customerStatus').val(customer.status);
+                        $('#customerState').val(customer.state);
+                        $('#customerCity').val(customer.city);
+                        $('#customerStreetAddress').val(customer.streetAddress);
+                        $('#customer-info').show();
+                    }
+                },
+                error: function () {
+                    alert('Failed to fetch customer details.');
+                }
+            });
+        }
+    </script>
+}
+
+
+
+

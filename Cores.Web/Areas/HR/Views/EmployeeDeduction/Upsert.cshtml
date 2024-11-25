@@ -1,0 +1,157 @@
+﻿@model EmployeeDeductionVm
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Employee deduction Info</h2>
+    <form method="POST" class="bg-white shadow-sm rounded p-4">
+        <input asp-for="EmployeeDeduction.Id" hidden>
+        <input asp-for="IsFromAttendance" hidden>
+        <input asp-for="AttendanceId" hidden>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="EmployeeDeduction.EmployeeId" class="form-label">Employees</label>
+                    <select class="form-control select2" asp-for="EmployeeDeduction.EmployeeId" asp-items="@Model.Employees">
+                        <option value="" disabled selected>-- Select Employee --</option>
+                    </select>
+                    <span class="text-danger" asp-validation-for="EmployeeDeduction.Id"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                   <label asp-for="EmployeeDeduction.DeductionId" class="form-label">Deductions</label>
+                     <select class="form-control select2" asp-for="EmployeeDeduction.DeductionId" asp-items="@Model.Deductions">
+                         <option value="" disabled selected>-- Select Employee --</option>
+                     </select>
+                     <span class="text-danger" asp-validation-for="EmployeeDeduction.Id"></span>
+                </div>
+            </div>
+                
+            <div class="col-md-4">
+                <label asp-for="EmployeeDeduction.Status" class="form-label">Leave Status</label>
+                <select class="form-control select2" asp-for="EmployeeDeduction.Status">
+                    <option value="" disabled selected>-- Select Leave Status --</option>
+                    <option value="Active">Active</option>
+                    <option value="One-time">One-time</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Expired">Expired</option>
+                </select>
+                <span class="text-danger" asp-validation-for="EmployeeDeduction.Status"></span>
+            </div>
+        </div>
+        <div class="row mb-4 date-fields">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="EmployeeDeduction.StartDate" class="form-label">Start Date</label>
+                    <div class="input-group flatpickr">
+                        <input asp-for="EmployeeDeduction.StartDate" id="start-date" class="form-control" placeholder="Select Date">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="EmployeeDeduction.StartDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="EmployeeDeduction.EndDate" class="form-label">End Date</label>
+                    <div class="input-group flatpickr">
+                        <input asp-for="EmployeeDeduction.EndDate" id="end-date" class="form-control" placeholder="Select Date">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="EmployeeDeduction.EndDate" class="text-danger"></span>
+                </div>
+            </div>
+            
+          </div>
+        <div class="row">
+            <div class="col-12">
+                @if (Model.IsFromAttendance)
+                {
+                    <a asp-controller="Attendance" asp-action="LateEmployee" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="EmployeeDeduction" asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                }
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i> Submit
+                </button>
+            </div>
+    </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .input-group-text {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+    }
+   
+   #start-date,
+   #end-date {
+        background-color: #ffffff !important;
+   }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+    <script>
+       $(document).ready(function() {
+           $('.select2').select2();
+           $('#leave-request').select2();
+           
+           $("#start-date, #end-date").flatpickr({
+               dateFormat: "Y-m-d"
+           });
+           
+           // Function to toggle date fields visibility
+           function toggleDateFields() {
+               let leaveStatus = $("#EmployeeDeduction_Status").val();
+               let dateFields = $(".date-fields");
+               
+               if (leaveStatus === "One-time") {
+                   dateFields.hide();
+               } else {
+                   dateFields.show();
+               }
+           }
+       
+           // Initial call to set correct visibility
+           toggleDateFields();
+       
+           // Add event listener for status change
+           $("#EmployeeDeduction_Status").on("change", toggleDateFields);
+       });
+    </script>
+}

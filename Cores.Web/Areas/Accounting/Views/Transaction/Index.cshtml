@@ -1,0 +1,152 @@
+﻿@using Cores.Models.Accounting.Enums
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Transaction>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Transactions</h6>
+            <a class="btn btn-secondary" asp-controller="Transaction" asp-action="Upsert">
+                <i class="fas fa-plus-circle"></i> Create Transaction
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>Reference No</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Created By</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody class="text-dark">
+                @foreach (var transaction in Model)
+                {
+                    <tr>
+                        <td>@transaction.ReferenceNo</td>
+                        <td>@transaction.TransactionDate.ToString("yyyy MMMM dd")</td>
+                        <td>@transaction.Description</td>
+                        <td>@transaction.TotalDebit.ToString("C")</td>
+                        <td>@transaction.Status</td>
+                        <td>@transaction.CreatedBy</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    Actions
+                                </button>
+                                <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="showDetails('@transaction.Id')"
+                                       onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
+                                       onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                    @if (transaction.Status == TransactionState.Draft.ToString())
+                                    {
+                                        <a class="dropdown-item" asp-controller="Transaction" asp-action="Upsert" asp-route-id="@transaction.Id"
+                                           onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:void(0);" onclick="postTransaction('@transaction.Id')"
+                                           onmouseover="this.style.backgroundColor='#007bff'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-check"></i> Post
+                                        </a>
+                                    }
+                                    @if (transaction.Status == TransactionState.Posted.ToString())
+                                    {
+                                        <a class="dropdown-item" href="javascript:void(0);" onclick="voidTransaction('@transaction.Id')"
+                                           onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-ban"></i> Void
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Transaction Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Account</th>
+                            <th>Description</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detailsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function showDetails(transactionId) {
+            $.get(`/Accounting/Transaction/GetTransactionDetails/${transactionId}`, function(response) {
+                let tbody = $('#detailsTableBody');
+                tbody.empty();
+                
+                response.data.forEach(function(detail) {
+                    tbody.append(`
+                        <tr>
+                            <td>${detail.code} - ${detail.name}</td>
+                            <td>${detail.description}</td>
+                            <td>${detail.debitAmount ? detail.debitAmount.toFixed(2) : ''}</td>
+                            <td>${detail.creditAmount ? detail.creditAmount.toFixed(2) : ''}</td>
+                        </tr>
+                    `);
+                });
+                
+                $('#detailsModal').modal('show');
+            });
+        }
+        
+        function postTransaction(id) {
+            if (confirm('Are you sure you want to post this transaction? This action cannot be undone.')) {
+                $.post(`/Accounting/Transaction/PostTransaction/${id}`, function(response) {
+                    if (response.success) {
+                        location.reload();
+                    }
+                });
+            }
+        }
+        
+        function voidTransaction(id) {
+            if (confirm('Are you sure you want to void this transaction? This will create a reversal entry.')) {
+                $.post(`/Accounting/Transaction/VoidTransaction/${id}`, function(response) {
+                    if (response.success) {
+                        location.reload();
+                    }
+                });
+            }
+        }
+    </script>
+}

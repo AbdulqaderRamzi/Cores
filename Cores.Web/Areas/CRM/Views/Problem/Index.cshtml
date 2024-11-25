@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Problem>
+
+<!-- DataTale -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Problem Data</h6>
+            <a class="btn btn-secondary" asp-controller="Problem" asp-action="Upsert">
+                <i class="fas fa-plus-circle"></i> Create Problem
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>Problem Id</th>
+                    <th>Customer Id</th>
+                    <th>Reported Date</th>
+                    <th>Problem Type</th>
+                    <th>Severity</th>
+                    <th>Status</th>
+                    <th>Assigned To</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>Problem Id</th>
+                    <th>Customer Id</th>
+                    <th>Reported Date</th>
+                    <th>Problem Type</th>
+                    <th>Severity</th>
+                    <th>Status</th>
+                    <th>Assigned To</th>
+                    <th>Actions</th>
+                </tr>
+                </tfoot>
+                <tbody class="text-dark">
+                @foreach (var problem in Model)
+                {
+                    <tr>
+                        <td>@problem.Id</td>
+                        <td>@problem.ContactId</td>
+                        <td>@problem.ReportedDate.ToString("yyyy MMMM dd")</td>
+                        <td>@problem.ProblemType.Type</td>
+                        <td>@problem.Severity</td>
+                        <td>@problem.Status</td>
+                        <td>@string.Concat(problem.ApplicationUser.FirstName, " ", problem.ApplicationUser.LastName)</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    Actions
+                                </button>
+                                <div class="dropdown-menu animated--fade-in"
+                                     aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" asp-controller="Problem" asp-action="Upsert" asp-route-id="@problem.Id"
+                                            onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
+                                            onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-info-circle"></i> Details
+                                        </a>
+                                    <a class="dropdown-item" asp-controller="Problem" asp-action="Upsert" asp-route-id="@problem.Id"
+                                       onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
+                                       onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                        <i class="fas fa-edit"></i> Update
+                                    </a>
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/CRM/Problem/Delete?id=@problem.Id')"
+                                       onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
+                                       onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/delete.js"></script>
+}

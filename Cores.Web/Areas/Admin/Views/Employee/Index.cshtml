@@ -1,0 +1,114 @@
+﻿@model IEnumerable<ApplicationUser>
+
+<!-- DataTale -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Employees Data</h6>
+            <a class="btn btn-secondary" asp-area="Identity" asp-page="/Account/Register">
+                <i class="fas fa-plus-circle"></i> Create employee
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Salary</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Salary</th>
+                    <th>Actions</th>
+                </tr>
+                </tfoot>
+                <tbody class="text-dark">
+                @foreach (var employee in Model)
+                {
+                    <tr>
+                        <td>@string.Concat(employee.FirstName, " ", employee.LastName)</td>
+                        <td>@employee.Email</td>
+                        <td>@employee.Salary.ToString("F2")</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    Actions
+                                </button>
+                                <div class="dropdown-menu animated--fade-in"
+                                     aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" asp-action="Details" asp-route-id="@employee.Id"
+                                       onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
+                                       onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                    <a class="dropdown-item " asp-controller="Employee" asp-action="Update" asp-route-id="@employee.Id"
+                                       onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
+                                       onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                        <i class="fas fa-edit"></i> Update
+                                    </a>
+                                    <a class="dropdown-item " asp-action="ResetPass" asp-route-userEmail="@employee.Email"  
+                                       onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
+                                       onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                        <i class="fas fa-edit"></i> Reset Pass
+                                    </a>
+                                    
+                                    @if (employee.LockoutEnd is null || employee.LockoutEnd <= DateTime.Now)
+                                    {
+                                        <a class="dropdown-item" onclick="LockUnlock('@employee.Id', this)"
+                                           onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color=''" style="cursor: pointer">
+                                            <i class="fas fa-lock"></i> Lock
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="dropdown-item" onclick="LockUnlock('@employee.Id', this)"
+                                           onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color=''" style="cursor: pointer">
+                                            <i class="fas fa-lock"></i> Unlock
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        function LockUnlock(userId, element) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("LockUnlock", "Employee", new { area = "Admin" })",
+                data: { id: userId },
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                        let newText = data.isLocked ? '<i class="fas fa-unlock"></i> Unlock' : '<i class="fas fa-lock"></i> Lock';
+                        $(element).html(newText); // Update the button's text and icon
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function () {
+                    alert("An error occurred while processing the request.");
+                }
+            });
+        }
+    </script>
+}

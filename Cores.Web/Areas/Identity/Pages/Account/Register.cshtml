@@ -1,0 +1,660 @@
+﻿@page
+@model Cores.Web.Areas.Identity.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                <input type="hidden" id="serializedProducts" name="schedules" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+            <div class="col-lg-4">
+                <fieldset>
+                    <legend>Personal Information</legend>
+                    <div class="form-group">
+                        <label asp-for="Input.FirstName">First Name</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input asp-for="Input.FirstName" class="form-control" autocomplete="new-password" aria-required="true" placeholder="First Name">
+                        </div>
+                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.LastName">Last Name</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input asp-for="Input.LastName" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Last Name">
+                        </div>
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.Email">Email</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            </div>
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter email">
+                        </div>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                  <div class="form-group">
+                      <label asp-for="Input.PhoneNumber">Phone Number</label>
+                      <div class="input-group" style="z-index: 99999">
+                          <input type="tel" 
+                                 asp-for="Input.PhoneNumber" 
+                                 class="form-control phone" 
+                                 placeholder="Enter phone number" 
+                                 required>
+                      </div>
+                      <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                  </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.EmergencyNumber">Emergency Number</label>
+                        <div class="input-group">
+                            <input type="tel" 
+                                   asp-for="Input.EmergencyNumber" 
+                                   class="form-control phone" 
+                                   placeholder="Enter phone number" 
+                                   required>
+                        </div>
+                        <span asp-validation-for="Input.EmergencyNumber" class="text-danger"></span>
+                    </div>
+                    
+
+               
+                    <div class="form-group">
+                        <label asp-for="Input.DateOfBirth">Date of Birth</label>
+                        <div class="input-group flatpickr">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            </div>
+                            <input asp-for="Input.DateOfBirth" id="dateOfBirth" class="form-control" placeholder="Date of Birth">
+                        </div>
+                        <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Identification</legend>
+                    <div class="form-group">
+                        <label asp-for="Input.CivilIdNumber">Civil ID Number</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                            </div>
+                            <input asp-for="Input.CivilIdNumber" class="form-control" placeholder="Civil ID Number">
+                        </div>
+                        <span asp-validation-for="Input.CivilIdNumber" class="text-danger"></span>
+                    </div>
+                                                                
+                    <div class="form-group">
+                        <label asp-for="Input.PassportNumber">Passport Number</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-passport"></i></span>
+                            </div>
+                            <input asp-for="Input.PassportNumber" class="form-control" placeholder="Passport Number">
+                        </div>
+                        <span asp-validation-for="Input.PassportNumber" class="text-danger"></span>
+                    </div>
+                </fieldset>
+                        
+            </div>
+            <div class="col-lg-4">
+                <fieldset>
+                    <legend>Work Information</legend>
+                    <div class="form-group">
+                        <label asp-for="Input.DepartmentId">Department</label>
+                        <select class="custom-select" aria-required="true" asp-for="Input.DepartmentId" asp-items="@Model.Input.Departments">
+                            <option value="" disabled selected>-- Select Department --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.PositionId">Position</label>
+                        <select id="position" class="custom-select" aria-required="true" asp-for="Input.PositionId" asp-items="@Model.Input.Positions">
+                            <option value="" disabled selected>-- Select Position --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.Salary">Salary</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                            </div>
+                            <input asp-for="Input.Salary" id="position-salary" class="form-control" autocomplete="username" aria-required="true" placeholder="Salary">
+                        </div>
+                        <span asp-validation-for="Input.Salary" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.Role">Role</label>
+                        <select class="custom-select" aria-required="true" asp-for="Input.Role" asp-items="@Model.Input.RoleList">
+                            <option value="" disabled selected>-- Select Role --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.ManagerId">Manager</label>
+                        <select class="custom-select" aria-required="true" asp-for="Input.ManagerId" asp-items="@Model.Input.Employees">
+                            <option value="" disabled selected>-- Select Manager --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.StartAt">Start Date</label>
+                        <div class="input-group flatpickr">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            </div>
+                            <input asp-for="Input.StartAt" class="form-control" id="startDate" placeholder="Start Date">
+                        </div>
+                        <span asp-validation-for="Input.StartAt" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label asp-for="Input.AnnualLeaveEntitlement">Annual Leave Entitlement</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                            </div>
+                            <input asp-for="Input.AnnualLeaveEntitlement" id="annual-leave-entitlement" class="form-control" type="number" value="30">
+                        </div>
+                        <span asp-validation-for="Input.AnnualLeaveEntitlement" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label asp-for="Input.WorkingDaysInMonth">Working Days In Month</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                            </div>
+                            <input asp-for="Input.WorkingDaysInMonth" id="working-days-in-month" class="form-control" type="number">
+                        </div>
+                        <span asp-validation-for="Input.WorkingDaysInMonth" class="text-danger"></span>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Financial Information</legend>
+                    <div class="form-group">
+                        <label asp-for="Input.BankName">Bank Name</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-university"></i></span>
+                            </div>
+                            <input asp-for="Input.BankName" class="form-control" placeholder="Bank Name">
+                        </div>
+                        <span asp-validation-for="Input.BankName" class="text-danger"></span>
+                    </div>
+                                                                
+                    <div class="form-group">
+                        <label asp-for="Input.BankAccountNumber">Bank Account Number</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-credit-card"></i></span>
+                            </div>
+                            <input asp-for="Input.BankAccountNumber" class="form-control" placeholder="Bank Account Number">
+                        </div>
+                        <span asp-validation-for="Input.BankAccountNumber" class="text-danger"></span>
+                    </div>
+                                                                
+                    <div class="form-group">
+                        <label asp-for="Input.IPAN">IPAN</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-money-check"></i></span>
+                            </div>
+                            <input asp-for="Input.IPAN" class="form-control" placeholder="IPAN">
+                        </div>
+                        <span asp-validation-for="Input.IPAN" class="text-danger"></span>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-lg-4">
+                <div class="profile-image mb-4">
+                    <img src="@Model.Input.ImageUrl" alt="" id="profile-pic">
+                </div>
+                <div class="form-group text-center mb-4">
+                    <label for="fileInput" class="btn btn-primary">
+                        <i class="fas fa-camera"></i> Upload Image
+                        <input id="fileInput" asp-for="Input.ImageUrl" name="file" type="file" style="display: none;">
+                    </label>
+                </div>
+                <fieldset>
+                    @*<legend>Additional Information</legend>*@
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input class="custom-control-input" type="radio" asp-for="Input.Gender" id="male" value="Male">
+                                        <label class="custom-control-label" for="male">Male</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input class="custom-control-input" type="radio" asp-for="Input.Gender" id="female" value="Female">
+                                        <label class="custom-control-label" for="female">Female</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Balance Reset</label>
+                                <div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input class="custom-control-input" type="radio" asp-for="Input.ResetAnnualLeave" id="reset" value="true">
+                                        <label class="custom-control-label" for="reset">Every Year</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input class="custom-control-input" type="radio" asp-for="Input.ResetAnnualLeave" id="never" value="false">
+                                        <label class="custom-control-label" for="never">Never</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Languages</label>
+                                <div>
+                                    @foreach (var checkbox in Model.Input.LanguagesOptions)
+                                    {
+                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   value="@checkbox.Value"
+                                                   name="languages"
+                                                   id="lan_@checkbox.Value"
+                                                   @(checkbox.isChecked ? "checked" : "")>
+                                            <label class="custom-control-label" for="lan_@checkbox.Value">@checkbox.Value</label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Expiry Dates</legend>
+                    <div class="form-group">
+                        <label asp-for="Input.PassportExpiredDate">Passport Expiry Date</label>
+                        <div class="input-group flatpickr">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            </div>
+                            <input asp-for="Input.PassportExpiredDate" class="form-control" id="passportExpiredDate" placeholder="Passport Expiry Date">
+                        </div>
+                        <span asp-validation-for="Input.PassportExpiredDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.ResidenceExpiredDate">Residence Expiry Date</label>
+                        <div class="input-group flatpickr">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            </div>
+                            <input asp-for="Input.ResidenceExpiredDate" id="residenceExpiredDate" class="form-control" placeholder="Residence Expiry Date">
+                        </div>
+                        <span asp-validation-for="Input.ResidenceExpiredDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.HealthCardExpiredDate">Health Card Expiry Date</label>
+                        <div class="input-group flatpickr">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            </div>
+                            <input asp-for="Input.HealthCardExpiredDate" id="healthCardExpiredDate" class="form-control" placeholder="Health Card Expiry Date">
+                        </div>
+                        <span asp-validation-for="Input.HealthCardExpiredDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.DrivingLicenseExpiredDate">Driving License Expiry Date</label>
+                        <div class="input-group flatpickr">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            </div>
+                            <input asp-for="Input.DrivingLicenseExpiredDate" id="drivingLicenseExpiredDate" class="form-control" placeholder="Driving License Expiry Date">
+                        </div>
+                        <span asp-validation-for="Input.DrivingLicenseExpiredDate" class="text-danger"></span>
+                    </div>
+                </fieldset>
+            </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="file">Upload Attachment</label>
+                        <div class="custom-file">
+                            <input type="file" name="document" class="custom-file-input" id="document" accept="image/*,application/pdf">
+                            <label class="custom-file-label" for="document">
+                                @(!string.IsNullOrEmpty(Model.Input.Document) ? "Choose new file" : "Choose file")
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <div class="dropzone" id="myDropzone">
+                            <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                            <span class="dropzone-text">Drag and drop files here</span>
+                        </div>
+                        <p class="mt-2 text-muted">
+                            <small>Please include any attachments (e.g., logo, mission statement, annual report, etc.) that would provide more info about the contact.</small>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 my-auto">
+                    <div id="currentDocument" class="text-center" style="display: none;">
+                        <i id="fileIcon" class="fas fa-file fa-5x mb-3"></i>
+                        <p id="fileName" class="mb-3"></p>
+                         <div>
+                                <a href="#" class="btn btn-danger btn-sm" id="removeDocument">
+                                    <i class="fas fa-trash"></i> Remove
+                                </a>
+                            </div>
+                        @*<div>
+                            @if (!string.IsNullOrEmpty(Model.Input.Document))
+                            {
+                                <a href="@Url.Action("DownloadDocument", "Contact", new { fileName = Model.Input.Document })" class="btn btn-info btn-sm" id="downloadDocument" download>
+                                    <i class="fas fa-download"></i> Download
+                                </a>
+                            }
+                            <button type="button" onclick="deleteObj('/CRM/Contact/DeleteDocument?contactId=@Model.Input.Id')"
+                                    class="btn btn-danger btn-sm ml-2" id="removeDocument">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                        </div>*@
+                    </div>
+                </div>
+                
+
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-5">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3 class="text-dark m-0">Work Schedule</h3>
+                         <button type="button" id="addScheduleRow" class="btn btn-primary mt-2">
+                             <i class="fas fa-plus"></i> Add Schedule
+                         </button>
+                        </div>
+                       <div class="table-responsive">
+                           <table id="scheduleTable" class="table table-bordered">
+                               <thead>
+                                   <tr>
+                                       <th>Day of Week</th>
+                                       <th>Start Time</th>
+                                       <th>End Time</th>
+                                       <th>Actions</th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   <!-- Schedule rows will be dynamically added here -->
+                               </tbody>
+                           </table>
+                       </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mt-4 text-center">
+                    <a asp-area="Admin" asp-controller="Employee" asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Register
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .profile-image {
+        width: 250px;
+        height: 250px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #ccc;
+        position: relative;
+        border: 4px solid #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .profile-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .profile-image:hover {
+        transform: scale(1.05);
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .custom-control-input {
+        width: 18px;
+        height: 18px;
+    }
+
+    .custom-control-label {
+        margin-left: 8px;
+    }
+
+    .text-danger {
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+    .custom-control-inline {
+        margin-right: 1rem;
+    }
+   
+     input {
+           background: white !important;
+        }
+
+     .dropzone {
+        border: 2px dashed #007bff;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: center;
+        margin-top: 20px;
+        color: #007bff;
+        cursor: pointer;
+    }
+
+    .dropzone:hover {
+        background-color: #f8f9fa;
+    }
+
+    .dropzone i {
+        font-size: 50px;
+        margin-bottom: 10px;
+    }
+
+    .dropzone-text {
+        font-size: 16px;
+        display: block;
+    }
+    #fileIcon {
+      font-size: 72px; /* or any other desired size */
+      margin-bottom: 20px;
+    }
+  .iti {
+      width: 100%;
+  }
+  
+  .iti__separate-dial-code .form-control {
+      padding-left: 70px;
+  }
+  
+  /* Override any conflicting styles */
+  .iti__flag-container {
+      z-index: 3;
+  }
+  
+  .form-group .input-group .iti {
+      flex: 1 1 auto;
+  }
+
+
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/work-schedule.js"></script>
+    <script src="~/js/phone-input.js"></script>
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            const img = document.getElementById('profile-pic');
+
+            reader.onload = function(e) {
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        });
+
+        $(document).ready(function () {
+            $("#position").on("change", loadPositionDate);
+             flatpickr("#dateOfBirth, #startDate, #passportExpiredDate, #residenceExpiredDate, #healthCardExpiredDate, #drivingLicenseExpiredDate", {
+                dateFormat: "Y-m-d"
+            });
+                        
+            loadPositionDate();
+        });
+
+        function loadPositionDate() {
+            let positionId = $("#position").val();
+            if (positionId) {
+                $("#position-salary").val('Loading...');
+                loadPositionSalary(positionId);
+            }
+        }
+
+        function loadPositionSalary(positionId) {
+            $.ajax({
+                url: `/HR/Position/GetPositionById/${positionId}`,
+                type: "GET",
+                data: { id: positionId },
+                success: function (position) {
+                    if (position) {
+                        $("#position-salary").val(position.salaryRange);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching position details:", error);
+                    $("#position-salary").val('');
+                }
+            });
+        }        
+        $(document).ready(function() {
+           function displayFileInfo(file) {
+                let fileName = file.name;
+                let fileExtension = fileName.split('.').pop().toLowerCase();
+    
+                $('#fileName').text(fileName);
+    
+                // Set appropriate icon based on file type
+                if (fileExtension === 'pdf') {
+                    $('#fileIcon').removeClass().addClass('fas fa-file-pdf fa-5x mb-3 text-danger');
+                } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                    $('#fileIcon').removeClass().addClass('fas fa-file-image fa-5x mb-3 text-primary');
+                } else {
+                    $('#fileIcon').removeClass().addClass('fas fa-file fa-5x mb-3 text-secondary');
+                }
+    
+                $('#currentDocument').show();
+            }
+                
+                $('.custom-file-input').on('change', function(e) {
+                    let fileInput = $(this);
+                    let fileName = fileInput.val().split('\\').pop();
+    
+                    if (fileName) {
+                        fileInput.next('.custom-file-label').html("Choose new file");
+                        if (this.files && this.files[0]) {
+                            displayFileInfo(this.files[0]);
+                            // Hide download button for new file upload
+                            $('#downloadDocument').hide();
+                        }
+                    } else {
+                        // If the file input is empty, reset the label and hide the document info
+                        fileInput.next('.custom-file-label').html('Choose file');
+                        $('#currentDocument').hide();
+                    }
+                });
+    
+                $('#myDropzone').on('dragover',  function(e) {
+                    e.preventDefault();
+                    $(this).addClass('dropzone-active');
+                }).on('dragleave', function() {
+                    $(this).removeClass('dropzone-active');
+                }).on('drop', function(e) {
+                    e.preventDefault();
+                    $(this).removeClass('dropzone-active');
+                    let file = e.originalEvent.dataTransfer.files[0];
+                    $('#document').prop('files', e.originalEvent.dataTransfer.files);
+                    $('.custom-file-label').html("Choose new file");
+                    displayFileInfo(file);
+                    // Hide download button for new file upload
+                    $('#downloadDocument').hide();
+                });
+    
+                // Display existing document if available
+                if ('@Model.Input.Document' !== '') {
+                    let fileName = '@Model.Input.Document'.split('/').pop();
+                    $('#fileName').text(fileName);
+                    $('.custom-file-label').html('Choose new file');
+                    let fileExtension = fileName.split('.').pop().toLowerCase();
+                    if (fileExtension === 'pdf') {
+                        $('#fileIcon').removeClass().addClass('fas fa-file-pdf fa-5x mb-3 text-danger');
+                    } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                        $('#fileIcon').removeClass().addClass('fas fa-file-image fa-5x mb-3 text-primary');
+                    } else {
+                        $('#fileIcon').removeClass().addClass('fas fa-file fa-5x mb-3 text-secondary');
+                    }
+                    $('#currentDocument').show();
+                }
+                
+                $('#removeDocument').click(function(e) {
+                    e.preventDefault();
+                    // Reset the file input and update the hidden field
+                    $('#document').val('');
+                    $('.custom-file-label').html('Choose file');
+                    $('#documentName').val('');
+                    // Hide the file information
+                    $('#currentDocument').hide();
+                });
+        
+            initializeWorkScheduleTable();
+           
+            $('form').submit(function(e) {
+                let scheduleData = collectScheduleData();
+               $('#serializedProducts').val(scheduleData);
+            });
+        });
+    </script>
+}

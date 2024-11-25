@@ -1,0 +1,88 @@
+﻿@model ApplicationUser
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4 text-dark">Personal Information</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-6">
+                                    <label asp-for="Gender"></label>
+                                </dt>
+                                <dd class="col-sm-6">@Model.Gender</dd>
+                                <dt class="col-sm-6">
+                                    <label asp-for="DateOfBirth"></label>
+                                </dt>
+                                <dd class="col-sm-6">@Model.DateOfBirth</dd>
+                                <dt class="col-sm-6">
+                                    <label asp-for="PhoneNumber"></label>
+                                </dt>
+                                <dd class="col-sm-6">@Model.PhoneNumber</dd>
+                                <dt class="col-sm-6">
+                                    <label asp-for="Languages"></label>
+                                </dt>
+                                <dd class="col-sm-6">
+                                    <ul class="list-unstyled">
+                                        @foreach (var lang in Model.Languages)
+                                        {
+                                            <li>@lang.Value</li>
+                                        }
+                                    </ul>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-6">
+                                    <label asp-for="Salary"></label>
+                                </dt>
+                                <dd class="col-sm-6">@Model.Salary.ToString("C")</dd>
+                                <dt class="col-sm-6">
+                                    <label asp-for="StreetAddress"></label>
+                                </dt>
+                                <dd class="col-sm-6">
+                                    @Model.StreetAddress
+                                </dd>
+                                <dt class="col-sm-6">
+                                    <label asp-for="City"></label>
+                                </dt>
+                                <dd class="col-sm-6">
+                                    @Model.City
+                                </dd>
+                                <dt class="col-sm-6">
+                                    <label asp-for="State"></label>
+                                </dt>
+                                <dd class="col-sm-6">
+                                    @Model.State
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <img src="@Model.ImageUrl" alt="@Model.FirstName @Model.LastName" class="card-img-top img-fluid mx-auto d-block" style="max-width: 200px; margin-top: 20px;"/>
+                <div class="card-body text-center">
+                    <h5 class="card-title text-dark">@Model.FirstName @Model.LastName</h5>
+                    <a href="#" class="btn btn-primary">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    dt, dd {
+        color: #000;
+    }
+</style>

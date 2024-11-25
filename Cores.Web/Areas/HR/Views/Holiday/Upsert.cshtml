@@ -1,0 +1,178 @@
+﻿@model HolidayVm
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Holiday Information</h2>
+    <form method="POST" class="bg-white shadow-sm rounded p-4">
+        <input asp-for="Holiday.Id" hidden>
+        <input asp-for="Holiday.CreatedAt" hidden>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Holiday.Name" class="form-label">Holiday Name</label>
+                    <input asp-for="Holiday.Name" class="form-control" required>
+                    <span asp-validation-for="Holiday.Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Holiday.CreatedAt" class="form-label">Created Date</label>
+                    <div class="input-group flatpickr">
+                        <input asp-for="Holiday.CreatedAt" id="holiday-date" class="form-control" placeholder="Select Date">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Holiday.CreatedAt" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Holiday.DayOfWeek" class="form-label">Day of Week</label>
+                        <select class="form-control" asp-for="Holiday.DayOfWeek" asp-items="Model.DaysOfWeek">
+                            <option value="" selected disabled>-- Select Day --</option>
+                        </select>
+                        <span asp-validation-for="Holiday.DayOfWeek" class="text-danger"></span>
+                    </div>
+                </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label" asp-for="Holiday.StartAt">Start Date</label>
+                    <div class="input-group flatpickr">
+                        <input asp-for="Holiday.StartAt" id="start-date" class="form-control" placeholder="Select Date">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                    <span class="text-danger" asp-validation-for="Holiday.StartAt"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label" asp-for="Holiday.EndAt">End Date</label>
+                    <div class="input-group flatpickr">
+                        <input asp-for="Holiday.EndAt" id="end-date" class="form-control" placeholder="Select Date">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                    <span class="text-danger" asp-validation-for="Holiday.EndAt"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Holiday.HolidayTypeId" class="form-label">Holiday Type</label>
+                    <select class="form-control select2" asp-for="Holiday.HolidayTypeId" asp-items="Model.HolidayTypes">
+                        <option value="" disabled selected>-- Select Holiday Type --</option>
+                    </select>
+                    <span asp-validation-for="Holiday.HolidayTypeId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Holiday.Location" class="form-label">Location</label>
+                    <input asp-for="Holiday.Location" class="form-control">
+                    <span asp-validation-for="Holiday.Location" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label asp-for="Holiday.Description" class="form-label">Description</label>
+                    <textarea asp-for="Holiday.Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Holiday.Description" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input asp-for="Holiday.IsWorkingDay" class="form-check-input" type="checkbox">
+                    <label asp-for="Holiday.IsWorkingDay" class="form-check-label">Is Working Day</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input asp-for="Holiday.IsRecurringYearly" class="form-check-input" type="checkbox">
+                    <label asp-for="Holiday.IsRecurringYearly" class="form-check-label">Recurring Yearly</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input asp-for="Holiday.IsActive" class="form-check-input" type="checkbox">
+                    <label asp-for="Holiday.IsActive" class="form-check-label">Is Active</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <a asp-controller="Holiday" asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .input-group-text {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+    }
+   
+   #start-date,
+   #end-date,
+   #holiday-date {
+        background-color: #ffffff !important;
+   }
+</style>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#holiday-date,#start-date,#end-date", {
+                dateFormat: "Y-m-d",
+                allowInput: true
+            });
+
+           $('.select2').select2();
+            
+        });
+    </script>
+}

@@ -1,0 +1,7 @@
+﻿@model ApplicationUser
+
+
+@if (Model.IsManager)
+{
+    <a class="collapse-item" asp-area="HR" asp-controller="LeaveRequest" asp-action="WaitingRequests" asp-route-isFromManager="true">Waiting Requests</a>
+}

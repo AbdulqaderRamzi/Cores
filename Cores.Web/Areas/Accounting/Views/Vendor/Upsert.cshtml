@@ -1,0 +1,93 @@
+﻿@model Vendor
+
+<div class="container mt-5">
+    <h2 class="mb-4">@(Model.Id == 0 ? "Create" : "Edit") Vendor</h2>
+    <form method="POST" class="bg-white shadow-sm rounded p-4">
+        <input asp-for="Id" type="hidden">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Name">Vendor Name</label>
+                    <input asp-for="Name" type="text" class="form-control">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ContactName">Contact Person Name</label>
+                    <input asp-for="ContactName" type="text" class="form-control">
+                    <span asp-validation-for="ContactName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Email">Email Address</label>
+                    <input asp-for="Email" type="email" class="form-control">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Phone">Phone Number</label>
+                    <input asp-for="Phone" type="tel" class="form-control">
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="State">State</label>
+                    <input asp-for="State" type="text" class="form-control">
+                    <span asp-validation-for="State" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="City">City</label>
+                    <input asp-for="City" type="text" class="form-control">
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="StreetAddress">Street Address</label>
+                    <input asp-for="StreetAddress" type="text" class="form-control">
+                    <span asp-validation-for="StreetAddress" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <a asp-controller="Vendor" asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i> @(Model.Id == 0 ? "Create Vendor" : "Update Vendor")
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-group label {
+        font-weight: 600;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

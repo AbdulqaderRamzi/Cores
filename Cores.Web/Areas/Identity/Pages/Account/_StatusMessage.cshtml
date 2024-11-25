@@ -1,0 +1,74 @@
+﻿@*@model string
+
+@if (!string.IsNullOrEmpty(Model))
+{
+    var statusMessageClass = Model.StartsWith("Error") ? "danger" : "success";
+    <div class="alert alert-@statusMessageClass alert-dismissible" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        @Model
+    </div>
+}*@
+
+@model string
+
+@if (!string.IsNullOrEmpty(Model))
+{
+    var statusMessageClass = Model.StartsWith("Error") ? "danger" : "success";
+    var alertIcon = statusMessageClass == "danger" ? "fa-times-circle" : "fa-check-circle";
+    <div class="alert alert-@statusMessageClass alert-dismissible fade show" role="alert">
+        <i class="fas @alertIcon me-2"></i>
+        <span>@Model</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<style>
+    .alert {
+        border-radius: 10px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        font-size: 1.1rem;
+        position: relative;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .alert .fas {
+        font-size: 1.5rem;
+        margin-right: 10px;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border-left: 5px solid #28a745;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border-left: 5px solid #dc3545;
+    }
+
+    .alert .btn-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: transparent;
+        border: none;
+        font-size: 1.2rem;
+        color: #000;
+        opacity: 0.5;
+        transition: opacity 0.3s ease;
+    }
+
+    .alert .btn-close:hover {
+        opacity: 1;
+    }
+
+    .alert .btn-close:focus {
+        outline: none;
+        box-shadow: none;
+    }
+</style>

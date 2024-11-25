@@ -1,0 +1,157 @@
+﻿@model PayrollVm
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">@(Model.Payroll.Id == 0 ? "Create" : "Edit") Payroll</h2>
+    <form method="POST" class="bg-white shadow-sm rounded p-4">
+        <input asp-for="Payroll.Id" hidden>
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Payroll.EmployeeId" class="form-label">Employee</label>
+                    <select asp-for="Payroll.EmployeeId" asp-items="@Model.Employees" class="form-control select2" id="employee">
+                        <option disabled selected>--Select Employee--</option>
+                    </select>
+                    <span asp-validation-for="Payroll.EmployeeId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Payroll.PayPeriodStart" class="form-label">Pay Period Start</label>
+                    <input asp-for="Payroll.PayPeriodStart" id="pay-start" class="form-control flatpickr" type="date" placeholder="Select Date">
+                    <span asp-validation-for="Payroll.PayPeriodStart" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Payroll.PayPeriodEnd" class="form-label">Pay Period End</label>
+                    <input asp-for="Payroll.PayPeriodEnd" id="pay-end" class="form-control flatpickr" type="date" placeholder="Select Date">
+                    <span asp-validation-for="Payroll.PayPeriodEnd" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="Payroll.GrossPay" class="form-label">Gross Pay</label>
+                    <input asp-for="Payroll.GrossPay" value="@Model.Payroll.GrossPay?.ToString("F2")"  class="form-control" id="gross-pay" type="number" readonly>
+                    <span asp-validation-for="Payroll.GrossPay" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="Payroll.TotalBenefit" class="form-label">Total Benefit</label>
+                    <input asp-for="Payroll.TotalBenefit" value="@Model.Payroll.TotalBenefit?.ToString("F2")" class="form-control"  id="benefit" type="number" readonly>
+                    <span asp-validation-for="Payroll.TotalBenefit" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="Payroll.TotalDeduction" class="form-label">Total Deduction</label>
+                    <input asp-for="Payroll.TotalDeduction" value="@Model.Payroll.TotalDeduction?.ToString("F2")" class="form-control" id="deduction" type="number" readonly>
+                    <span asp-validation-for="Payroll.TotalDeduction" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="Payroll.NetPay" class="form-label">Net Pay</label>
+                    <input asp-for="Payroll.NetPay" value="@Model.Payroll.NetPay?.ToString("F2")" class="form-control"  id="net-pay" type="number" readonly>
+                    <span asp-validation-for="Payroll.NetPay" class="text-danger"></span>
+                </div>
+            </div>
+           
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label asp-for="Payroll.PaymentDate" class="form-label">Payment Date</label>
+                    <input asp-for="Payroll.PaymentDate" id="payment-date" class="form-control flatpickr" type="date" placeholder="Select Date">
+                    <span asp-validation-for="Payroll.PaymentDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i> @(Model.Payroll.Id == 0 ? "Create" : "Update")
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+    .form-check-input {
+        width: 3em;
+        height: 1.5em;
+    }
+    .form-switch .form-check-input {
+        margin-left: 0;
+    }
+    #pay-start, 
+    #pay-end, 
+    #payment-date {
+        background: white !important; 
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+    <script src="~/js/select2.js"></script>
+    <script>
+           $(document).ready(function() {
+              flatpickr("#pay-start, #pay-end, #payment-date", {
+                  dateFormat: "Y-m-d"
+              });
+               $("#employee").on("change", function() {
+                 let $employeeId = $("#employee").val();
+                  loadEmployeeData($employeeId);
+               });
+           });
+           
+           
+           function loadEmployeeData(id) {
+                $.ajax({    
+                    url: `/Accounting/Payroll/GetEmployee/${id}`,
+                    type: 'GET',
+                    success: function (data) {
+                         // Extract the returned data
+                         const { salary, deductions, benefits } = data;
+         
+                         // Set values to the form fields
+                         $('#gross-pay').val(salary);
+                         $('#deduction').val(deductions);
+                         $('#benefit').val(benefits);
+                         $('#net-pay').val((salary + benefits) - deductions);
+                    }, 
+                    error: function (xhr, status, error) {
+                          console.error("Error fetching customer details:", error);
+                          alert('Failed to fetch employee details. Please try again or contact support.');
+                    }
+                });
+           }
+        </script>
+}

@@ -1,0 +1,47 @@
+﻿@model LeaveType
+<div class="container mt-5">
+    <h2 class="mb-2 text-gray-800 text-center">Leave Types</h2>
+    <form method="POST" class="bg-white shadow-sm rounded p-4">
+        <input hidden asp-for="Id">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="MaxDaysPerYear" class="form-label"></label>
+                    <input asp-for="MaxDaysPerYear" class="form-control">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description"  class="form-control" rows="3" ></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <a asp-controller="LeaveType" asp-action="Index"
+               class="btn btn-dark mt-5">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+            <button type="submit" class="btn btn-success ml-4 mt-5">
+                <i class="fas fa-solid fa-check"></i> Create
+            </button>
+        </div>
+    </form>
+
+</div>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}

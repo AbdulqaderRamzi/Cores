@@ -1,0 +1,193 @@
+﻿@model UserConnection
+
+@{
+    ViewData["Title"] = "Chat Room";
+}
+
+<div class="container-fluid d-flex flex-column mt-5 p-0">
+    <div class="header d-flex justify-content-between align-items-center bg-primary text-white p-3">
+        <div>
+            <h5 class="mb-0">Chat Room: @Model.ChatRoom</h5>
+        </div>
+        <div class="user-info d-flex align-items-center">
+            <button id="leaveRoomBtn" class="btn btn-danger">Leave Room</button>
+        </div>
+    </div>
+    <div class="chat-area d-flex flex-column flex-grow-1">
+        <div class="chat-window flex-grow-1 p-3" id="chatWindow">
+            <ul id="messagesList" class="list-unstyled">
+                @* We will append some lis in the js block *@
+            </ul>
+        </div>
+        <div class="input-group p-3">
+            <input type="text" id="messageInput" class="form-control" placeholder="Enter your message" autocomplete="off"/>
+            <button id="sendButton" class="btn btn-primary">Send</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/signalr.js"></script>
+    <script>
+        // Create a new SignalR connection.
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+        // Whenever the server sends a ReceiveMessage event, this function is called.
+        // Inside the function, a new list item (<li>) is created for the message.
+        // The chatWindow is scrolled to the bottom to show the newest message.
+        connection.on("ReceiveMessage", function (user, message) {
+            var li = document.createElement("li");
+            li.className = "message";
+            li.innerHTML = `<span class="user-name ${user === "Admin" ? "Admin" : "user"}">${user}:</span> ${message}`;
+            document.getElementById("messagesList").appendChild(li);
+            var chatWindow = document.getElementById("chatWindow");
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        });
+        
+        connection.start().then(function () {
+            var user = "@Model.Username";
+            var roomName = "@Model.ChatRoom";
+            var userConnection = { Username: user, ChatRoom: roomName };
+
+            connection.invoke("JoinSpecificRoom", userConnection).catch(function (err) {
+                console.error(err.toString());
+            });
+        }).catch(function (err) {
+            console.error(err.toString());
+        });
+
+        // Function to send a message.
+        function sendMessage() {
+            var user = "@Model.Username";
+            var roomName = "@Model.ChatRoom";
+            var message = document.getElementById("messageInput").value.trim();
+
+            if (message) {
+                connection.invoke("SendMessage", user, roomName, message).catch(function (err) {
+                    console.error(err.toString());
+                });
+
+                document.getElementById("messageInput").value = "";
+            }
+        }
+
+        // Send message on button click or Enter key press.
+        document.getElementById("sendButton").addEventListener("click", sendMessage);
+        document.getElementById("messageInput").addEventListener("keyup", function (event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+
+       // Leave the room and stop the SignalR connection.
+       document.getElementById("leaveRoomBtn").addEventListener("click", function () {
+           var user = "@Model.Username";
+           var roomName = "@Model.ChatRoom";
+           var userConnection = { Username: user, ChatRoom: roomName };
+           connection.invoke("LeaveSpecificRoom", userConnection).then(function() {
+               connection.stop().then(function () {
+                   window.location.href = "JoinChat";
+               }).catch(function (err) {
+                   console.error(err.toString());
+               });
+           }).catch(function (err) {
+               console.error(err.toString());
+           });
+       });
+    </script>
+}
+
+<style>
+    body {
+        background-color: #f0f2f5;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        color: #333;
+    }
+
+    .header {
+        background-color: #007bff;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+    }
+
+    .user-info span {
+        margin-right: 10px;
+    }
+
+    .chat-area {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 120px);
+    }
+
+    .chat-window {
+        overflow-y: auto;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        flex-grow: 1;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .message {
+        margin-bottom: 10px;
+        padding: 8px 12px;
+        border-radius: 5px;
+        word-wrap: break-word;
+        background-color: #f1f1f1;
+        border: 1px solid #ddd;
+    }
+
+    .user-name {
+        font-weight: bold;
+        margin-right: 5px;
+    }
+
+    .user-name.Admin {
+        color: #dc3545;
+    }
+
+    .user-name.user {
+        color: #007bff;
+    }
+
+    .input-group {
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+    }
+
+    .input-group input {
+        flex-grow: 1;
+        margin-right: 10px;
+        border: none;
+        background-color: #ffffff;
+        color: #333;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .input-group input::placeholder {
+        color: #888;
+    }
+
+    .input-group button {
+        border: none;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+
+    .input-group button:hover {
+        background-color: #0056b3;
+    }
+</style>

@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Vendor>
+
+<!-- DataTale -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="m-0 flex-grow-1 font-weight-bold text-primary">Vendors</h6>
+            <div class="px-1">
+                <a class="btn btn-secondary" asp-controller="Vendor" asp-action="Upsert">
+                    <i class="fas fa-plus-circle"></i> Create Vendor
+                </a>
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Contact Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                   <th>Id</th>
+                  <th>Name</th>
+                  <th>Contact Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Actions</th>
+                </tr>
+                </tfoot>
+                <tbody class="text-dark">
+                @foreach (var vendor in Model)
+                {
+                    <tr>
+                        <td>@vendor.Id</td>
+                        <td>@vendor.Name</td>
+                        <td>@vendor.ContactName</td>
+                        <td>@vendor.Email</td>
+                        <td>@vendor.Phone</td>
+                        <td class="no-print">
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    Actions
+                                </button>
+                                <div class="dropdown-menu animated--fade-in"
+                                     aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" asp-controller="Vendor" asp-action="Upsert" asp-route-id="@vendor.Id"
+                                       onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
+                                       onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                    <a class="dropdown-item" asp-controller="Vendor" asp-action="Upsert" asp-route-id="@vendor.Id"
+                                       onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
+                                       onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                        <i class="fas fa-edit"></i> Update
+                                    </a>
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/Accounting/Vendor/Delete?id=@vendor.Id')"
+                                       onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
+                                       onmouseout="this.style.backgroundColor=''; this.style.color='';" style="cursor: pointer;">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/delete.js"></script>
+}

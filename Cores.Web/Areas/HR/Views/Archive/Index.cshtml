@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Archive>
+
+<!-- DataTale -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Archives</h6>
+            <a class="btn btn-secondary" asp-controller="Archive" asp-action="Upsert">
+                <i class="fas fa-plus-circle"></i> Create Archives
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+                   <div class="table-responsive">
+                       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                           <thead>
+                           <tr>
+                               <th>Type</th>
+                               <th>Upload Date</th>
+                               <th>Employee</th>
+                               <th>Actions</th>
+                           </tr>
+                           </thead>
+                           <tfoot>
+                           <tr>
+                           <th>Type</th>
+                          <th>Upload Date</th>
+                          <th>Employee</th>
+                          <th>Actions</th>
+                           </tr>
+                           </tfoot>
+                           <tbody class="text-dark">
+                           @foreach (var archive in Model)
+                           {
+                               <tr>
+                                   <td>@($"{archive.Employee.FirstName} {archive.Employee.LastName}")</td>
+                                   <td>@archive.UploadDate.ToString("yyyy MMMM dd")</td>
+                                   <td>@(archive.ArchiveTypeId is not null ? archive.ArchiveType.Name : "")</td>
+                                   <td>
+                                       <div class="dropdown">
+                                           <button class="btn btn-primary dropdown-toggle" type="button"
+                                                   id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                   aria-expanded="false">
+                                               Actions
+                                           </button>
+                                           <div class="dropdown-menu animated--fade-in"
+                                                aria-labelledby="dropdownMenuButton">
+                                               <a class="dropdown-item" asp-controller="Archive" asp-action="Upsert" asp-route-id="@archive.Id"
+                                                  onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
+                                                  onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                                   <i class="fas fa-info-circle"></i> Details
+                                               </a>
+                                                                       
+                                               <a class="dropdown-item" asp-controller="Archive" asp-action="Upsert" asp-route-id="@archive.Id"
+                                                  onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
+                                                  onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                                   <i class="fas fa-edit"></i> Update
+                                               </a>
+                                               <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/HR/Archive/Delete?id=@archive.Id')"
+                                                  onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
+                                                  onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                                   <i class="fas fa-trash"></i> Delete
+                                               </a>
+                                           </div>
+                                       </div>
+                                   </td>
+                               </tr>
+                           }
+                           </tbody>
+                       </table>
+                   </div>
+               </div>
+
+</div>
+
+@section Scripts{
+    <script src="~/js/delete.js"></script>
+}

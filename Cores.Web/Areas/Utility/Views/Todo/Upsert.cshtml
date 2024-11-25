@@ -1,0 +1,282 @@
+﻿@model TodoVm
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Task Information</h2>
+    <form method="POST" class="bg-white shadow-sm rounded p-4">
+        <input asp-for="Todo.Id" hidden>
+        <input asp-for="Todo.ApplicationUserId" hidden>
+        <input asp-for="Todo.Role" hidden>
+        <input asp-for="IsDetailsMode" hidden>
+        
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Todo.Title" class="form-label">Task Title</label>
+                    @if (!Model.IsDetailsMode)
+                    {
+                        <input asp-for="Todo.Title" class="form-control" type="text">
+                    }
+                    else
+                    {
+                        <input asp-for="Todo.Title" class="form-control" type="text" readonly>
+                    }
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Todo.Status" class="form-label">Status</label>
+                    @if (!Model.IsDetailsMode)
+                    {
+                        <select id="status" class="form-control select2" asp-for="Todo.Status" required>
+                            <option value="" disabled selected>-- Select Status --</option>
+                            <option value="Not Started">Not Started</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Complete">Complete</option>
+                            <option value="Failed">Failed</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="Todo.Status"></span>
+                    }
+                    else
+                    {
+                        <input asp-for="Todo.Status" class="form-control" type="text" readonly>
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Todo.Priority" class="form-label">Priority</label>
+                    @if (!Model.IsDetailsMode)
+                    {
+                        <select id="priority" class="form-control select2" asp-for="Todo.Priority" required>
+                            <option value="" disabled selected>-- Select Priority --</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="Todo.Priority"></span>
+                    }
+                    else
+                    {
+                        <input asp-for="Todo.Priority" class="form-control" type="text" readonly>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            @if (Model.Todo.LastUpdatedDate is null)
+            {
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Todo.DueDate" class="form-label"> </label>
+                        <div class="input-group flatpickr">
+                            @if (!Model.IsDetailsMode)
+                            {
+                                <input asp-for="Todo.DueDate" id="due-date" class="form-control" placeholder="Select Date and Time">
+                            }
+                            else
+                            {
+                                <input asp-for="Todo.DueDate" class="form-control" readonly>
+
+                            }
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Todo.DueDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Todo.NotificationDateTime" class="form-label"></label>
+                        <div class="input-group flatpickr">
+                            @if (!Model.IsDetailsMode)
+                            {
+                                <input asp-for="Todo.NotificationDateTime" id="notification-date" class="form-control" placeholder="Select Date and Time">
+                            }
+                            else
+                            {
+                                <input asp-for="Todo.NotificationDateTime" class="form-control" readonly>
+                            }
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Todo.NotificationDateTime" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Todo.DueDate" class="form-label"> </label>
+                        <div class="input-group flatpickr">
+                            @if (!Model.IsDetailsMode)
+                            {
+                                <input asp-for="Todo.DueDate" id="due-date" class="form-control" placeholder="Select Date and Time">
+                            }
+                            else
+                            {
+                                <input asp-for="Todo.DueDate" class="form-control" readonly>
+
+                            }
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Todo.DueDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Todo.NotificationDateTime" class="form-label"></label>
+                        <div class="input-group flatpickr">
+                            @if (!Model.IsDetailsMode)
+                            {
+                                <input asp-for="Todo.NotificationDateTime" id="notification-date" class="form-control" placeholder="Select Date and Time">
+                            }
+                            else
+                            {
+                                <input asp-for="Todo.NotificationDateTime" class="form-control" readonly>
+                            }
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Todo.NotificationDateTime" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Todo.LastUpdatedDate" class="form-label"></label>
+                        <div class="input-group">
+                            <input asp-for="Todo.LastUpdatedDate" class="form-control" readonly>
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Todo.LastUpdatedDate" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-6">
+                <div class="form-group">
+                    <label asp-for="Todo.Description" class="form-label">Task Description</label>
+                    @if (!Model.IsDetailsMode)
+                    {
+                        <textarea class="form-control" asp-for="Todo.Description" rows="4"></textarea>
+                        <span class="text-danger" asp-validation-for="Todo.Description"></span>
+                    }
+                    else
+                    {
+                        <textarea class="form-control" asp-for="Todo.Description" rows="4" readonly></textarea>
+                    }
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="form-group">
+                    <label asp-for="Todo.Comment" class="form-label">Comment</label>
+                    @if (!Model.IsDetailsMode)
+                    {
+                        <textarea class="form-control" asp-for="Todo.Comment" rows="4"></textarea>
+                        <span class="text-danger" asp-validation-for="Todo.Comment"></span>
+                    }
+                    else
+                    {
+                        <textarea class="form-control" asp-for="Todo.Comment" rows="4" readonly></textarea>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <a asp-controller="Todo" asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                @if (!Model.IsDetailsMode)
+                {
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Submit
+                    </button>
+                }
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow,
+    .form-control {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .input-group-text {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+    }
+    
+    #notification-date {
+        background-color: #ffffff !important;
+    }
+    
+    #due-date {
+            background-color: #ffffff !important;
+        }
+</style>
+
+@section Scripts {
+    <script src="~/js/problem-form.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#due-date", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i"
+            });
+
+            flatpickr("#notification-date", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i"
+            });
+
+            $('.select2').select2({
+                theme: 'bootstrap4',
+            });
+        });
+    </script>
+}

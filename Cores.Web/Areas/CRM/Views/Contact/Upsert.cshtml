@@ -1,0 +1,382 @@
+﻿    @model ContactVm
+    
+    <div class="container mt-5">
+        <form method="POST" enctype="multipart/form-data">
+            <input asp-for="Contact.Id" type="hidden">
+            
+             <input type="hidden" name="createPurchase" id="createPurchase" value="false" />
+            <div>
+                <h2 class="text-dark">Personal Info</h2>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="Contact.FirstName"></label>
+                        <input asp-for="Contact.FirstName" type="text" class="form-control">
+                        <span asp-validation-for="Contact.FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="Contact.LastName"></label>
+                        <input asp-for="Contact.LastName" type="text" class="form-control">
+                        <span asp-validation-for="Contact.LastName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="Contact.Email"></label>
+                        <input asp-for="Contact.Email" type="text" class="form-control">
+                        <span asp-validation-for="Contact.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="Contact.PhoneNumber"></label>
+                        <input asp-for="Contact.PhoneNumber" type="text" class="form-control">
+                        <span asp-validation-for="Contact.PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label asp-for="Contact.State"></label>
+                        <input asp-for="Contact.State" type="text" class="form-control">
+                        <span asp-validation-for="Contact.State" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Contact.City"></label>
+                        <input asp-for="Contact.City" type="text" class="form-control">
+                        <span asp-validation-for="Contact.City" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Contact.StreetAddress"></label>
+                        <input asp-for="Contact.StreetAddress" type="text" class="form-control">
+                        <span asp-validation-for="Contact.StreetAddress" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Contact.CreatedTime"></label>
+                        <input asp-for="Contact.CreatedTime" type="text" class="form-control" readonly>
+                        <span asp-validation-for="Contact.CreatedTime" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Contact.Tags">Tags</label>
+                        <select asp-for="SelectedTagIds" asp-items="Model.Tags" class="form-control select2-tags" multiple>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <div class="form-check">
+                                <input asp-for="Contact.Gender" class="form-check-input" type="radio" id="male" value="Male">
+                                <label asp-for="Contact.Gender" class="form-check-label">Male</label>
+                            </div>
+                            <div class="form-check">
+                                <input asp-for="Contact.Gender" class="form-check-input" type="radio" id="female" value="Female">
+                                <label asp-for="Contact.Gender" class="form-check-label" for="female">Female</label>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Status</label>
+                                <div class="form-check">
+                                    <input asp-for="Contact.Status" class="form-check-input" type="radio" value="Customer">
+                                    <label class="form-check-label" asp-for="Contact.Status">Customer</label>
+                                </div>
+                                <div class="form-check">
+                                    <input asp-for="Contact.Status" class="form-check-input" type="radio" value="Lead">
+                                    <label class="form-check-label" asp-for="Contact.Status">Lead</label>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="col-md-2">
+                        <div class="form-group mr-lg-5">
+                            <label class="text-gray-800">Languages:</label><br>
+                            @foreach (var checkbox in Model.LanguagesOptions)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           value="@checkbox.Value"
+                                           name="languages"
+                                           id="lan_@checkbox.Value"
+                                           @(checkbox.isChecked ? "checked" : "")>
+                                    <label class="form-check-label text-gray-800" for="lan_@checkbox.Value">@checkbox.Value</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="file">Upload Attachment</label>
+                        <div class="custom-file">
+                            <input type="file" name="file" class="custom-file-input" id="file" accept="image/*,application/pdf">
+                            <label class="custom-file-label" for="file">
+                                @(!string.IsNullOrEmpty(Model.Contact.Document) ? "Choose new file" : "Choose file")
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <div class="dropzone" id="myDropzone">
+                            <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                            <span class="dropzone-text">Drag and drop files here</span>
+                        </div>
+                        <p class="mt-2 text-muted">
+                            <small>Please include any attachments (e.g., logo, mission statement, annual report, etc.) that would provide more info about the contact.</small>
+                        </p>
+                    </div>
+                </div>
+                    <div class="col-md-6 my-auto">
+                        <div id="currentDocument" class="text-center" style="display: none;">
+                            <i id="fileIcon" class="fas fa-file fa-5x mb-3"></i>
+                            <p id="fileName" class="mb-3"></p>
+                            <div>
+                                @if (!string.IsNullOrEmpty(Model.Contact.Document))
+                                {
+                                    <a href="@Url.Action("DownloadDocument", "Contact", new { fileName = Model.Contact.Document })" class="btn btn-info btn-sm" id="downloadDocument" download>
+                                        <i class="fas fa-download"></i> Download
+                                    </a>
+                                }
+                                <button type="button" onclick="deleteObj('/CRM/Contact/DeleteDocument?contactId=@Model.Contact.Id')"
+                                        class="btn btn-danger btn-sm ml-2" id="removeDocument">
+                                    <i class="fas fa-trash"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+                
+                @if (Model.Contact.Id is not 0 && !string.IsNullOrEmpty(Model.Contact.Status) && "Customer".Equals(Model.Contact.Status))
+                {
+                    <div class="mt-3">
+                        <h2 class="text-dark">Purchase Info</h2>
+                        <table class="table table-bordered purchases" id="dataTable">
+                            <thead>
+                            <tr>
+                                <th>Purchase Date</th>
+                                <th>Purchase Amount</th>
+                                <th>Currency</th>
+                                <th>Status</th>
+                                <th>Payment Method</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Purchase Date</th>
+                                <th>Purchase Amount</th>
+                                <th>Currency</th>
+                                <th>Status</th>
+                                <th>Payment Method</th>
+                                <th>Actions</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            @foreach (var purchase in Model.Purchases)
+                            {
+                                <tr>
+                                    <td>@purchase.PurchaseDate</td>
+                                    <td>@purchase.PurchaseAmount</td>
+                                    <td>@purchase.Currency</td>
+                                    <td>@purchase.Status</td>
+                                    <td>@purchase.PaymentMethod</td>
+                                    <td>
+                                        <a class="btn" asp-controller="Purchase" asp-action="Upsert" asp-route-id="@purchase.Id" asp-route-contactId="@Model.Contact.Id"
+                                           style="background-color: #f6a23e; color: #ffffff"
+                                           onmouseover="this.style.backgroundColor='#e78211';"
+                                           onmouseout="this.style.backgroundColor='#f6a23e'">
+                                            <i class="fas fa-info-circle"></i> Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                @if (Model.Contact.Id is not 0)
+                {
+                    <div class="mt-5">
+                        <h2 class="text-dark">Events Info</h2>
+                        <table class="table table-bordered events" id="eventTable">
+                            <thead>
+                            <tr>
+                                <th>Events Date</th>
+                                <th>Event Type</th>
+                                <th>Assign To</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                               <th>Events Date</th>
+                              <th>Event Type</th>
+                              <th>Assign To</th>
+                              <th>Status</th>
+                              <th>Actions</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            @foreach (var eventModel in Model.Contact.Events)
+                            {
+                                <tr>
+                                    <td>@eventModel.DateTime.ToString("yyyy MMMM dd")</td>
+                                    <td>@eventModel.EventType.Type</td>
+                                    <td>@eventModel.ApplicationUser.FirstName</td>
+                                    <td>@eventModel.Status</td>
+                                    <td>
+                                        <a class="btn" asp-controller="Event" asp-action="Upsert" asp-route-id="@eventModel.Id" 
+                                           style="background-color: #f6a23e; color: #ffffff"
+                                           onmouseover="this.style.backgroundColor='#e78211';"
+                                           onmouseout="this.style.backgroundColor='#f6a23e'">
+                                            <i class="fas fa-info-circle"></i> Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+    
+            <div class="row">
+                <a asp-controller="Contact" asp-action="Index"
+                   class="btn btn-dark mt-5">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                 <button type="submit" onclick="document.getElementById('createPurchase').value='false'" class="btn btn-success ml-4 mt-5">
+                          <i class="fas fa-solid fa-check"></i>
+                          @(Model.Contact.Id == 0 ? "Create" : "Update")
+                    </button>
+                <button type="submit" id="purchaseBtn" onclick="document.getElementById('createPurchase').value='true'"
+                         class="btn btn-success ml-4 mt-5" >
+                    <i class="fas fa-solid fa-check"></i> Add new purchase
+                    @*@(Model.Contact.Id == 0 ? "Create Purchases" : "Add Purchases")*@
+                </button>
+                
+            </div>
+        </form>
+    </div>
+    
+    <style>
+         .dropzone {
+            border: 2px dashed #007bff;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            cursor: pointer;
+        }
+    
+        .dropzone:hover {
+            background-color: #f8f9fa;
+        }
+    
+        .dropzone i {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+    
+        .dropzone-text {
+            font-size: 16px;
+            display: block;
+        }
+        
+    </style>
+    
+    @section Scripts
+    {
+        <partial name="_ValidationScriptsPartial"></partial>
+        <script src="~/js/delete.js"></script>
+        @*<script src="~/js/product.js"></script>*@
+
+        <script>
+         $(document).ready(function() {
+                $('.select2-tags').select2({
+                                placeholder: "",
+                                allowClear: true,
+                                tags: true, 
+                                width: '100%'
+                            });
+                        });
+        $(document).ready(function() {
+                function displayFileInfo(file) {
+                    alert(file);
+                    let fileName = file.name;
+                    let fileExtension = fileName.split('.').pop().toLowerCase();
+    
+                    $('#fileName').text(fileName);
+    
+                    // Set appropriate icon based on file type
+                    if (fileExtension === 'pdf') {
+                        $('#fileIcon').removeClass().addClass('fas fa-file-pdf fa-5x mb-3 text-danger');
+                    } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                        $('#fileIcon').removeClass().addClass('fas fa-file-image fa-5x mb-3 text-primary');
+                    } else {
+                        $('#fileIcon').removeClass().addClass('fas fa-file fa-5x mb-3 text-secondary');
+                    }
+    
+                    $('#currentDocument').show();
+                }
+    
+                $('.custom-file-input').on('change', function(e) {
+                    let fileInput = $(this);
+                    let fileName = fileInput.val().split('\\').pop();
+    
+                    if (fileName) {
+                        fileInput.next('.custom-file-label').html("Choose new file");
+                        if (this.files && this.files[0]) {
+                            displayFileInfo(this.files[0]);
+                            // Hide download button for new file upload
+                            $('#downloadDocument').hide();
+                        }
+                    } else {
+                        // If the file input is empty, reset the label and hide the document info
+                        fileInput.next('.custom-file-label').html('Choose file');
+                        $('#currentDocument').hide();
+                    }
+                });
+    
+                $('#myDropzone').on('dragover', function(e) {
+                    e.preventDefault();
+                    $(this).addClass('dropzone-active');
+                }).on('dragleave', function() {
+                    $(this).removeClass('dropzone-active');
+                }).on('drop', function(e) {
+                    e.preventDefault();
+                    $(this).removeClass('dropzone-active');
+                    let file = e.originalEvent.dataTransfer.files[0];
+                    $('#file').prop('files', e.originalEvent.dataTransfer.files);
+                    $('.custom-file-label').html("Choose new file");
+                    displayFileInfo(file);
+                    // Hide download button for new file upload
+                    $('#downloadDocument').hide();
+                });
+    
+                // Display existing document if available
+                if ('@Model.Contact.Document' !== '') {
+                    let fileName = '@Model.Contact.Document'.split('/').pop();
+                    $('#fileName').text(fileName);
+                    $('.custom-file-label').html('Choose new file');
+                    let fileExtension = fileName.split('.').pop().toLowerCase();
+                    if (fileExtension === 'pdf') {
+                        $('#fileIcon').removeClass().addClass('fas fa-file-pdf fa-5x mb-3 text-danger');
+                    } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                        $('#fileIcon').removeClass().addClass('fas fa-file-image fa-5x mb-3 text-primary');
+                    } else {
+                        $('#fileIcon').removeClass().addClass('fas fa-file fa-5x mb-3 text-secondary');
+                    }
+                    $('#currentDocument').show();
+                }
+              
+                function updatePurchaseButton() {
+                       $('#purchaseBtn').toggle($('input[name="Contact.Status"]:checked').val() === "Customer");
+                   }
+        
+               $('.form-check-input[name="Contact.Status"]').on('change', updatePurchaseButton);
+               updatePurchaseButton(); // Check initial state
+              
+            });
+        </script>
+    }

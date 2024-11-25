@@ -1,0 +1,34 @@
+﻿@model Tag
+<form method="POST">
+    <h2 class="mb-2 text-gray-800">Tag Information</h2>
+    <input hidden asp-for="Id">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label asp-for="Name" class="text-gray-800"></label>
+                <input asp-for="Name" class="form-control">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="from-group">
+                <label class="text-gray-800">Created Time</label>
+                <input class="form-control" value="@Model.DateTime.ToString("MMM-dd-yy hh:mm tt")" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <a asp-controller="Tag" asp-action="Index"
+           class="btn btn-dark mt-5">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+        <button type="submit" class="btn btn-success ml-4 mt-5">
+            <i class="fas fa-solid fa-check"></i> 
+            @(Model.Id is 0 ? "Create" : "Update") 
+        </button>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}

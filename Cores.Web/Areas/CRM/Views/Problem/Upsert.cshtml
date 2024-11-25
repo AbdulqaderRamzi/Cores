@@ -1,0 +1,163 @@
+﻿@model ProblemVm
+
+<div class="container mt-4">
+    <form method="POST" >
+        <input asp-for="Problem.Id" hidden>
+        <input asp-for="Problem.ApplicationUserId" hidden>
+        <input asp-for="Problem.ModifiedById" hidden>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0">Problem Information</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    @if (Model.Problem.ModifiedById is null) {
+                    <div class="form-group col-md-6">
+                        <label asp-for="Problem.ReportedDate">Reported Date</label>
+                        <input asp-for="Problem.ReportedDate" type="date" class="form-control" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="Problem.ApplicationUser.FirstName">Assigned To</label>
+                        <input asp-for="Problem.ApplicationUser.FirstName" class="form-control" type="text" readonly>
+                    </div>
+                } 
+                else {
+                    <div class="form-group col-md-4">
+                        <label asp-for="Problem.ReportedDate">Reported Date</label>
+                        <input asp-for="Problem.ReportedDate" type="date" class="form-control" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Problem.ApplicationUser.FirstName">Assigned To</label>
+                        <input asp-for="Problem.ApplicationUser.FirstName" class="form-control" type="text" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Problem.ModifiedBy.FirstName">Last Modified By</label>
+                        <input asp-for="Problem.ModifiedBy.FirstName" class="form-control" type="text" readonly>
+                    </div>
+                    }
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label asp-for="Problem.ContactId">Customer</label>
+                        <select id="customerSelect" class="form-control select2" asp-for="Problem.ContactId" asp-items="Model.Contacts" aria-describedby="customerHelp">
+                            <option value="">-- Select a Customer --</option>
+                        </select>
+                        <small id="customerHelp" class="form-text text-muted">Select a customer to auto-fill contact information.</small>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="customerPhone">Customer Phone Number</label>
+                        <input id="customerPhone" class="form-control" type="tel" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="customerEmail">Customer Email</label>
+                        <input id="customerEmail" class="form-control" type="email" readonly>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                      <label asp-for="Problem.ProblemTypeId">Problem Type</label>
+                      <select class="form-control select2" asp-for="Problem.ProblemTypeId" asp-items="Model.ProblemTypes">
+                          <option value="">-- Select Problem Type --</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Problem.Severity">Severity</label>
+                        <select class="form-control select2" asp-for="Problem.Severity" required>
+                            <option value="" disabled selected>-- Select Severity --</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="Problem.Severity"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Problem.Status">Status</label>
+                        <select id="status" class="form-control select2" asp-for="Problem.Status" required>
+                            <option value="" disabled  selected>-- Select Status --</option>
+                            <option value="Open">Open</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="Problem.Status"></span>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group col-12">
+                        <label asp-for="Problem.Description">Description</label>
+                        <textarea class="form-control" asp-for="Problem.Description" rows="3"></textarea>
+                        <span class="text-danger" asp-validation-for="Problem.Description"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="solutionSection" class="card mb-4" style="display: none;">
+            <div class="card-header">
+                <h3 class="mb-0">Solution Information</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label asp-for="Problem.DateResolved">Date Resolved</label>
+                        <input class="form-control" asp-for="Problem.DateResolved" type="date">
+                        <span class="text-danger" asp-validation-for="Problem.DateResolved"></span>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label asp-for="Problem.Resolution">Resolution</label>
+                        <input class="form-control" asp-for="Problem.Resolution" type="text">
+                        <span class="text-danger" asp-validation-for="Problem.Resolution"></span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-12">
+                        <label asp-for="Problem.Note">Additional Notes</label>
+                        <textarea class="form-control" asp-for="Problem.Note" rows="3"></textarea>
+                        <span class="text-danger" asp-validation-for="Problem.Note"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-12">
+                <a asp-controller="Problem" asp-action="Index" class="btn btn-secondary">
+                   <i class="fas fa-arrow-left"></i> Back
+               </a>
+               <button type="submit" class="btn btn-primary">
+                   <i class="fas fa-check"></i> Submit
+               </button>
+            </div>
+        </div>
+        
+        
+    </form>
+</div>
+
+<style>
+    .select2-container .select2-selection--single {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 36px;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .form-control {
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+    }
+</style>
+
+@section Scripts {
+    <script src="~/js/problem-form.js"></script>
+}

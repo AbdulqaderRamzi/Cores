@@ -1,0 +1,53 @@
+﻿@model Attendance
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 mb-5">Attendance</h1>
+            <form method="post">
+                <input asp-for="Id" hidden>
+                <input asp-for="EmployeeId" hidden>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" asp-action="SignIn" class="btn btn-primary btn-lg mx-2 mr-3">Sign In</button>
+                    <button type="submit" asp-action="SignOut" class="btn btn-secondary btn-lg mx-2">Sign Out</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Arial', sans-serif;
+    }
+    .container {
+        margin-top: 5rem;
+    }
+    h1 {
+        color: #343a40;
+        font-weight: 300;
+    }
+    .btn-lg {
+        padding: 15px 30px;
+        font-size: 1.25rem;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+    .btn-secondary:hover {
+        background-color: #545b62;
+        border-color: #545b62;
+    }
+</style>

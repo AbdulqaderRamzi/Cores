@@ -1,0 +1,360 @@
+﻿@model LeaveRequestVm
+
+<div class="container mt-5">
+        
+    <h2 class="mb-4 text-center">@(Model.LeaveRequest.Id == 0 ? "Create" : "Edit") Leave Request</h2>
+    <form method="POST" class="bg-white shadow-sm rounded p-4" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input asp-for="LeaveRequest.Id" hidden>
+        <input asp-for="EmployeeName" hidden>
+        <div class="row mb-4">
+            @if (Model.EmployeeName is not null)
+            {
+                <input asp-for="LeaveRequest.EmployeeId" hidden>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Employee</label>
+                        <input type="text" class="form-control" value="@Model.EmployeeName" required readonly>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="LeaveRequest.LeaveTypeId" class="form-label">Leave Type</label>
+                        <select class="form-control select2" id="leave-request" asp-for="LeaveRequest.LeaveTypeId" asp-items="@Model.LeaveTypes">
+                            <option value="" disabled selected>-- Select Leave Type --</option>
+                        </select>
+                        <span asp-validation-for="LeaveRequest.LeaveTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="LeaveRequest.EmployeeId" class="form-label">Employee</label>
+                        <select class="form-control select2" asp-for="LeaveRequest.EmployeeId" asp-items="@Model.Employees">
+                            <option value="" disabled selected>-- Select Employee --</option>
+                        </select>
+                        <span asp-validation-for="LeaveRequest.EmployeeId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="LeaveRequest.LeaveTypeId" class="form-label">Leave Type</label>
+                        <select class="form-control select2" id="leave-request" asp-for="LeaveRequest.LeaveTypeId" asp-items="@Model.LeaveTypes">
+                            <option value="" disabled selected>-- Select Leave Type --</option>
+                        </select>
+                        <span asp-validation-for="LeaveRequest.LeaveTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="LeaveRequest.LeaveStatus" class="form-label">Leave Status</label>
+                    <select class="form-control select2" asp-for="LeaveRequest.LeaveStatus">
+                        <option value="" disabled selected>-- Select Leave Status --</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                    <span asp-validation-for="LeaveRequest.LeaveStatus" class="text-danger"></span>
+                </div>
+            }
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="LeaveRequest.StartDate" class="form-label">Start Date</label>
+                    <div class="input-group flatpickr">
+                        <input asp-for="LeaveRequest.StartDate" id="start-date" class="form-control" placeholder="Select Date">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="LeaveRequest.StartDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="LeaveRequest.EndDate" class="form-label">End Date</label>
+                    <div class="input-group flatpickr">
+                        <input asp-for="LeaveRequest.EndDate" id="end-date" class="form-control" placeholder="Select Date">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="LeaveRequest.EndDate" class="text-danger"></span>
+                </div>
+            </div>
+            
+
+        </div>
+            <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="LeaveRequest.NumberOfDays" class="form-label"></label>
+                                <input asp-for="LeaveRequest.NumberOfDays" type="number" class="form-control" id="number-of-days" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Holidays</label>
+                                <input type="text" id="holiday" class="form-control" value="" readonly>
+                            </div>
+                        </div>
+                    </div>
+        
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Payment</label>
+                    <div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input class="custom-control-input" checked type="radio" asp-for="LeaveRequest.IsPayed" id="payed" value="true">
+                            <label class="custom-control-label" for="payed">Payed</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input class="custom-control-input" type="radio" asp-for="LeaveRequest.IsPayed" id="un-payed" value="false">
+                            <label class="custom-control-label" for="un-payed">Un-payed</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label asp-for="LeaveRequest.Reason" class="form-label">Reason</label>
+                    <textarea class="form-control" asp-for="LeaveRequest.Reason" rows="3"></textarea>
+                    <span class="text-danger" asp-validation-for="LeaveRequest.Reason"></span>
+                </div>
+            </div>
+        </div>
+        @if (Model.LeaveRequest.Id is not 0)
+        {
+            <div class="row mb-4">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label asp-for="LeaveRequest.ResponseReason" class="form-label">Response Reason</label>
+                        <textarea class="form-control" asp-for="LeaveRequest.ResponseReason" rows="3" readonly></textarea>
+                        <span class="text-danger" asp-validation-for="LeaveRequest.Reason"></span>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="file">Upload Attachment</label>
+                    <div class="custom-file">
+                        <input type="file" name="file" class="custom-file-input" id="file" accept="image/*,application/pdf">
+                        <label class="custom-file-label" for="file">
+                            @(!string.IsNullOrEmpty(Model.LeaveRequest.Document) ? "Choose new file" : "Choose file")
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group mt-3">
+                    <div class="dropzone" id="myDropzone">
+                        <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                        <span class="dropzone-text">Drag and drop files here</span>
+                    </div>
+                    <p class="mt-2 text-muted">
+                        <small>Please include any attachments (e.g., medical certificate) that support your leave request.</small>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 my-auto">
+                <div id="currentDocument" class="text-center" style="display: none;">
+                    <i id="fileIcon" class="fas fa-file fa-5x mb-3"></i>
+                    <p id="fileName" class="mb-3"></p>
+                    <div>
+                        @if (!string.IsNullOrEmpty(Model.LeaveRequest.Document))
+                        {
+                            <a href="@Url.Action("DownloadDocument", "LeaveRequest", new { fileName = Model.LeaveRequest.Document })" class="btn btn-info btn-sm" id="downloadDocument" download>
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        }
+                        <button type="button" onclick="deleteObj('/HR/LeaveRequest/DeleteDocument?id=@Model.LeaveRequest.Id')"
+                                class="btn btn-danger btn-sm ml-2" id="removeDocument">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i> @(Model.LeaveRequest.Id == 0 ? "Submit" : "Update")
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+   
+    .input-group-text {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+    }
+   
+   #start-date,
+   #end-date {
+        background-color: #ffffff !important;
+   }
+   
+     .dropzone {
+               border: 2px dashed #007bff;
+               border-radius: 5px;
+               padding: 20px;
+               text-align: center;
+               margin-top: 20px;
+               color: #007bff;
+               cursor: pointer;
+           }
+       
+           .dropzone:hover {
+               background-color: #f8f9fa;
+           }
+       
+           .dropzone i {
+               font-size: 50px;
+               margin-bottom: 10px;
+           }
+       
+           .dropzone-text {
+               font-size: 16px;
+               display: block;
+           }
+           
+</style>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+    <script src="~/js/delete.js"></script>
+    <script>
+            $(document).ready(function() {
+                $('.select2').select2();
+               
+                $("#start-date, #end-date").flatpickr({
+                    dateFormat: "Y-m-d"
+                });
+    
+                function updateNumberOfDays() {
+                    const startDate = new Date($("#start-date").val());
+                    const endDate = new Date($("#end-date").val());
+                    const diffDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                    if (diffDays > 0) {
+                        $("#number-of-days").val(diffDays);
+                        fetchHolidays(startDate, endDate);
+                    }
+                }
+                
+            function fetchHolidays(startDate, endDate) {
+                const holidays = $("#holiday");
+                holidays.empty(); // Clear previous results
+                
+                $.ajax({
+                    url: '/HR/LeaveRequest/GetHolidays', // Adjust to your endpoint
+                    type: 'GET',
+                    data: {startDate, endDate},
+                    success: function(data) {
+                         holidays.val(data);
+                    }
+                });
+            }
+        
+                $("#start-date, #end-date").change(updateNumberOfDays);
+        
+                function displayFileInfo(file) {
+                    let fileName = file.name;
+                    let fileExtension = fileName.split('.').pop().toLowerCase();
+    
+                    $('#fileName').text(fileName);
+    
+                    if (fileExtension === 'pdf') {
+                        $('#fileIcon').removeClass().addClass('fas fa-file-pdf fa-5x mb-3 text-danger');
+                    } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                        $('#fileIcon').removeClass().addClass('fas fa-file-image fa-5x mb-3 text-primary');
+                    } else {
+                        $('#fileIcon').removeClass().addClass('fas fa-file fa-5x mb-3 text-secondary');
+                    }
+    
+                    $('#currentDocument').show();
+                }
+    
+                $('.custom-file-input').on('change', function(e) {
+                    let fileInput = $(this);
+                    let fileName = fileInput.val().split('\\').pop();
+    
+                    if (fileName) {
+                        fileInput.next('.custom-file-label').html("Choose new file");
+                        if (this.files && this.files[0]) {
+                            displayFileInfo(this.files[0]);
+                            $('#downloadDocument').hide();
+                        }
+                    } else {
+                        fileInput.next('.custom-file-label').html('Choose file');
+                        $('#currentDocument').hide();
+                    }
+                });
+    
+                $('#myDropzone').on('dragover', function(e) {
+                    e.preventDefault();
+                    $(this).addClass('dropzone-active');
+                }).on('dragleave', function() {
+                    $(this).removeClass('dropzone-active');
+                }).on('drop', function(e) {
+                    e.preventDefault();
+                    $(this).removeClass('dropzone-active');
+                    let file = e.originalEvent.dataTransfer.files[0];
+                    $('#file').prop('files', e.originalEvent.dataTransfer.files);
+                    $('.custom-file-label').html("Choose new file");
+                    displayFileInfo(file);
+                    $('#downloadDocument').hide();
+                });
+    
+                if ('@Model.LeaveRequest.Document' !== '') {
+                    let fileName = '@Model.LeaveRequest.Document'.split('/').pop();
+                    $('#fileName').text(fileName);
+                    $('.custom-file-label').html('Choose new file');
+                    let fileExtension = fileName.split('.').pop().toLowerCase();
+                    if (fileExtension === 'pdf') {
+                        $('#fileIcon').removeClass().addClass('fas fa-file-pdf fa-5x mb-3 text-danger');
+                    } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                        $('#fileIcon').removeClass().addClass('fas fa-file-image fa-5x mb-3 text-primary');
+                    } else {
+                        $('#fileIcon').removeClass().addClass('fas fa-file fa-5x mb-3 text-secondary');
+                    }
+                    $('#currentDocument').show();
+                }
+                
+                
+            });
+        </script>
+}

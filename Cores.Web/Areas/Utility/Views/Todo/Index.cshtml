@@ -1,0 +1,106 @@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Todo>
+
+<!-- DataTale -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Task List</h6>
+            <div class="px-1">
+                <a asp-action="Index" asp-route-showAllTasks="@(!ViewBag.ShowAllTasks)" class="btn btn-secondary">
+                    @(ViewBag.ShowAllTasks ? "Show My Tasks" : "Show All Tasks")
+                </a>
+                <a class="btn btn-secondary" asp-controller="Todo" asp-action="Upsert">
+                    <i class="fas fa-plus-circle"></i> Create Task
+                </a>
+            </div>
+            
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Created Date</th>
+                    <th>Owner</th>
+                    <th>Actions</th>
+                    
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                     <th>Title</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Created Date</th>
+                    <th>Owner</th>
+                    <th>Actions</th>
+                </tr>
+                </tfoot>
+                <tbody class="text-dark">
+                @foreach (var todo in Model)
+                {
+                    <tr>
+                        <td>@todo.Title</td>
+                        <td>@todo.Priority</td>
+                        <td>@todo.Status</td>
+                        <td>@todo.CreatedDate.ToString("yyyy MMMM dd")</td>
+                        <td>@string.Concat(todo.ApplicationUser?.FirstName, " ", todo.ApplicationUser?.LastName)</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    Actions
+                                </button>
+                                <div class="dropdown-menu animated--fade-in"
+                                     aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" asp-controller="Todo" asp-action="Upsert" asp-route-id="@todo.Id" asp-route-isDetailsMode="true"
+                                       onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
+                                       onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                      <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                    @{
+                                        var claimsIdentity = User.Identity as ClaimsIdentity;
+                                        var employeeId = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                                        if (employeeId == todo.ApplicationUserId)
+                                        {
+                                            <a class="dropdown-item" asp-controller="Todo" asp-action="Upsert" asp-route-id="@todo.Id"
+                                               onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
+                                               onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                                <i class="fas fa-solid fa-edit"></i> Update
+                                            </a>
+                                            <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/Utility/Todo/Delete?id=@todo.Id')"
+                                               onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
+                                               onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                                <i class="fas fa-solid fa-trash"></i> Delete
+                                            </a>
+                                        }
+                                    }
+                                    @if (employeeId != todo.ApplicationUserId)
+                                    {
+                                        <a class="dropdown-item" asp-controller="Todo" asp-action="CloneTask" asp-route-taskId="@todo.Id"
+                                           onmouseover="this.style.backgroundColor='#5c9eb8'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-solid fa-clone"></i> Clone
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/delete.js"></script>
+}

@@ -1,0 +1,85 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Confirm email";
+    Layout = "_AuthLayout";
+}
+
+<h1>@ViewData["Title"]</h1>
+@*
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <partial name="_StatusMessage" model="Model.StatusMessage"/>
+            </div>  
+            <button type="submit" class="w-100 btn btn-lg btn-primary">Reset Password</button>
+        </form>
+    </div>
+</div>
+*@
+
+
+
+<div class="container">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-5 d-none d-lg-block p-0">
+                    <img src="~/img/login-image.jpg" alt="Login Image" class="img-fluid h-100 w-100">
+                </div>
+                <div class="col-lg-7 mt-5 pt-4">
+                    <div class="p-5 content">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                        </div>
+                        <form method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                            <div class="form-floating mb-3">
+                                <partial name="_StatusMessage" model="Model.StatusMessage"/>
+                            </div>  
+                        </form>
+                        <hr/>
+                        <div class="text-center">
+                            <a class="small" id="login" asp-page="./Login">Login</a>
+                        </div>
+                        @*<div class="text-center">
+                            <a class="small" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Create an Account!</a>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .content {
+        margin-top: 70px;
+    }
+    .container {
+        max-width: 1100px;
+    }
+    .card {
+        height: 600px
+    }
+    .form-control-user {
+        font-size: 1rem;
+        border-radius: 10rem;
+        padding: 1.5rem 1rem;
+    }
+    .btn-user {
+        font-size: 0.8rem;
+        border-radius: 10rem;
+        padding: 1rem 1rem;
+    }
+     .img-fluid {
+            object-fit: cover;
+        }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

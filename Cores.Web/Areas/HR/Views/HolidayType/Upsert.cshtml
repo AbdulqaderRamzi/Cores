@@ -1,0 +1,76 @@
+﻿@model HolidayType
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Holiday Type Information</h2>
+    <form method="POST" class="bg-white shadow-sm rounded p-4">
+        <input asp-for="Id" hidden>
+        <input asp-for="CreatedAt" hidden>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Name" class="form-label">Type Name</label>
+                    <input asp-for="Name" class="form-control" required>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ColorCode" class="form-label">Color</label>
+                    <div class="input-group">
+                        <input asp-for="ColorCode" type="color" class="form-control form-control-color" title="Choose your color">
+                        <input type="text" class="form-control" id="colorText" readonly>
+                    </div>
+                    <span asp-validation-for="ColorCode" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="form-check">
+                    <input asp-for="IsActive" class="form-check-input" type="checkbox">
+                    <label asp-for="IsActive" class="form-check-label">Is Active</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <a asp-controller="HolidayType" asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const colorPicker = document.querySelector('input[type="color"]');
+            const colorText = document.getElementById('colorText');
+            
+            // Initial value
+            colorText.value = colorPicker.value;
+            
+            // Update on change
+            colorPicker.addEventListener('input', function() {
+                colorText.value = this.value;
+            });
+        });
+    </script>
+}

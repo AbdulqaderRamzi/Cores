@@ -1,0 +1,140 @@
+﻿@model IEnumerable<Journal>
+
+<!-- Index.cshtml -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Journals</h6>
+            <a class="btn btn-secondary" asp-controller="Journal" asp-action="Upsert">
+                <i class="fas fa-plus-circle"></i> Create Journal
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Created By</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Created By</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </tfoot>
+                <tbody class="text-dark">
+                    @foreach (var journal in Model)
+                    {
+                        <tr>
+                            <td>@journal.Name</td>
+                            <td>@journal.Type</td>
+                            <td>@journal.Description</td>
+                            <td>@(journal.IsActive ? "Active" : "Inactive")</td>
+                            <td>@journal.CreatedBy</td>
+                            <td>@journal.CreatedAt.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        Actions
+                                    </button>
+                                    <div class="dropdown-menu animated--fade-in"
+                                         aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="javascript:void(0);" onclick="showEntries(@journal.Id)"
+                                           onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-list"></i> Entries
+                                        </a>
+                                        <a class="dropdown-item" asp-controller="Journal" asp-action="Upsert" asp-route-id="@journal.Id"
+                                           onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-edit"></i> Update
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/Accounting/Journal/Delete?id=@journal.Id')"
+                                           onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Journal Entries Modal -->
+<div class="modal fade" id="entriesModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Journal Entries</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table" id="entriesTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Reference</th>
+                            <th>Description</th>
+                            <th>Total Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/delete.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable();
+        });
+
+        function showEntries(journalId) {
+            if ($.fn.DataTable.isDataTable('#entriesTable')) {
+                $('#entriesTable').DataTable().destroy();
+            }
+
+            $('#entriesTable').DataTable({
+                ajax: {
+                    url: '/Accounting/Journal/GetJournalEntries?journalId=' + journalId,
+                    type: 'GET',
+                    datatype: 'json'
+                },
+                columns: [
+                    { data: 'date', render: function(data) { return moment(data).format('YYYY-MM-DD'); } },
+                    { data: 'referenceNo' },
+                    { data: 'description' },
+                    { data: 'totalAmount', render: function(data) { return parseFloat(data).toFixed(2); } },
+                    { data: 'status' }
+                ]
+            });
+
+            $('#entriesModal').modal('show');
+        }
+    </script>
+}

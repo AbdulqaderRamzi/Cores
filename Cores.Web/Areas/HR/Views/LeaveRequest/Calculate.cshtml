@@ -1,0 +1,41 @@
+﻿@*@model LeaveBalanceCalculatorVm
+
+<h1>Leave Balance Calculator</h1>
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <form asp-action="Calculate" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EmployeeId" class="control-label"></label>
+                <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.Employees"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="LeaveTypeId" class="control-label"></label>
+                <select asp-for="LeaveTypeId" class="form-control" asp-items="ViewBag.LeaveTypes"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CurrentBalance" class="control-label"></label>
+                <input asp-for="CurrentBalance" class="form-control" />
+                <span asp-validation-for="CurrentBalance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccrualRate" class="control-label"></label>
+                <input asp-for="AccrualRate" class="form-control" />
+                <span asp-validation-for="AccrualRate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestedDays" class="control-label"></label>
+                <input asp-for="RequestedDays" class="form-control" />
+                <span asp-validation-for="RequestedDays" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectedBalance" class="control-label"></label>
+                <input asp-for="ProjectedBalance" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Calculate" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>*@

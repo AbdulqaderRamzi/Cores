@@ -1,0 +1,100 @@
+﻿@model IEnumerable<Attendance>
+
+<!-- DataTale -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Late Employees</h6>
+            @*@if (User.IsInRole(SD.ADMIN_ROLE) || User.IsInRole(SD.HR_ROLE))
+            {
+                <a class="btn btn-secondary" asp-controller="Attendance" asp-action="Upsert">
+                    <i class="fas fa-plus-circle"></i> Create Attendance
+                </a>
+            }*@
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>Employee Name</th>
+                    <th>Date</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    @if (User.IsInRole(SD.HR_ROLE) || User.IsInRole(SD.ADMIN_ROLE))
+                    {
+                        <th>Actions</th>
+                    }
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                     <th>Employee Name</th>
+                    <th>Date</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    @if (User.IsInRole(SD.HR_ROLE) || User.IsInRole(SD.ADMIN_ROLE))
+                    {
+                        <th>Actions</th>
+                    }
+                </tr>
+                </tfoot>
+                <tbody class="text-dark">
+                @foreach (var attendance in Model)
+                {
+                    <tr>
+                        <td>@($"{attendance.Employee.FirstName} {attendance.Employee.LastName}")</td>
+                        <td>@attendance.Date.ToString("yyyy MMMM dd")</td>
+                        <td>@attendance.TimeIn</td>
+                        <td>@attendance.TimeOut</td>
+                        @if (User.IsInRole(SD.HR_ROLE) || User.IsInRole(SD.ADMIN_ROLE))
+                        {
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        Actions
+                                    </button>
+                                    <div class="dropdown-menu animated--fade-in"
+                                         aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" asp-controller="Attendance" asp-action="Ignore" asp-route-id="@attendance.Id"
+                                           onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-info-circle"></i> Ignore
+                                        </a>
+                                        <a class="dropdown-item" asp-controller="EmployeeDeduction" asp-action="Upsert" 
+                                            asp-route-attendanceId="@attendance.Id"
+                                           onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-edit"></i>  Deduct
+                                        </a>
+                                        <a class="dropdown-item" asp-area="Utility" asp-controller="MessagePayload" asp-action="Send"
+                                           asp-route-employeeEmail="@attendance.Employee.Email"
+                                           onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-trash"></i> Send Message
+                                        </a>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Employee" asp-action="Update" 
+                                           asp-route-id="@attendance.EmployeeId"
+                                           onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-trash"></i> Profile
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        }
+                    </tr>
+                    
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/delete.js"></script>
+}

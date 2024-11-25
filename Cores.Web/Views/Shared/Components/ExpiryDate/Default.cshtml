@@ -1,0 +1,34 @@
+﻿@model Dictionary<ApplicationUser, List<string>>
+
+
+<a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-solid fa-address-card"></i>
+    <!-- Counter - Alerts -->
+    <span class="badge badge-danger badge-counter">@(ViewBag.Total > 99 ? "+99" : ViewBag.Total)</span>
+</a>
+<!-- Dropdown - Alerts -->
+<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+     aria-labelledby="alertsDropdown">
+    <h6 class="dropdown-header">Alerts Center</h6>
+    
+    @foreach (var employee in Model.Keys)
+    {
+        var dates = Model[employee];
+        foreach (var dateName in dates)
+        {
+            <a class="dropdown-item d-flex align-items-center" asp-area="Admin" asp-controller="Employee" asp-action="Update" asp-route-id="@employee.Id">
+                <div class="mr-3">
+                    <div class="icon-circle bg-primary">
+                        <i class="fas fa-file-alt text-white"></i>
+                    </div>
+                </div>
+                <div>
+                    <div class="small text-gray-500">@DateTime.Now.ToString("MMM dd, yyyy HH:mm")</div>
+                    <span class="font-weight-bold">@($"Employee {employee.FirstName} {employee.LastName}'s {dateName} has expired")</span>
+                </div>
+            </a>
+        }
+    }
+    <a class="dropdown-item text-center small text-gray-500" asp-area="Admin" asp-controller="Employee" asp-action="Index">Show All Alerts</a>
+</div>

@@ -1,0 +1,254 @@
+﻿
+@using Cores.Models.Accounting.Enums
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json
+@model TransactionVm
+
+@{
+    var title = Model.Transaction.Id == 0 ? "Create Transaction" : "Edit Transaction";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary bg-gradient text-white py-3">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h4 class="m-0">@title</h4>
+                </div>
+                <div class="col-auto">
+                    <span class="badge bg-light text-dark">Status: @Model.Transaction.Status</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-body">
+            <form method="POST" id="transactionForm" onsubmit="return validateForm()">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                
+                <!-- Hidden Fields -->
+                <input asp-for="Transaction.Id" id="transactionId" type="hidden">
+                <input asp-for="Transaction.CreatedAt" type="hidden">
+                <input asp-for="Transaction.CreatedBy" type="hidden">
+                <input asp-for="Transaction.Status" type="hidden">
+                <input asp-for="Transaction.TotalDebit" type="hidden" id="hiddenTotalDebit">
+                <input asp-for="Transaction.TotalCredit" type="hidden" id="hiddenTotalCredit">
+                <input type="hidden" id="serializedTransaction" name="serializedTransaction" />
+
+                <!-- Header Information -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Transaction.ReferenceNo" class="form-label">Reference Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                                <input asp-for="Transaction.ReferenceNo" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Transaction.TransactionDate" class="form-label required">Transaction Date</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                <input asp-for="Transaction.TransactionDate" 
+                                       class="form-control datepicker" 
+                                       required 
+                                       data-date-format="yyyy-mm-dd"
+                                       data-date-today-highlight="true"
+                                       data-date-autoclose="true">
+                            </div>
+                            <span asp-validation-for="Transaction.TransactionDate" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Status</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-info-circle"></i></span>
+                                <input value="@Model.Transaction.Status" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label asp-for="Transaction.Description" class="form-label required">Description</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-align-left"></i></span>
+                                <textarea asp-for="Transaction.Description" 
+                                         class="form-control" 
+                                         rows="2" 
+                                         required 
+                                         maxlength="500"
+                                         placeholder="Enter transaction description"></textarea>
+                            </div>
+                            <span asp-validation-for="Transaction.Description" class="text-danger"></span>
+                            <div class="form-text text-end">
+                                <span id="descriptionCount">0</span>/500 characters
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transaction Details -->
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="m-0">Transaction Details</h6>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary btn-sm" onclick="addDetailRow()">
+                                    <i class="fas fa-plus"></i> Add Line
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" onclick="copyLastRow()">
+                                    <i class="fas fa-copy"></i> Copy Last
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" id="detailsTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Account</th>
+                                        <th>Description</th>
+                                        <th>Debit</th>
+                                        <th>Credit</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="detailsTableBody">
+                                    <!-- Rows will be dynamically added here -->
+                                </tbody>
+                                <tfoot class="table-light">
+                                    <tr class="fw-bold">
+                                        <td colspan="3" class="text-end">Totals:</td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-text">$</span>
+                                                <input type="text" id="totalDebit" class="form-control text-end" readonly value="0.00">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-text">$</span>
+                                                <input type="text" id="totalCredit" class="form-control text-end" readonly value="0.00">
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr id="differenceLine" class="d-none text-danger">
+                                        <td colspan="3" class="text-end">Difference:</td>
+                                        <td colspan="2">
+                                            <div class="input-group">
+                                                <span class="input-group-text">$</span>
+                                                <input type="text" id="totalDifference" class="form-control text-end" readonly value="0.00">
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-info d-flex align-items-center" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <div>Total debits must equal total credits. </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex gap-2">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn btn-primary" id="submitButton" disabled>
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                            @if (Model.Transaction.Id > 0 && Model.Transaction.Status == TransactionState.Draft.ToString())
+                            {
+                                <button type="button" class="btn btn-success" onclick="postTransaction(@Model.Transaction.Id)">
+                                    <i class="fas fa-check-circle"></i> Post Transaction
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow,
+    .form-control {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .input-group-text {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+    }
+</style>    
+
+
+@section Scripts {
+    <script src="~/js/transaction-table.js"></script>
+
+    <script>
+         $(document).ready(function() {
+            flatpickr(".datepicker", {
+                    enableTime: true,
+                    dateFormat: "Y-m-d H:i"
+                });
+            $('.select2').select2({
+                 width: '100%',
+                 placeholder: '-- Select Account --'
+             });
+        
+            $('#Transaction_Description').on('input', function() {
+                $('#descriptionCount').text(this.value.length);
+              })
+            .trigger('input');
+              
+              let accountOptions =
+               @Json.Serialize(Model.Accounts.Select(a => new {value = a.Value, text = a.Text}));
+               let existingDetails =  @JsonConvert.SerializeObject(Model.Transaction.Details);
+                initTable(accountOptions, existingDetails);
+        
+        });    
+    </script>
+        
+    
+}

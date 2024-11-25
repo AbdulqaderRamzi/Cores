@@ -1,0 +1,187 @@
+﻿@model RecruitmentVm
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Department Information</h2>
+    <form method="POST" class="bg-white shadow-sm rounded p-4">
+        <input asp-for="Recruitment.Id" hidden>
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Recruitment.JobTitle" class="form-label">Job Title</label>
+                    <input asp-for="Recruitment.JobTitle" class="form-control" type="text">
+                    <span class="text-danger" asp-validation-for="Recruitment.JobTitle"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Recruitment.DepartmentId" class="form-label">Department Head</label>
+                    <select class="form-control select2" asp-for="Recruitment.DepartmentId" asp-items="@Model.Departments">
+                        <option value="" disabled selected>-- Select Department --</option>
+                    </select>
+                </div>
+            </div>
+              <div class="col-md-4">
+                  <div class="form-group">
+                      <label asp-for="Recruitment.NumberOfVacancies" class="form-label">Number Of Vacancies</label>
+                      <input asp-for="Recruitment.NumberOfVacancies" class="form-control" type="number" min="0">
+                      <span class="text-danger" asp-validation-for="Recruitment.NumberOfVacancies"></span>
+                  </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Recruitment.PostingDate" class="form-label">Posting Date</label>
+                    <input asp-for="Recruitment.PostingDate" class="form-control" id="posting-date" placeholder="Select Posting Date">
+                    <span class="text-danger" asp-validation-for="Recruitment.PostingDate"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Recruitment.ClosingDate" class="form-label">Closing Date</label>
+                    <input asp-for="Recruitment.ClosingDate" class="form-control" id="closing-date" placeholder="Select Closing Date">
+                    <span class="text-danger" asp-validation-for="Recruitment.ClosingDate"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group mb-5">
+            <label asp-for="Recruitment.JobDescription" class="form-label">Job Description</label>
+            <textarea asp-for="Recruitment.JobDescription" class="form-control flatpickr" type="text" rows="4"></textarea>
+            <span class="text-danger" asp-validation-for="Recruitment.JobDescription"></span>
+        </div>
+        @if (Model.Recruitment.Id is not 0)
+        {
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">Job Applications</h6>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </tfoot>
+                            <tbody class="text-dark">
+                            @foreach (var jobApplication in Model.Recruitment.JobApplications)
+                            {
+                                <tr>
+                                    <td>@jobApplication.Name</td>
+                                    <td>@jobApplication.Phone</td>
+                                    <td>@jobApplication.Email</td>
+                                    <td>@jobApplication.Status</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button"
+                                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                Actions
+                                            </button>
+                                            <div class="dropdown-menu animated--fade-in"
+                                                 aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" asp-controller="JobApplication" asp-action="Upsert" asp-route-id="@jobApplication.Id"
+                                                   onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
+                                                   onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                                    <i class="fas fa-info-circle"></i> Details
+                                                </a>
+
+                                                <a class="dropdown-item" asp-controller="JobApplication" asp-action="Upsert" asp-route-id="@jobApplication.Id"
+                                                   onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
+                                                   onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                                    <i class="fas fa-edit"></i> Update
+                                                </a>
+                                                <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/HR/JobApplication/Delete?id=@jobApplication.Id')"
+                                                   onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
+                                                   onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-12">
+                <a asp-controller="Recruitment" asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i> Submit
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow
+    {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .input-group-text {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+    }
+    #posting-date {
+        background-color: #ffffff; !important;
+    }
+    #closing-date {
+        background-color: #ffffff; !important;
+    }
+        
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+      <script>
+            $(document).ready(function () {
+                $('.select2').select2();
+                $("#posting-date, #closing-date").flatpickr({
+                     dateFormat: "Y-m-d"
+                 });
+            });
+        </script>
+}

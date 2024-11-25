@@ -1,0 +1,586 @@
+﻿@model EmployeeVm
+
+<div class="container">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+            <input asp-for="Employee.Id" hidden> 
+            <input type="hidden" id="serializedProducts" name="schedules" />
+            <input id="employeeData" value="@Model.SerializedEmployee" hidden>
+            <div class="row">
+                    <div class="col-lg-4">
+                        <fieldset>
+                            <legend>Personal Information</legend>
+                            <div class="form-group">
+                                <label asp-for="Employee.FirstName">First Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    </div>
+                                    <input asp-for="Employee.FirstName" class="form-control" autocomplete="new-password" aria-required="true" placeholder="First Name">
+                                </div>
+                                <span asp-validation-for="Employee.FirstName" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Employee.LastName">Last Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    </div>
+                                    <input asp-for="Employee.LastName" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Last Name">
+                                </div>
+                                <span asp-validation-for="Employee.LastName" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Employee.Email">Email</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    </div>
+                                    <input asp-for="Employee.Email" class="form-control" autocomplete="username" aria-required="true" readonly>
+                                </div>
+                                <span asp-validation-for="Employee.Email" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label asp-for="Employee.PhoneNumber" style="z-index: 99999">Phone Number</label>
+                                <div class="input-group">
+                                    <input type="tel" 
+                                           asp-for="Employee.PhoneNumber" 
+                                           class="form-control phone" 
+                                           placeholder="Enter phone number" 
+                                           required>
+                                </div>
+                                <span asp-validation-for="Employee.PhoneNumber" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label asp-for="Employee.EmergencyNumber">Emergency Number</label>
+                                <div class="input-group">
+                                    <input type="tel" 
+                                           asp-for="Employee.EmergencyNumber" 
+                                           class="form-control phone" 
+                                           placeholder="Enter phone number" 
+                                           required>
+                                </div>
+                                <span asp-validation-for="Employee.EmergencyNumber" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label asp-for="Employee.DateOfBirth">Date of Birth</label>
+                                <div class="input-group flatpickr">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    </div>
+                                    <input asp-for="Employee.DateOfBirth" id="dateOfBirth" class="form-control" placeholder="Date of Birth">
+                                </div>
+                                <span asp-validation-for="Employee.DateOfBirth" class="text-danger"></span>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Identification</legend>
+                            <div class="form-group">
+                                <label asp-for="Employee.CivilIdNumber">Civil ID Number</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                    </div>
+                                    <input asp-for="Employee.CivilIdNumber" class="form-control" placeholder="Civil ID Number">
+                                </div>
+                                <span asp-validation-for="Employee.CivilIdNumber" class="text-danger"></span>
+                            </div>
+                                                                
+                            <div class="form-group">
+                                <label asp-for="Employee.PassportNumber">Passport Number</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-passport"></i></span>
+                                    </div>
+                                    <input asp-for="Employee.PassportNumber" class="form-control" placeholder="Passport Number">
+                                </div>
+                                <span asp-validation-for="Employee.PassportNumber" class="text-danger"></span>
+                            </div>
+                        </fieldset>
+                        
+                    </div>
+                    <div class="col-lg-4">
+                        <fieldset>
+                            <legend>Work Information</legend>
+                            <div class="form-group">
+                                <label asp-for="Employee.DepartmentId">Department</label>
+                                <select class="custom-select" aria-required="true" asp-for="Employee.DepartmentId" asp-items="@Model.Departments">
+                                    <option value="" disabled selected>-- Select Department --</option>
+                                </select>
+                                <span asp-validation-for="Employee.DepartmentId" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Employee.PositionID">Position</label>
+                                <select id="position" class="custom-select" aria-required="true" asp-for="Employee.PositionID" asp-items="@Model.Positions">
+                                    <option value="" disabled selected>-- Select Position --</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Employee.Salary">Salary</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                    </div>
+                                    <input asp-for="Employee.Salary" id="position-salary" class="form-control" autocomplete="username" aria-required="true" placeholder="Salary">
+                                </div>
+                                <span asp-validation-for="Employee.Salary" class="text-danger"></span>
+                            </div>
+
+                            @*<div class="form-group">
+                                <label asp-for="Input.Role">Role</label>
+                                <select class="custom-select" aria-required="true" asp-for="Input.Role" asp-items="@Model.Input.RoleList">
+                                    <option value="" disabled selected>-- Select Role --</option>
+                                </select>
+                            </div>*@
+
+                            <div class="form-group">
+                                <label asp-for="Employee.ManagerID">Manager</label>
+                                <select class="custom-select" aria-required="true" asp-for="Employee.ManagerID" asp-items="@Model.Employees">
+                                    <option value="" disabled selected>-- Select Manager --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Role">Role</label>
+                                <select class="custom-select" aria-required="true" asp-for="Role" asp-items="@Model.Roles">
+                                    <option value="" disabled selected>-- Select Role --</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label asp-for="Employee.StartAt">Start Date</label>
+                                <div class="input-group flatpickr">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    </div>
+                                    <input asp-for="Employee.StartAt" class="form-control" id="startDate" placeholder="Start Date">
+                                </div>
+                                <span asp-validation-for="Employee.StartAt" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label asp-for="Employee.AnnualLeaveEntitlement">Annual Leave Entitlement</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                    </div>
+                                    <input asp-for="Employee.AnnualLeaveEntitlement" id="annual-leave-entitlement" class="form-control" type="number">
+                                </div>
+                                <span asp-validation-for="Employee.AnnualLeaveEntitlement" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label asp-for="Employee.WorkingDaysInMonth">Working Days In Month</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                    </div>
+                                    <input asp-for="Employee.WorkingDaysInMonth" id="working-days-in-month" class="form-control" type="number">
+                                </div>
+                                <span asp-validation-for="Employee.WorkingDaysInMonth" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label asp-for="Employee.AnnualLeaveBalance">Annual Leave Balance</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                    </div>
+                                    <input asp-for="Employee.AnnualLeaveBalance" id="annual-leave-balance" class="form-control" readonly>
+                                </div>
+                                <span asp-validation-for="Employee.AnnualLeaveBalance" class="text-danger"></span>
+                            </div>
+                            
+                            
+                            
+                            
+                        </fieldset>
+                        <fieldset>
+                            <legend>Financial Information</legend>
+                            <div class="form-group">
+                                <label asp-for="Employee.BankName">Bank Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-university"></i></span>
+                                    </div>
+                                    <input asp-for="Employee.BankName" class="form-control" placeholder="Bank Name">
+                                </div>
+                                <span asp-validation-for="Employee.BankName" class="text-danger"></span>
+                            </div>
+                                                                
+                            <div class="form-group">
+                                <label asp-for="Employee.BankAccountNumber">Bank Account Number</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-credit-card"></i></span>
+                                    </div>
+                                    <input asp-for="Employee.BankAccountNumber" class="form-control" placeholder="Bank Account Number">
+                                </div>
+                                <span asp-validation-for="Employee.BankAccountNumber" class="text-danger"></span>
+                            </div>
+                                                                
+                            <div class="form-group">
+                                <label asp-for="Employee.IPAN">IPAN</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-money-check"></i></span>
+                                    </div>
+                                    <input asp-for="Employee.IPAN" class="form-control" placeholder="IPAN">
+                                </div>
+                                <span asp-validation-for="Employee.IPAN" class="text-danger"></span>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="profile-image mb-4">
+                            <img src="@Model.Employee.ImageUrl" alt="" id="profile-pic">
+                        </div>
+                        <div class="form-group text-center mb-4">
+                            <label for="fileInput" class="btn btn-primary">
+                                <i class="fas fa-camera"></i> Upload Image
+                                <input id="fileInput" asp-for="Employee.ImageUrl" name="file" type="file" style="display: none;">
+                            </label>
+                        </div>
+                        <fieldset>
+                            @*<legend>Additional Information</legend>*@
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Gender</label>
+                                        <div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input class="custom-control-input" type="radio" asp-for="Employee.Gender" id="male" value="Male">
+                                                <label class="custom-control-label" for="male">Male</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input class="custom-control-input" type="radio" asp-for="Employee.Gender" id="female" value="Female">
+                                                <label class="custom-control-label" for="female">Female</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Balance Reset</label>
+                                        <div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input class="custom-control-input" type="radio" asp-for="Employee.ResetAnnualLeave" id="reset" value="true">
+                                                <label class="custom-control-label" for="reset">Every Year</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input class="custom-control-input" type="radio" asp-for="Employee.ResetAnnualLeave" id="never" value="false">
+                                                <label class="custom-control-label" for="never">Never</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Languages</label>
+                                        <div>
+                                            @foreach (var checkbox in Model.LanguagesOptions)
+                                            {
+                                                <div class="custom-control custom-checkbox custom-control-inline">
+                                                    <input class="custom-control-input"
+                                                           type="checkbox"
+                                                           value="@checkbox.Value"
+                                                           name="languages"
+                                                           id="lan_@checkbox.Value"
+                                                           @(checkbox.isChecked ? "checked" : "")>
+                                                    <label class="custom-control-label" for="lan_@checkbox.Value">@checkbox.Value</label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                           <fieldset>
+                               <legend>Expiry Dates</legend>
+                               <div class="form-group">
+                                   <label asp-for="Employee.PassportExpiredDate">Passport Expiry Date</label>
+                                   <div class="input-group flatpickr">
+                                       <div class="input-group-prepend">
+                                           <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                       </div>
+                                       <input asp-for="Employee.PassportExpiredDate" class="form-control" id="passportExpiredDate" placeholder="Passport Expiry Date">
+                                   </div>
+                                   <span asp-validation-for="Employee.PassportExpiredDate" class="text-danger"></span>
+                               </div>
+                               <div class="form-group">
+                                   <label asp-for="Employee.ResidenceExpiredDate">Residence Expiry Date</label>
+                                   <div class="input-group flatpickr">
+                                       <div class="input-group-prepend">
+                                           <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                       </div>
+                                       <input asp-for="Employee.ResidenceExpiredDate" id="residenceExpiredDate" class="form-control" placeholder="Residence Expiry Date">
+                                   </div>
+                                   <span asp-validation-for="Employee.ResidenceExpiredDate" class="text-danger"></span>
+                               </div>
+                               <div class="form-group">
+                                   <label asp-for="Employee.HealthCardExpiredDate">Health Card Expiry Date</label>
+                                   <div class="input-group flatpickr">
+                                       <div class="input-group-prepend">
+                                           <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                       </div>
+                                       <input asp-for="Employee.HealthCardExpiredDate" id="healthCardExpiredDate" class="form-control" placeholder="Health Card Expiry Date">
+                                   </div>
+                                   <span asp-validation-for="Employee.HealthCardExpiredDate" class="text-danger"></span>
+                               </div>
+                               <div class="form-group">
+                                   <label asp-for="Employee.DrivingLicenseExpiredDate">Driving License Expiry Date</label>
+                                   <div class="input-group flatpickr">
+                                       <div class="input-group-prepend">
+                                           <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                       </div>
+                                       <input asp-for="Employee.DrivingLicenseExpiredDate" id="drivingLicenseExpiredDate" class="form-control" placeholder="Driving License Expiry Date">
+                                   </div>
+                                   <span asp-validation-for="Employee.DrivingLicenseExpiredDate" class="text-danger"></span>
+                               </div>
+                           </fieldset>
+                    </div>
+                </div>
+            <div class="row">
+                            <div class="col-12">
+                                <div class="mb-5">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h3 class="text-dark m-0">Work Schedule</h3>
+                                        <button type="button" id="addScheduleRow" class="btn btn-primary mt-2">
+                                            <i class="fas fa-plus"></i> Add Schedule
+                                        </button>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table id="scheduleTable" class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>Day of Week</th>
+                                                <th>Start Time</th>
+                                                <th>End Time</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <!-- Schedule rows will be dynamically added here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">Employee Data</h6>
+                            <div>
+                                <select class="form-control" id="prop">
+                                    <option value="" disabled selected>-- Select Property --</option>
+                                    <option value="Subordinates">Subordinates</option>
+                                    <option value="LeaveRequests">LeaveRequests</option>
+                                    <option value="Attendances">Attendances</option>
+                                    <option value="Salaries">Salaries</option>
+                                    <option value="EmployeeTrainings">EmployeeTrainings</option>
+                                    <option value="EmployeeBenefits">EmployeeBenefits</option>
+                                    <option value="Documents">Documents</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <th>
+                                        
+                                    </th>
+                                </thead>
+                                <tfoot>
+                                    <th>
+                                                                                    
+                                    </th>
+                                </tfoot>
+                                <tbody class="text-dark">
+                                <tr>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="form-group mt-4 text-center">
+                    <a asp-area="Admin" asp-controller="Employee" asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Update
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .profile-image {
+        width: 250px;
+        height: 250px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #ccc;
+        position: relative;
+        border: 4px solid #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .profile-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .profile-image:hover {
+        transform: scale(1.05);
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .custom-control-input {
+        width: 18px;
+        height: 18px;
+    }
+
+    .custom-control-label {
+        margin-left: 8px;
+    }
+
+    .text-danger {
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+    .custom-control-inline {
+        margin-right: 1rem;
+    }
+    
+    #scheduleTable th, #scheduleTable td {
+        vertical-align: middle;
+    }
+    input {
+       background: white !important;
+    }
+    
+     .iti {
+          width: 100%;
+      }
+      
+      .iti__separate-dial-code .form-control {
+          padding-left: 70px;
+      }
+      
+      /* Override any conflicting styles */
+      .iti__flag-container {
+          z-index: 3;
+      }
+      
+      .form-group .input-group .iti {
+          flex: 1 1 auto;
+      }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+    <script src="~/js/populate-table.js"></script>
+    <script src="~/js/work-schedule.js"></script>
+    <script src="~/js/phone-input.js"></script>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            const img = document.getElementById('profile-pic');
+
+            reader.onload = function(e) {
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        });
+
+        $(document).ready(function () {
+            $("#position").on("change", loadPositionDate);
+             flatpickr("#dateOfBirth, #startDate, #passportExpiredDate, #residenceExpiredDate, #healthCardExpiredDate, #drivingLicenseExpiredDate", {
+                altInput: true,
+                altFormat: "F j, Y",
+                dateFormat: "Y-m-d"
+            });
+          
+            let scheduleTable = initializeWorkScheduleTable();           
+            // Load existing schedule data
+            let existingSchedules = @Json.Serialize(Model.Employee.WorkSchedules);
+            scheduleTable.rows.add(existingSchedules).draw();
+            $('form').submit(function(e) {
+                let scheduleData = collectScheduleData();
+                $('#serializedProducts').val(scheduleData);
+             });
+            loadPositionDate();
+            
+            let employeeData = JSON.parse($('#employeeData').val());
+           console.log(employeeData);
+           
+                $('#prop').change(function () {
+                    let property = $(this).val();
+                   console.log(property);
+                   console.log(employeeData[property]);
+                  
+                    if (property && employeeData.hasOwnProperty(property)) {
+                        console.log(employeeData[property]);
+                        populateTable(employeeData[property], property);
+                    }
+                 });
+            });
+
+        function loadPositionDate() {
+            let positionId = $("#position").val();
+            if (positionId) {
+                $("#position-salary").val('Loading...');
+                loadPositionSalary(positionId);
+            }
+        }
+
+        function loadPositionSalary(positionId) {
+            $.ajax({
+                url: `/HR/Position/GetPositionById/${positionId}`,
+                type: "GET",
+                data: { id: positionId },
+                success: function (position) {
+                    if (position) {
+                        $("#position-salary").val(position.salaryRange);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching position details:", error);
+                    $("#position-salary").val('');
+                }
+            });
+        }
+    </script>   
+}
+
+
