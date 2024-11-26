@@ -2,5 +2,5 @@
 
 public class TransactionData
 {
-    public List<TransactionDetail> TransactionDetails { get; set; }
+    public List<TransactionDetail> Details { get; set; }
 }

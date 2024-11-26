@@ -76,18 +76,11 @@ public class TransactionController : Controller
             transactionVm.Accounts = await GetActiveAccounts();
             return View(transactionVm);
         }*/
-
-        // Validate transaction details
-        if (!transactionVm.Transaction.Details.Any())
-        {
-            ModelState.AddModelError("", "Transaction must have at least one detail line");
-            transactionVm.Accounts = await GetActiveAccounts();
-            return View(transactionVm);
-        }
+    
 
         // Calculate and validate totals
-        decimal totalDebits = transactionVm.Transaction.Details.Sum(d => d.DebitAmount);
-        decimal totalCredits = transactionVm.Transaction.Details.Sum(d => d.CreditAmount);
+        var totalDebits = transactionVm.Transaction.Details.Sum(d => d.DebitAmount);
+        var totalCredits = transactionVm.Transaction.Details.Sum(d => d.CreditAmount);
 
         if (totalDebits != totalCredits)
         {
@@ -96,8 +89,9 @@ public class TransactionController : Controller
             return View(transactionVm);
         }
         
+        // Validate transaction detail
         var transactionData = JsonConvert.DeserializeObject<TransactionData>(serializedTransaction);
-        if (transactionData is null || !transactionData.TransactionDatas.Any())
+        if (transactionData is null || transactionData.Details.Count == 0)
         {
             ModelState.AddModelError("", "Transaction must have at least one detail line");
             transactionVm.Accounts = await GetActiveAccounts();
@@ -115,15 +109,19 @@ public class TransactionController : Controller
             await _unitOfWork.Transaction.Add(transactionVm.Transaction);
             await _unitOfWork.SaveAsync();
 
-            var details = transactionData.TransactionDetails;
+            var details = transactionData.Details;
             // Then add details with the new transaction ID
             foreach (var detail in details)
             {
                 detail.TransactionId = transactionVm.Transaction.Id;
-                await _unitOfWork.TransactionDetail.Add(detail);
             }
-            
-                    
+            var transactionFromDb = await _unitOfWork.Transaction
+                .Get(t => t.Id == transactionVm.Transaction.Id, includeProperties:"Details");
+            if (transactionFromDb is not null)
+            {
+                transactionFromDb.Details.Clear();
+                transactionFromDb.Details.AddRange(details);
+            }
             TempData["success"] = "Transaction created successfully";
         }
         else
@@ -137,11 +135,19 @@ public class TransactionController : Controller
                 TempData["error"] = "Only draft transactions can be edited";
                 return RedirectToAction(nameof(Index));
             }
-
+            var details = transactionData.Details;
+            // Then add details with the new transaction ID
+            foreach (var detail in details)
+            {
+                detail.TransactionId = transactionVm.Transaction.Id;
+                await _unitOfWork.TransactionDetail.Add(detail);
+            }
+            
             await _unitOfWork.Transaction.Update(transactionVm.Transaction);
             TempData["success"] = "Transaction updated successfully";
             await _unitOfWork.SaveAsync();
-
+                
+           
         }
 
 
@@ -149,9 +155,9 @@ public class TransactionController : Controller
         if (transactionVm.Transaction.Status != TransactionState.Draft.ToString())
         {
             await ProcessTransaction(transactionVm.Transaction);
-            await _unitOfWork.SaveAsync();
         }
 
+        await _unitOfWork.SaveAsync();
         return RedirectToAction(nameof(Index));
     }
 

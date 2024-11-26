@@ -124,9 +124,55 @@
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="detailsTableBody">
-                                    <!-- Rows will be dynamically added here -->
-                                </tbody>
+                              <tbody id="detailsTableBody">
+                                  @if (Model.Transaction.Details != null && Model.Transaction.Details.Any())
+                                  {
+                                      @for (var i = 0; i < Model.Transaction.Details.Count; i++)
+                                      {
+                                          var detail = Model.Transaction.Details[i];
+                                          <tr>
+                                              <td>@(i + 1)</td>
+                                              <td>
+                                                  <select class="form-control select2" asp-for="Transaction.Details[i].AccountId" asp-items="Model.Accounts">
+                                                      <option value="">-- Select Account --</option>
+                                                  </select>
+                                              </td>
+                                              <td>
+                                                  <input type="text" class="form-control" 
+                                                         asp-for="Transaction.Details[i].Description"
+                                                         placeholder="Enter description">
+                                              </td>
+                                              <td>
+                                                  <div class="input-group">
+                                                      <span class="input-group-text">$</span>
+                                                      <input type="number" class="form-control text-end debit-amount" 
+                                                             asp-for="Transaction.Details[i].DebitAmount" min="0"
+                                                             onchange="updateTotals()">
+                                                  </div>
+                                              </td>
+                                              <td>
+                                                  <div class="input-group">
+                                                      <span class="input-group-text">$</span>
+                                                      <input type="number" class="form-control text-end credit-amount" 
+                                                             asp-for="Transaction.Details[i].CreditAmount" min="0"
+                                                             onchange="updateTotals()">
+                                                      
+                                                  </div>
+                                              </td>
+                                              <td class="text-center">
+                                                  <div class="btn-group btn-group-sm">
+                                                      <button type="button" class="btn btn-outline-danger" onclick="removeDetailRow(this)">
+                                                          <i class="fas fa-trash"></i>
+                                                      </button>
+                                                      <button type="button" class="btn btn-outline-secondary" onclick="clearRow(this)">
+                                                          <i class="fas fa-eraser"></i>
+                                                      </button>
+                                                  </div>
+                                              </td>
+                                          </tr>
+                                      }
+                                  }
+                              </tbody>
                                 <tfoot class="table-light">
                                     <tr class="fw-bold">
                                         <td colspan="3" class="text-end">Totals:</td>
@@ -241,11 +287,19 @@
                 $('#descriptionCount').text(this.value.length);
               })
             .trigger('input');
+           /* // If no rows exist, add one empty row
+              if ($('#detailsTableBody tr').length === 0) {
+                  addDetailRow();
+              }*/
+          /*
+             // Calculate initial totals
+              updateTotals();*/
+          
+              let accountOptions = @Json.Serialize(Model.Accounts.Select(a => new {value = a.Value, text = a.Text}));
               
-              let accountOptions =
-               @Json.Serialize(Model.Accounts.Select(a => new {value = a.Value, text = a.Text}));
-               let existingDetails =  @JsonConvert.SerializeObject(Model.Transaction.Details);
-                initTable(accountOptions, existingDetails);
+              /* let existingDetails =  Html.Raw(Json.Serialize(Model.Transaction.Details));
+               console.log(existingDetails);*/
+                initTable(accountOptions);
         
         });    
     </script>

@@ -9,9 +9,6 @@ public class TransactionDetail
     public int Id { get; set; }
     
     public int TransactionId { get; set; }
-    [ForeignKey("TransactionId")]
-    [ValidateNever]
-     public Transaction Transaction { get; set; }
     
     public int AccountId { get; set; }
     [ForeignKey("AccountId")]
