@@ -16,7 +16,7 @@ public class TransactionRepository : Repository<Transaction>, ITransactionReposi
 
     public async Task Update(Transaction transaction)
     {
-        var transactionFromDb = await _db.Transactions.FirstOrDefaultAsync(t => t.Id == transaction.Id);
+        var transactionFromDb = await _db.Transactions.Include(t => t.Details).FirstOrDefaultAsync(t => t.Id == transaction.Id);
         if (transactionFromDb is null)
             return;
         transactionFromDb.ReferenceNo = transaction.ReferenceNo;
@@ -27,5 +27,7 @@ public class TransactionRepository : Repository<Transaction>, ITransactionReposi
         transactionFromDb.Status = transaction.Status;
         transactionFromDb.CreatedAt = transaction.CreatedAt;
         transactionFromDb.CreatedBy = transaction.CreatedBy;
+        transactionFromDb.Details.Clear();
+        transactionFromDb.Details.AddRange(transaction.Details);
     }
 }

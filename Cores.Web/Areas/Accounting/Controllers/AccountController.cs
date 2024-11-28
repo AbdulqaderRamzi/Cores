@@ -123,24 +123,29 @@ public class AccountController : Controller
     
 
     #region API CALLS
-    /*[HttpGet]
+    [HttpGet]
     public async Task<IActionResult> GetAccountTransactions(int accountId)
     {
+        // Fetch transactions for the specific account
         var transactions = await _unitOfWork.TransactionDetail.GetAll(
             td => td.AccountId == accountId,
             includeProperties: "Transaction");
-        
-        var response = transactions.Select(t => new
+    
+        // Map transactions to a view-friendly format
+        var response = transactions.Select(t => new 
         {
-            t.Transaction.TransactionDate,
-            t.Transaction.ReferenceNo,
-            t.Description,
-            t.DebitAmount,
-            t.CreditAmount
+            date = t.Transaction.TransactionDate.ToString("yyyy-MM-dd"),
+            referenceNo = t.Transaction.ReferenceNo,
+            description = t.Description,
+            debit = t.DebitAmount,
+            credit = t.CreditAmount
+        }).ToList();
+    
+        // Return JSON with a data property
+        return Json(new { 
+            data = response 
         });
-        
-        return Json(new { data = response });
-    }*/
+    }
     #endregion
 }
     

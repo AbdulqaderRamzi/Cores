@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cores.Models.Accounting;
 
@@ -11,12 +12,16 @@ public class TransactionDetail
     public int TransactionId { get; set; }
     [ForeignKey("TransactionId")]
     [ValidateNever]
-     public Transaction Transaction { get; set; }
+    /*
+    [DeleteBehavior(DeleteBehavior.NoAction)]
+    */
+    public Transaction Transaction { get; set; }
+
     
     public int AccountId { get; set; }
     [ForeignKey("AccountId")]
     [ValidateNever]
-    public Account Account { get; set; }
+    public Account Account { get; set; }    
     
     public decimal DebitAmount { get; set; }
     public decimal CreditAmount { get; set; }

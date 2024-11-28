@@ -96,14 +96,15 @@
             <div class="modal-body">
                 <table class="table" id="transactionsTable">
                     <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Reference</th>
-                            <th>Description</th>
-                            <th>Debit</th>
-                            <th>Credit</th>
-                        </tr>
+                    <tr>
+                        <th>Date</th>
+                        <th>Reference</th>
+                        <th>Description</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                    </tr>
                     </thead>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
@@ -112,27 +113,58 @@
 
 @section Scripts {
     <script>
-        function showTransactions(accountId) {
-            if ($.fn.DataTable.isDataTable('#transactionsTable')) {
-                $('#transactionsTable').DataTable().destroy();
-            }
+ 
 
-            $('#transactionsTable').DataTable({
-                ajax: {
-                    url: '/Accounting/Account/GetAccountTransactions?accountId=' + accountId,
-                    type: 'GET',
-                    datatype: 'json'
-                },
-                columns: [
-                    { data: 'transactionDate', render: function(data) { return moment(data).format('YYYY-MM-DD'); } },
-                    { data: 'referenceNo' },
-                    { data: 'description' },
-                    { data: 'debitAmount', render: function(data) { return parseFloat(data).toFixed(2); } },
-                    { data: 'creditAmount', render: function(data) { return parseFloat(data).toFixed(2); } }
-                ]
-            });
-
-            $('#transactionModal').modal('show');
-        }
-    </script>
+    // Initialize DataTable with enhanced configuration
+   function showTransactions(id) {
+     // Destroy existing DataTable instance if it exists
+         if ($.fn.DataTable.isDataTable('#transactionsTable')) {
+             $('#transactionsTable').DataTable().destroy();
+         }
+     
+         // Clear previous rows
+         $('#transactionsTable tbody').empty();
+         
+       // Initialize DataTable with enhanced configuration
+       $('#transactionsTable').DataTable({
+           ajax: {
+               url: '/Accounting/Account/GetAccountTransactions',
+               data: { accountId: id },
+           },
+           columns: [
+               {
+                   data: 'date',
+                   render: function(data) {
+                       // Format the date without using moment.js
+                       return new Date(data).toISOString().slice(0, 10);
+                   }
+               },
+               { data: 'referenceNo' },
+               { data: 'description' },
+               {
+                   data: 'debit',
+                   render: function(data) {
+                       // Format the debit amount
+                       return data ? data.toFixed(2) : '0.00';
+                   }
+               },
+               {
+                   data: 'credit',
+                   render: function(data) {
+                       // Format the credit amount
+                       return data ? data.toFixed(2) : '0.00';
+                   }
+               }
+           ],
+           // Optional: Add error handling
+           error: function(xhr, error, thrown) {
+               console.error('DataTables error:', error);
+               alert('Error loading transactions');
+           }
+       });
+    
+       // Show the modal
+       $('#transactionModal').modal('show');
+   }
+   </script>
 }

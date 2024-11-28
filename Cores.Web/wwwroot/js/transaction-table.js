@@ -1,18 +1,14 @@
 ﻿let accountOptions;
 let rowTemplate;
 
-function initTable(accountOpts, existingDetails) {
+function initTable(accountOpts) {
     accountOptions = accountOpts;
-
-    if (existingDetails && existingDetails.length > 0) {
-        $('table').rows.add(existingDetails).draw();
-    }
-    updateTotals();
-
+    console.log(accountOptions);
+    /*updateTotals();
     // Store template only if we have existing rows
     if ($('#detailsTableBody tr').length > 0) {
         rowTemplate = $('#detailsTableBody tr:first').clone();
-    }
+    }*/
 }
 
 function addDetailRow() {
