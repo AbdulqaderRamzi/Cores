@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cores.DataService.Migrations.HangfireDb
 {
     [DbContext(typeof(HangfireDbContext))]
-    [Migration("20241031222642_Inithangfire")]
-    partial class Inithangfire
+    [Migration("20241125222233_InitHangfire")]
+    partial class InitHangfire
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

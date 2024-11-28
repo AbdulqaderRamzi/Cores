@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Cores.DataService.Migrations
 {
     /// <inheritdoc />
-    public partial class InitCores : Migration
+    public partial class InitAppUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,19 +16,28 @@ namespace Cores.DataService.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "AccountTypes",
+                name: "Accounts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Code = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Type = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
+                    Category = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Balance = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountTypes", x => x.Id);
+                    table.PrimaryKey("PK_Accounts", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -177,19 +186,46 @@ namespace Cores.DataService.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "JournalTypes",
+                name: "HolidayTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ColorCode = table.Column<string>(type: "varchar(7)", maxLength: 7, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HolidayTypes", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Journals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Type = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
+                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JournalTypes", x => x.Id);
+                    table.PrimaryKey("PK_Journals", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -309,6 +345,31 @@ namespace Cores.DataService.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ReferenceNo = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TransactionDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TotalDebit = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    TotalCredit = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    Status = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Vendors",
                 columns: table => new
                 {
@@ -332,32 +393,6 @@ namespace Cores.DataService.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Vendors", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Accounts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    AccountTypeId = table.Column<int>(type: "int", nullable: false),
-                    Balance = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    Status = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Accounts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Accounts_AccountTypes_AccountTypeId",
-                        column: x => x.AccountTypeId,
-                        principalTable: "AccountTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -387,23 +422,65 @@ namespace Cores.DataService.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Journals",
+                name: "Holidays",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    JournalTypeId = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    HolidayTypeId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsRecurringYearly = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsWorkingDay = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Location = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DayOfWeek = table.Column<int>(type: "int", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    StartAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    EndAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Holidays", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Holidays_HolidayTypes_HolidayTypeId",
+                        column: x => x.HolidayTypeId,
+                        principalTable: "HolidayTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "JournalEntries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    JournalId = table.Column<int>(type: "int", nullable: false),
+                    EntryNumber = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    EntryDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsPosted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    PostedDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    PostedBy = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Journals", x => x.Id);
+                    table.PrimaryKey("PK_JournalEntries", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Journals_JournalTypes_JournalTypeId",
-                        column: x => x.JournalTypeId,
-                        principalTable: "JournalTypes",
+                        name: "FK_JournalEntries_Journals_JournalId",
+                        column: x => x.JournalId,
+                        principalTable: "Journals",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -507,6 +584,68 @@ namespace Cores.DataService.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "TransactionDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    TransactionId = table.Column<int>(type: "int", nullable: false),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    DebitAmount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    CreditAmount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransactionDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TransactionDetails_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TransactionDetails_Transactions_TransactionId",
+                        column: x => x.TransactionId,
+                        principalTable: "Transactions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "JournalEntryDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    JournalEntryId = table.Column<int>(type: "int", nullable: false),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    DebitAmount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    CreditAmount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JournalEntryDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_JournalEntryDetails_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_JournalEntryDetails_JournalEntries_JournalEntryId",
+                        column: x => x.JournalEntryId,
+                        principalTable: "JournalEntries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -585,12 +724,12 @@ namespace Cores.DataService.Migrations
                     EmployeeId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ArchiveTypeId = table.Column<int>(type: "int", nullable: true),
-                    Path = table.Column<string>(type: "longtext", nullable: true)
+                    Path = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UploadDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    ExpiryDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    ExpiryDate = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -677,8 +816,8 @@ namespace Cores.DataService.Migrations
                     Gender = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Salary = table.Column<decimal>(type: "decimal(65,30)", nullable: true),
-                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: true),
-                    DateOfJoining = table.Column<DateOnly>(type: "date", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    DateOfJoining = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     StreetAddress = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     BankName = table.Column<string>(type: "longtext", nullable: true)
@@ -713,6 +852,7 @@ namespace Cores.DataService.Migrations
                     employmentStatus = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DepartmentId = table.Column<int>(type: "int", nullable: true),
+                    WorkingDaysInMonth = table.Column<byte>(type: "tinyint unsigned", nullable: true),
                     PositionID = table.Column<int>(type: "int", nullable: true),
                     ManagerID = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -787,6 +927,7 @@ namespace Cores.DataService.Migrations
                     Status = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IsPresent = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsIgnored = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     EmployeeId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
@@ -968,46 +1109,6 @@ namespace Cores.DataService.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "JournalEntries",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    JournalId = table.Column<int>(type: "int", nullable: false),
-                    AccountId = table.Column<int>(type: "int", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Debit = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    Credit = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_JournalEntries", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_JournalEntries_Accounts_AccountId",
-                        column: x => x.AccountId,
-                        principalTable: "Accounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_JournalEntries_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_JournalEntries_Journals_JournalId",
-                        column: x => x.JournalId,
-                        principalTable: "Journals",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "LeaveRequests",
                 columns: table => new
                 {
@@ -1015,8 +1116,8 @@ namespace Cores.DataService.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     LeaveStatus = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    StartDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    EndDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     NumberOfDays = table.Column<int>(type: "int", nullable: false),
                     Reason = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -1027,6 +1128,7 @@ namespace Cores.DataService.Migrations
                     ManagerResponse = table.Column<bool>(type: "tinyint(1)", nullable: true),
                     HrResponse = table.Column<bool>(type: "tinyint(1)", nullable: true),
                     IsPayed = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsDeducted = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     ManagerResponseDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     HrResponseDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     ApprovedByHrId = table.Column<string>(type: "longtext", nullable: true)
@@ -1284,36 +1386,21 @@ namespace Cores.DataService.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Transactions",
+                name: "UnpaidLeaveDeductions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    DebitAccountId = table.Column<int>(type: "int", nullable: false),
-                    CreditAccountId = table.Column<int>(type: "int", nullable: false),
+                    Deduction = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                    table.PrimaryKey("PK_UnpaidLeaveDeductions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Transactions_Accounts_CreditAccountId",
-                        column: x => x.CreditAccountId,
-                        principalTable: "Accounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Transactions_Accounts_DebitAccountId",
-                        column: x => x.DebitAccountId,
-                        principalTable: "Accounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Transactions_AspNetUsers_ApplicationUserId",
+                        name: "FK_UnpaidLeaveDeductions_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -1481,11 +1568,6 @@ namespace Cores.DataService.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Accounts_AccountTypeId",
-                table: "Accounts",
-                column: "AccountTypeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ActivityLogs_ApplicationUserId",
                 table: "ActivityLogs",
                 column: "ApplicationUserId");
@@ -1638,19 +1720,14 @@ namespace Cores.DataService.Migrations
                 column: "ModifiedById");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Holidays_HolidayTypeId",
+                table: "Holidays",
+                column: "HolidayTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_JobApplications_RecruitmentId",
                 table: "JobApplications",
                 column: "RecruitmentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_JournalEntries_AccountId",
-                table: "JournalEntries",
-                column: "AccountId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_JournalEntries_ApplicationUserId",
-                table: "JournalEntries",
-                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_JournalEntries_JournalId",
@@ -1658,9 +1735,14 @@ namespace Cores.DataService.Migrations
                 column: "JournalId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Journals_JournalTypeId",
-                table: "Journals",
-                column: "JournalTypeId");
+                name: "IX_JournalEntryDetails_AccountId",
+                table: "JournalEntryDetails",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JournalEntryDetails_JournalEntryId",
+                table: "JournalEntryDetails",
+                column: "JournalEntryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LeaveRequests_EmployeeId",
@@ -1768,19 +1850,19 @@ namespace Cores.DataService.Migrations
                 column: "TrainerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transactions_ApplicationUserId",
-                table: "Transactions",
+                name: "IX_TransactionDetails_AccountId",
+                table: "TransactionDetails",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransactionDetails_TransactionId",
+                table: "TransactionDetails",
+                column: "TransactionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UnpaidLeaveDeductions_ApplicationUserId",
+                table: "UnpaidLeaveDeductions",
                 column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transactions_CreditAccountId",
-                table: "Transactions",
-                column: "CreditAccountId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transactions_DebitAccountId",
-                table: "Transactions",
-                column: "DebitAccountId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkSchedules_ApplicationUserId",
@@ -1906,10 +1988,13 @@ namespace Cores.DataService.Migrations
                 name: "Events");
 
             migrationBuilder.DropTable(
+                name: "Holidays");
+
+            migrationBuilder.DropTable(
                 name: "JobApplications");
 
             migrationBuilder.DropTable(
-                name: "JournalEntries");
+                name: "JournalEntryDetails");
 
             migrationBuilder.DropTable(
                 name: "LeaveRequests");
@@ -1939,7 +2024,10 @@ namespace Cores.DataService.Migrations
                 name: "Salaries");
 
             migrationBuilder.DropTable(
-                name: "Transactions");
+                name: "TransactionDetails");
+
+            migrationBuilder.DropTable(
+                name: "UnpaidLeaveDeductions");
 
             migrationBuilder.DropTable(
                 name: "Vendors");
@@ -1972,10 +2060,13 @@ namespace Cores.DataService.Migrations
                 name: "EventTypes");
 
             migrationBuilder.DropTable(
+                name: "HolidayTypes");
+
+            migrationBuilder.DropTable(
                 name: "Recruitments");
 
             migrationBuilder.DropTable(
-                name: "Journals");
+                name: "JournalEntries");
 
             migrationBuilder.DropTable(
                 name: "LeaveTypes");
@@ -1993,7 +2084,10 @@ namespace Cores.DataService.Migrations
                 name: "Accounts");
 
             migrationBuilder.DropTable(
-                name: "JournalTypes");
+                name: "Transactions");
+
+            migrationBuilder.DropTable(
+                name: "Journals");
 
             migrationBuilder.DropTable(
                 name: "Contacts");
@@ -2006,9 +2100,6 @@ namespace Cores.DataService.Migrations
 
             migrationBuilder.DropTable(
                 name: "Taxes");
-
-            migrationBuilder.DropTable(
-                name: "AccountTypes");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

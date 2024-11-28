@@ -97,7 +97,7 @@ public class TransactionController : Controller
         }
         
         var transactionData = JsonConvert.DeserializeObject<TransactionData>(serializedTransaction);
-        if (transactionData is null || !transactionData.TransactionDatas.Any())
+        if (transactionData is null || !transactionData.TransactionDetails.Any())
         {
             ModelState.AddModelError("", "Transaction must have at least one detail line");
             transactionVm.Accounts = await GetActiveAccounts();
