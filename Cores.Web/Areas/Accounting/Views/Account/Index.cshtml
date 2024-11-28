@@ -84,7 +84,7 @@
 </div>
 
 <!-- Transactions Modal -->
-<div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="transactionModal" tabindex="-1">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -94,18 +94,20 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table" id="transactionsTable">
-                    <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Reference</th>
-                        <th>Description</th>
-                        <th>Debit</th>
-                        <th>Credit</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <div class="table-bordered">                    
+                    <table class="table" id="transactionsTable" width="100%">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Reference</th>
+                            <th>Description</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -113,9 +115,7 @@
 
 @section Scripts {
     <script>
- 
 
-    // Initialize DataTable with enhanced configuration
    function showTransactions(id) {
      // Destroy existing DataTable instance if it exists
          if ($.fn.DataTable.isDataTable('#transactionsTable')) {
@@ -130,6 +130,7 @@
            ajax: {
                url: '/Accounting/Account/GetAccountTransactions',
                data: { accountId: id },
+               type: 'GET'
            },
            columns: [
                {
