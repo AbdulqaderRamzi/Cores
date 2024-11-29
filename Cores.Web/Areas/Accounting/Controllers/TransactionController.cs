@@ -293,7 +293,8 @@ public class TransactionController : Controller
                     break;
             }
             
-            /*var glEntry = new GeneralLedger
+            // Create GL entry
+            var glEntry = new GeneralLedger
             {
                 AccountId = detail.AccountId,
                 TransactionDate = transaction.TransactionDate,
@@ -303,10 +304,9 @@ public class TransactionController : Controller
                 CreditAmount = detail.CreditAmount,
                 RunningBalance = detail.Account.Balance
             };
-
             await _unitOfWork.GeneralLedger.Add(glEntry);
-            detail.Account.Balance = newBalance;*/
         }
+        await _unitOfWork.SaveAsync();
     }
 
     private async Task<string> GenerateJournalEntryNumber()

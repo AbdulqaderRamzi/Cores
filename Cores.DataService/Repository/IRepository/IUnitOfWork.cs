@@ -50,5 +50,6 @@ public interface IUnitOfWork
     IHolidayTypeRepository HolidayType { get; }
     IHolidayRepository Holiday { get; }
     ITransactionDetailRepository TransactionDetail { get; }
+    IGeneralLedgerRepository GeneralLedger { get; }
     Task SaveAsync();
 }
