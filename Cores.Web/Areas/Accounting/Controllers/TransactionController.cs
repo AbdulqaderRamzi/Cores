@@ -1,5 +1,6 @@
 ﻿using System.Transactions;
 using Cores.DataService.Repository.IRepository;
+using Cores.Models;
 using Cores.Models.Accounting;
 using Cores.Models.Accounting.Enums;
 using Cores.Models.ViewModels;
@@ -111,7 +112,7 @@ public class TransactionController : Controller
 
             var details = transactionData.Details;
             // Then add details with the new transaction ID
-            foreach (var detail in details)
+             foreach (var detail in details)
             {
                 detail.TransactionId = transactionVm.Transaction.Id;
             }
@@ -135,6 +136,7 @@ public class TransactionController : Controller
                 TempData["error"] = "Only draft transactions can be edited";
                 return RedirectToAction(nameof(Index));
             }
+            
             var details = transactionData.Details;
             // Then add details with the new transaction ID
             foreach (var detail in details)
@@ -154,7 +156,7 @@ public class TransactionController : Controller
         // If transaction is not in draft status, update account balances
         if (transactionVm.Transaction.Status != TransactionState.Draft.ToString())
         {
-            await ProcessTransaction(transactionVm.Transaction);
+             ProcessTransaction(transactionVm.Transaction);
         }
 
         await _unitOfWork.SaveAsync();
@@ -254,24 +256,67 @@ public class TransactionController : Controller
 
     private async Task ProcessTransaction(Transaction transaction)
     {
+        // Create journal entry
+        var journalEntry = new JournalEntry
+        {
+            TransactionId = transaction.Id,
+            EntryNumber = await GenerateJournalEntryNumber(),
+            EntryDate = transaction.TransactionDate,
+            Description = transaction.Description,
+            IsPosted = true,
+            PostedDate = DateTime.Now,
+            PostedBy = User.Identity?.Name!,
+            CreatedAt = DateTime.Now,
+            CreatedBy = User.Identity?.Name!,
+            Details = transaction.Details.Select(d => new JournalEntryDetail
+            {
+                AccountId = d.AccountId,
+                Description = d.Description,
+                DebitAmount = d.DebitAmount,
+                CreditAmount = d.CreditAmount
+            }).ToList()
+        };
+        
+        await _unitOfWork.JournalEntry.Add(journalEntry);
+        await _unitOfWork.SaveAsync();
+    
         foreach (var detail in transaction.Details)
         {
-            var account = await _unitOfWork.Account.Get(a => a.Id == detail.AccountId);
-            if (account == null) continue;
-
-            // Update account balance based on account type and debit/credit amounts
-            switch (account.Type)
+        
+            switch (detail.Account.Type)
             {
                 case "Asset" or "Expense":
-                    account.Balance += (detail.DebitAmount) - (detail.CreditAmount);
+                    detail.Account.Balance += detail.DebitAmount - detail.CreditAmount;
                     break;
                 case "Liability" or "Equity" or "Revenue":
-                    account.Balance += (detail.CreditAmount) - (detail.DebitAmount);
+                    detail.Account.Balance += detail.CreditAmount - detail.DebitAmount;
                     break;
             }
+            
+            /*var glEntry = new GeneralLedger
+            {
+                AccountId = detail.AccountId,
+                TransactionDate = transaction.TransactionDate,
+                JournalEntryId = journalEntry.Id,
+                Description = detail.Description,
+                DebitAmount = detail.DebitAmount,
+                CreditAmount = detail.CreditAmount,
+                RunningBalance = detail.Account.Balance
+            };
 
-            await _unitOfWork.Account.Update(account);
+            await _unitOfWork.GeneralLedger.Add(glEntry);
+            detail.Account.Balance = newBalance;*/
         }
+    }
+
+    private async Task<string> GenerateJournalEntryNumber()
+    {
+        var today = DateTime.Now;
+        var entries = await _unitOfWork.JournalEntry.GetAll(
+            j => j.CreatedAt.Date == today.Date);
+    
+        var count = entries.Count() + 1;
+        return $"JE-{today:yyyyMMdd}-{count:D4}";
     }
 
     #region API CALLS

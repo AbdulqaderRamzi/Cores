@@ -36,7 +36,7 @@
 
                 <!-- Header Information -->
                 <div class="row g-3 mb-4">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="Transaction.ReferenceNo" class="form-label">Reference Number</label>
                             <div class="input-group">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="Transaction.TransactionDate" class="form-label required">Transaction Date</label>
                             <div class="input-group">
@@ -62,7 +62,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    @*<div class="col-md-4">
                         <div class="form-group">
                             <label class="form-label">Status</label>
                             <div class="input-group">
@@ -70,7 +70,7 @@
                                 <input value="@Model.Transaction.Status" class="form-control" readonly>
                             </div>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
 
                 <!-- Description -->
@@ -125,11 +125,10 @@
                                     </tr>
                                 </thead>
                               <tbody id="detailsTableBody">
-                                  @if (Model.Transaction.Details != null && Model.Transaction.Details.Any())
+                                  @if (Model.Transaction.Details.Any())
                                   {
                                       @for (var i = 0; i < Model.Transaction.Details.Count; i++)
                                       {
-                                          var detail = Model.Transaction.Details[i];
                                           <tr>
                                               <td>@(i + 1)</td>
                                               <td>
@@ -214,23 +213,29 @@
                             <div>Total debits must equal total credits. </div>
                         </div>
                     </div>
-                    <div class="col-12">
-                        <div class="d-flex gap-2">
-                            <a asp-action="Index" class="btn btn-secondary">
-                                <i class="fas fa-arrow-left"></i> Back to List
-                            </a>
-                            <button type="submit" class="btn btn-primary" id="submitButton" disabled>
-                                <i class="fas fa-save"></i> Save Changes
+                    <div class="row">
+                      <div class="col-12">
+                        <!-- Back to List Button -->
+                      <a asp-action="Index" class="btn btn-secondary d-inline-flex align-items-center gap-2">
+                          <i class="fas fa-arrow-left pr-1"></i> Back to List
+                      </a>
+                         
+                        <!-- Save Changes Button -->
+                      <button type="submit" class="btn btn-primary d-inline-flex align-items-center gap-2">
+                          <i class="fas fa-save pr-1"></i> Save Changes
+                      </button>
+                         
+                        <!-- Post Transaction Button (conditional) -->
+                        @if (Model.Transaction.Id > 0 && Model.Transaction.Status == TransactionState.Draft.ToString())
+                        {
+                            <button type="button" class="btn btn-success d-inline-flex align-items-center gap-2" onclick="postTransaction(@Model.Transaction.Id)">
+                                <i class="fas fa-check-circle pr-1"></i> Post Transaction
                             </button>
-                            @if (Model.Transaction.Id > 0 && Model.Transaction.Status == TransactionState.Draft.ToString())
-                            {
-                                <button type="button" class="btn btn-success" onclick="postTransaction(@Model.Transaction.Id)">
-                                    <i class="fas fa-check-circle"></i> Post Transaction
-                                </button>
-                            }
-                        </div>
+                        }
                     </div>
                 </div>
+            </div>
+
             </form>
         </div>
     </div>
@@ -287,12 +292,12 @@
                 $('#descriptionCount').text(this.value.length);
               })
             .trigger('input');
-           /* // If no rows exist, add one empty row
-              if ($('#detailsTableBody tr').length === 0) {
+            // If no rows exist, add one empty row
+             /* if ($('#detailsTableBody tr').length === 0) {
                   addDetailRow();
-              }*/
-          /*
-             // Calculate initial totals
+              }
+            */
+           /*  // Calculate initial totals
               updateTotals();*/
           
               let accountOptions = @Json.Serialize(Model.Accounts.Select(a => new {value = a.Value, text = a.Text}));

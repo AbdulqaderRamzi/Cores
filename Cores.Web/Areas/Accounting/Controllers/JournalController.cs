@@ -1,4 +1,4 @@
-﻿using Cores.DataService.Repository.IRepository;
+﻿/*using Cores.DataService.Repository.IRepository;
 using Cores.Models.Accounting;
 using Cores.Models.Accounting.Enums;
 using Cores.Models.ViewModels;
@@ -98,4 +98,4 @@ public class JournalController : Controller
     #endregion
     
  
-}
+}*/

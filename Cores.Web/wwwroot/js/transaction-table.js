@@ -176,10 +176,14 @@ function updateTotals() {
     if (difference > 0) {
         $('#differenceLine').removeClass('d-none');
         $('#totalDifference').val(difference.toFixed(2));
+/*
         $('#submitButton').prop('disabled', true);
+*/
     } else {
         $('#differenceLine').addClass('d-none');
+/*
         $('#submitButton').prop('disabled', false);
+*/
     }
 }
 

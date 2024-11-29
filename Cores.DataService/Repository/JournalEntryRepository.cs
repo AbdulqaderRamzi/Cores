@@ -19,7 +19,9 @@ public class JournalEntryRepository : Repository<JournalEntry>, IJournalEntryRep
         var journalEntryFromDb = await _db.JournalEntries.FirstOrDefaultAsync(je => je.Id == journalEntry.Id);
         if (journalEntryFromDb is null)
             return;
+        /*
         journalEntryFromDb.JournalId = journalEntry.JournalId;
+        */
         journalEntryFromDb.EntryNumber = journalEntry.EntryNumber;
         journalEntryFromDb.EntryDate = journalEntry.EntryDate;
         journalEntryFromDb.Description = journalEntry.Description;
