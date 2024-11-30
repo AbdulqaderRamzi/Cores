@@ -7,4 +7,5 @@ public enum AccountType
     Equity,     // Credit increases, Debit decreases
     Revenue,    // Credit increases, Debit decreases
     Expense     // Debit increases, Credit decreases
+// Withdrawals/Dividends
 }

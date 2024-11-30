@@ -73,6 +73,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<UnpaidLeaveDeduction> UnpaidLeaveDeductions { get; set; }
     public DbSet<HolidayType> HolidayTypes { get; set; }
     public DbSet<Holiday> Holidays { get; set; }
+    public DbSet<GeneralLedger> GeneralLedgers { get; set; }
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
         IHttpContextAccessor httpContextAccessor) : base(options)

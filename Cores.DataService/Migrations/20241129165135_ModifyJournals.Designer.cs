@@ -4,6 +4,7 @@ using Cores.DataService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cores.DataService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241129165135_ModifyJournals")]
+    partial class ModifyJournals
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,45 +130,6 @@ namespace Cores.DataService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Currencies");
-                });
-
-            modelBuilder.Entity("Cores.Models.Accounting.GeneralLedger", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("CreditAmount")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<decimal>("DebitAmount")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("JournalEntryId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("RunningBalance")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<DateTime>("TransactionDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("JournalEntryId");
-
-                    b.ToTable("GeneralLedgers");
                 });
 
             modelBuilder.Entity("Cores.Models.Accounting.Journal", b =>
@@ -2065,25 +2029,6 @@ namespace Cores.DataService.Migrations
                         .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Cores.Models.Accounting.GeneralLedger", b =>
-                {
-                    b.HasOne("Cores.Models.Accounting.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cores.Models.Accounting.JournalEntry", "JournalEntry")
-                        .WithMany()
-                        .HasForeignKey("JournalEntryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-
-                    b.Navigation("JournalEntry");
                 });
 
             modelBuilder.Entity("Cores.Models.Accounting.JournalEntry", b =>

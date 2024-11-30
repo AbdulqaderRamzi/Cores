@@ -42,7 +42,7 @@ public class AccountController : Controller
             return View(accountVm);
         }
 
-        var account = await _unitOfWork.Account.Get(a => a.Id == id);
+        var account = await _unitOfWork.Account.Get(a => a.Id == id);   
         if (account is null)
         {
             return NotFound();

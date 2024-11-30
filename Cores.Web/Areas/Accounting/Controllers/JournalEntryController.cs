@@ -21,7 +21,13 @@ public class JournalEntryController : Controller
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<IActionResult> Upsert(int? id, int? journalId)
+    public async Task<IActionResult> Index()
+    {
+        var journalEntries = await _unitOfWork.JournalEntry.GetAll();
+        return View(journalEntries);
+    }
+
+    /*public async Task<IActionResult> Upsert(int? id, int? journalId)
     {
         JournalEntryVm entryVm = new()
         {
@@ -30,14 +36,14 @@ public class JournalEntryController : Controller
         };
 
         // Edit mode
-        if (id != null && id > 0)
+        if (id is > 0)
         {
             var entry = await _unitOfWork.JournalEntry.Get(
                 e => e.Id == id,
                 includeProperties: "Details"
             );
             
-            if (entry == null) return NotFound();
+            if (entry is null) return NotFound();
             
             // Prevent editing of posted entries
             if (entry.IsPosted)
@@ -49,10 +55,10 @@ public class JournalEntryController : Controller
             entryVm.JournalEntry = entry;
         }
         // Create mode
-        else if (journalId != null && journalId > 0)
+        else if (journalId is > 0)
         {
             var journal = await _unitOfWork.Journal.Get(j => j.Id == journalId);
-            if (journal == null) return NotFound();
+            if (journal is null) return NotFound();
 
             entryVm.JournalEntry = new()
             {
@@ -90,7 +96,7 @@ public class JournalEntryController : Controller
         }
 
         // Create mode
-        if (entryVm.JournalEntry.Id == 0)
+        if (entryVm.JournalEntry.Id is 0)
         {
             entryVm.JournalEntry.CreatedAt = DateTime.Now;
             entryVm.JournalEntry.CreatedBy = User.Identity?.Name!;
@@ -117,7 +123,7 @@ public class JournalEntryController : Controller
             {
                 /*
                 await _unitOfWork.JournalEntryDetail.Remove(detail);
-            */
+            #1#
             }
 
             // Update entry properties
@@ -187,5 +193,5 @@ public class JournalEntryController : Controller
         entry.PostedDate = DateTime.Now;
         entry.PostedBy = User.Identity?.Name!;
         await _unitOfWork.SaveAsync();
-    }
+    }*/
 }

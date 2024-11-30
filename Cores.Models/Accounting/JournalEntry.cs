@@ -9,10 +9,16 @@ public class JournalEntry
 {
     public int Id { get; set; }
     
+    public int TransactionId { get; set; }
+    [ForeignKey("TransactionId")]
+    [ValidateNever]
+    public Transaction Transaction { get; set; }
+    
+    /*
     public int JournalId { get; set; }
     [ForeignKey("JournalId")]
     [ValidateNever]
-    public Journal Journal { get; set; }
+    public Journal Journal { get; set; }*/
     
     public string EntryNumber { get; set; }
     public DateTime EntryDate { get; set; }
