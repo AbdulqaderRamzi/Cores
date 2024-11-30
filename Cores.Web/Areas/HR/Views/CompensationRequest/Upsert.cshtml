@@ -1,0 +1,119 @@
+﻿@model CompensationRequestVm
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header">
+            <h4 class="text-primary">@(Model.CompensationRequest.Id == 0 ? "New Compensation Request" : "Edit Request")</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <input asp-for="CompensationRequest.Id" hidden />
+                <input asp-for="CompensationRequest.ApplicationUserId" hidden />
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="CompensationRequest.RequestType" class="form-label">Request Type</label>
+                            <select asp-for="CompensationRequest.RequestType" asp-items="Model.CompensationTypes"
+                                    class="form-control select2">
+                                <option disabled selected>-- Select Request Type --</option>
+                            </select>
+                            <span asp-validation-for="CompensationRequest.RequestType" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                        <label asp-for="CompensationRequest.RequestedAmount" class="form-label">Requested Amount</label>
+                        <input asp-for="CompensationRequest.RequestedAmount" class="form-control" type="number" step="0.01"/>
+                        <span asp-validation-for="CompensationRequest.RequestedAmount" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                        <label asp-for="CompensationRequest.PeriodStart" class="form-label">Period Start</label>
+                        <input asp-for="CompensationRequest.PeriodStart" id="period-start" class="form-control"/>
+                        <span asp-validation-for="CompensationRequest.PeriodStart" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="CompensationRequest.PeriodEnd" class="form-label">Period End</label>
+                            <input asp-for="CompensationRequest.PeriodEnd" id="period-end" class="form-control" />
+                            <span asp-validation-for="CompensationRequest.PeriodEnd" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CompensationRequest.Justification" class="form-label">Justification</label>
+                    <textarea asp-for="CompensationRequest.Justification" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="CompensationRequest.Justification" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CompensationRequest.SupportingDocuments" class="form-label">Supporting Documents</label>
+                    <input asp-for="CompensationRequest.SupportingDocuments" class="form-control" type="file" multiple />
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow,
+    .form-control {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    .input-group-text {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+    }
+    #period-start, 
+    #period-end {
+        background-color: #ffffff !important;
+    }
+</style>
+
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script src="~/js/select2.js"></script>
+    <script>
+        $(document).ready(function() {
+            flatpickr("#period-start,#period-end", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i"
+            });
+        });
+    </script>
+}

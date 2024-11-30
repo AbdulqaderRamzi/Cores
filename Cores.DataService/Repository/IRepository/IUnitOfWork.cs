@@ -51,5 +51,7 @@ public interface IUnitOfWork
     IHolidayRepository Holiday { get; }
     ITransactionDetailRepository TransactionDetail { get; }
     IGeneralLedgerRepository GeneralLedger { get; }
+    IDocumentRequestRepository DocumentRequest { get; }
+    ICompensationRequestRepository CompensationRequest { get; }
     Task SaveAsync();
 }

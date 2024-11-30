@@ -56,6 +56,8 @@ public class UnitOfWork : IUnitOfWork
     public IHolidayRepository Holiday { get; }
     public ITransactionDetailRepository TransactionDetail { get; }
     public IGeneralLedgerRepository GeneralLedger { get; }
+    public IDocumentRequestRepository DocumentRequest { get; }
+    public ICompensationRequestRepository CompensationRequest { get; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
@@ -109,6 +111,8 @@ public class UnitOfWork : IUnitOfWork
         Holiday = new HolidayRepository(_db);
         TransactionDetail = new TransactionDetailRepository(_db);
         GeneralLedger = new GeneralLedgerRepository(_db);
+        DocumentRequest = new DocumentRequestRepository(_db);
+        CompensationRequest = new CompensationRequestRepository(_db);
     }
 
     public async Task SaveAsync() => await _db.SaveChangesAsync();

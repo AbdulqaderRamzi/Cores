@@ -51,25 +51,45 @@
             string area;
             if (User.IsInRole(SD.ADMIN_ROLE))
             {
-                area = "Admin";   
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dashboard"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Dashboards</span>
+                </a>
+                <div id="dashboard" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" asp-area="Hr" asp-controller="Dashboard" asp-action="Index">Hr</a>
+                    <a class="collapse-item" asp-area="CRM" asp-controller="Dashboard" asp-action="Index">CRM</a>
+                    <a class="collapse-item" asp-area="Accounting" asp-controller="Dashboard" asp-action="Index">Accounting</a>
+                    <a class="collapse-item" asp-area="Employee" asp-controller="Dashboard" asp-action="Index">Employee</a>
+                </div>
+                </div>
+
             } else if (User.IsInRole(SD.HR_ROLE)) {
-                area = "Hr";    
+                <a class="nav-link" asp-area="Hr" asp-controller="Dashboard" asp-action="Index">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a> 
             } else if (User.IsInRole(SD.CRM_ROLE))
             {
-                area = "Crm";
+                <a class="nav-link" asp-area="CRM" asp-controller="Dashboard" asp-action="Index">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
             } else if (User.IsInRole(SD.ACCOUNTING_ROLE))
             {
-                area = "Accounting";
+                <a class="nav-link" asp-area="Accounting" asp-controller="Dashboard" asp-action="Index">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
             }
             else
             {
-                area = "Employee";
+                <a class="nav-link" asp-area="Employee" asp-controller="Dashboard" asp-action="Index">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
             }
-
-            <a class="nav-link" asp-area="@area" asp-controller="Dashboard" asp-action="Index">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span>
-            </a>
         }
     </li>
         
@@ -113,6 +133,8 @@
                     <a class="collapse-item" asp-area="HR" asp-controller="Department" asp-action="Index">Departments</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="Position" asp-action="Index">Positions</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="LeaveRequest" asp-action="Index">Leave Requests</a>
+                    <a class="collapse-item" asp-area="HR" asp-controller="DocumentRequest" asp-action="Index">Document Requests</a>
+                    <a class="collapse-item" asp-area="HR" asp-controller="CompensationRequest" asp-action="Index">Compensation Requests</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="LeaveType" asp-action="Index">Leave Types</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="Attendance" asp-action="HrAttendance">Attendances</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="Attendance" asp-action="LateEmployee">Late Employees</a>

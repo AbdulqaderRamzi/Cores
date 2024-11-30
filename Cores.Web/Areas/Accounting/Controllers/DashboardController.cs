@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Cores.Web.Areas.Accounting.Controllers;
 
 [Area("Accounting")]
-[Authorize(Roles = SD.ACCOUNTING_ROLE)]
+[Authorize(Roles = SD.ACCOUNTING_ROLE + "," + SD.ADMIN_ROLE)]
 public class DashboardController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;

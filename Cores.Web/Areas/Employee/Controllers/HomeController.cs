@@ -13,10 +13,9 @@ public class HomeController : Controller
 {
     public IActionResult Index()
     {
-        return User.IsInRole(SD.ADMIN_ROLE) ? RedirectToAction(nameof(Index), "Dashboard", new { area = "Admin"}) :
+        return User.IsInRole(SD.ADMIN_ROLE) || User.IsInRole(SD.HR_ROLE) ? RedirectToAction(nameof(Index), "Dashboard", new { area = "Hr"}) :
             User.IsInRole(SD.ACCOUNTING_ROLE) ? RedirectToAction(nameof(Index), "Dashboard", new { area = "Accounting"}) :
             User.IsInRole(SD.CRM_ROLE) ? RedirectToAction(nameof(Index), "Dashboard", new { area = "CRM"}) :
-            User.IsInRole(SD.HR_ROLE) ? RedirectToAction(nameof(Index), "Dashboard", new { area = "HR"}) :
             RedirectToAction(nameof(Index), "Dashboard", new { area = "Employee"});
     }
 

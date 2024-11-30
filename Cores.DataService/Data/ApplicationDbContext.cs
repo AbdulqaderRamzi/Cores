@@ -74,6 +74,8 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<HolidayType> HolidayTypes { get; set; }
     public DbSet<Holiday> Holidays { get; set; }
     public DbSet<GeneralLedger> GeneralLedgers { get; set; }
+    public DbSet<DocumentRequest> DocumentRequests { get; set; }
+    public DbSet<CompensationRequest> CompensationRequests { get; set; }
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
         IHttpContextAccessor httpContextAccessor) : base(options)

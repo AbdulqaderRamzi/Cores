@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cores.Web.Areas.CRM.Controllers;
 
 [Area("CRM")]
-[Authorize(Roles = SD.CRM_ROLE)]
+[Authorize(Roles = SD.CRM_ROLE + "," + SD.ADMIN_ROLE)]
 public class DashboardController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;

@@ -4,6 +4,7 @@ using Cores.DataService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cores.DataService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241130203441_AddDocumentRequest")]
+    partial class AddDocumentRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -953,63 +956,6 @@ namespace Cores.DataService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Benefits");
-                });
-
-            modelBuilder.Entity("Cores.Models.HR.CompensationRequest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime?>("ApprovalDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("ApprovedById")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Comments")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Justification")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("PeriodEnd")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("PeriodStart")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("RequestDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("RequestType")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<decimal>("RequestedAmount")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("SupportingDocuments")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("ApprovedById");
-
-                    b.ToTable("CompensationRequests");
                 });
 
             modelBuilder.Entity("Cores.Models.HR.Deduction", b =>
@@ -2390,23 +2336,6 @@ namespace Cores.DataService.Migrations
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("Cores.Models.HR.CompensationRequest", b =>
-                {
-                    b.HasOne("Cores.Models.ApplicationUser", "Employee")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cores.Models.ApplicationUser", "ApprovedBy")
-                        .WithMany()
-                        .HasForeignKey("ApprovedById");
-
-                    b.Navigation("ApprovedBy");
 
                     b.Navigation("Employee");
                 });

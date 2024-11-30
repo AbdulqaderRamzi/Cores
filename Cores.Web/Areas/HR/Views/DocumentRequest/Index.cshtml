@@ -1,0 +1,58 @@
+﻿@model IEnumerable<DocumentRequest>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Document Requests</h6>
+            <a class="btn btn-primary" asp-action="Upsert">
+                <i class="fas fa-plus"></i> New Request
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Document Type</th>
+                        <th>Request Date</th>
+                        <th>Status</th>
+                        <th>Approved By</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Employee.FirstName @item.Employee.LastName</td>
+                            <td>@item.DocumentType</td>
+                            <td>@item.RequestDate.ToShortDateString()</td>
+                            <td>@item.Status</td>
+                            <td>@(item.ApprovedBy?.FirstName ?? "-")</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a asp-action="Upsert" asp-route-id="@item.Id" 
+                                       class="btn btn-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    @if (item.Status == "Pending")
+                                    {
+                                        <form asp-action="ApproveRequest" asp-route-id="@item.Id" 
+                                              method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
