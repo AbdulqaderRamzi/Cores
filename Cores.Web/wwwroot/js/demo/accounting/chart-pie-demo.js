@@ -1,15 +1,22 @@
+// Access the data from the div
+const problemData = document.getElementById("problemData");
+
+const openProblems = problemData.getAttribute("data-open-problems");
+const pendingProblems = problemData.getAttribute("data-pending-problems");
+const closedProblems = problemData.getAttribute("data-closed-problems");
+
 // Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
 // Pie Chart Example
-let accCtx = document.getElementById("myPieChart");
-let myPieChart = new Chart(accCtx, {
+let crmCtx = document.getElementById("myPieChart");
+let myPieChart = new Chart(crmCtx, {
     type: 'doughnut',
     data: {
-        labels: ["Open", "Pending", "Close"],
+        labels: ["Assets", "Liabilities", "Equity"],
         datasets: [{
-            data: [55, 30, 15],
+            data: [openProblems, pendingProblems, closedProblems],
             backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
             hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
             hoverBorderColor: "rgba(234, 236, 244, 1)",

@@ -1,21 +1,24 @@
+// Get the element containing the monthly earnings data
+let monthlyExpensesData = document.getElementById("monthlyExpensesData");
+
+// Parse the JSON string into a JavaScript object
+let monthlyExpenses = JSON.parse(monthlyExpensesData.getAttribute("data-monthly-expenses"));
+
+// Extract labels (months) and data
+let barLabels = Object.keys(monthlyExpenses);
+let barData = Object.values(monthlyExpenses);
+
 // Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
 function number_format(number, decimals, dec_point, thousands_sep) {
-    // *     example: number_format(1234.56, 2, ',', ' ');
-    // *     return: '1 234,56'
     number = (number + '').replace(',', '').replace(' ', '');
     var n = !isFinite(+number) ? 0 : +number,
         prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
         sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
         dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
-        s = '',
-        toFixedFix = function (n, prec) {
-            var k = Math.pow(10, prec);
-            return '' + Math.round(n * k) / k;
-        };
-    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+        s = '';
     s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
     if (s[0].length > 3) {
         s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
@@ -32,13 +35,13 @@ var ctx = document.getElementById("myBarChart");
 var myBarChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ["January", "February", "March", "April", "May", "June"],
+        labels: barLabels,
         datasets: [{
             label: "Revenue",
             backgroundColor: "#4e73df",
             hoverBackgroundColor: "#2e59d9",
             borderColor: "#4e73df",
-            data: [4215, 5312, 6251, 7841, 9821, 14984],
+            data: barData,
         }],
     },
     options: {
@@ -68,11 +71,9 @@ var myBarChart = new Chart(ctx, {
             yAxes: [{
                 ticks: {
                     min: 0,
-                    max: 15000,
                     maxTicksLimit: 5,
                     padding: 10,
-                    // Include a dollar sign in the ticks
-                    callback: function (value, index, values) {
+                    callback: function(value, index, values) {
                         return '$' + number_format(value);
                     }
                 },
@@ -101,11 +102,11 @@ var myBarChart = new Chart(ctx, {
             displayColors: false,
             caretPadding: 10,
             callbacks: {
-                label: function (tooltipItem, chart) {
+                label: function(tooltipItem, chart) {
                     var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
                     return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
                 }
             }
-        },
+        }
     }
 });

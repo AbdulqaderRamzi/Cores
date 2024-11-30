@@ -57,10 +57,15 @@
             } else if (User.IsInRole(SD.CRM_ROLE))
             {
                 area = "Crm";
-            } else
+            } else if (User.IsInRole(SD.ACCOUNTING_ROLE))
+            {
+                area = "Accounting";
+            }
+            else
             {
                 area = "Employee";
             }
+
             <a class="nav-link" asp-area="@area" asp-controller="Dashboard" asp-action="Index">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span>

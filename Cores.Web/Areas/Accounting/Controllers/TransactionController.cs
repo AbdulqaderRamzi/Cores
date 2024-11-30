@@ -287,7 +287,7 @@ public class TransactionController : Controller
             {
                 case "Asset" or "Expense":
                     detail.Account.Balance += detail.DebitAmount - detail.CreditAmount;
-                    break;
+                    break;  
                 case "Liability" or "Equity" or "Revenue":
                     detail.Account.Balance += detail.CreditAmount - detail.DebitAmount;
                     break;
