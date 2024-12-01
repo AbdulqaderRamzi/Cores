@@ -58,6 +58,8 @@ public class UnitOfWork : IUnitOfWork
     public IGeneralLedgerRepository GeneralLedger { get; }
     public IDocumentRequestRepository DocumentRequest { get; }
     public ICompensationRequestRepository CompensationRequest { get; }
+    public IBenefitsRequestRepository BenefitsRequest { get; }
+    public IAdministrativeRequestRepository AdministrativeRequest { get; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
@@ -113,6 +115,8 @@ public class UnitOfWork : IUnitOfWork
         GeneralLedger = new GeneralLedgerRepository(_db);
         DocumentRequest = new DocumentRequestRepository(_db);
         CompensationRequest = new CompensationRequestRepository(_db);
+        BenefitsRequest = new BenefitsRequestRepository(_db);
+        AdministrativeRequest = new AdministrativeRequestRepository(_db);
     }
 
     public async Task SaveAsync() => await _db.SaveChangesAsync();

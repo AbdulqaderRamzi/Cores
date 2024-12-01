@@ -1,0 +1,126 @@
+﻿@model AdministrativeRequestVm
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header">
+            <h4 class="text-primary">@(Model.AdministrativeRequest.Id is 0 ? "New Administrative Request" : "Edit Request")</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <input asp-for="AdministrativeRequest.Id" hidden />
+                <input asp-for="AdministrativeRequest.ApplicationUserId" hidden />
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="AdministrativeRequest.RequestType" class="form-label">Request Type</label>
+                        <select asp-for="AdministrativeRequest.RequestType" asp-items="Model.RequestTypes" 
+                                class="form-control select2" id="requestType">
+                            <option disabled selected>-- Select Request Type --</option>
+                        </select>
+                        <span asp-validation-for="AdministrativeRequest.RequestType" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="AdministrativeRequest.RequiredDate" class="form-label">Required Date</label>
+                        <input asp-for="AdministrativeRequest.RequiredDate" id="requiredDate" class="form-control" />
+                        <span asp-validation-for="AdministrativeRequest.RequiredDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label asp-for="AdministrativeRequest.Purpose" class="form-label">Purpose</label>
+                        <textarea asp-for="AdministrativeRequest.Purpose" class="form-control" rows="2"></textarea>
+                        <span asp-validation-for="AdministrativeRequest.Purpose" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input asp-for="AdministrativeRequest.IsReplacement" class="form-check-input" id="isReplacement" />
+                            <label asp-for="AdministrativeRequest.IsReplacement" class="form-check-label">Is this a replacement?</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="replacementFields" style="display:none;">
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label asp-for="AdministrativeRequest.ReplacementReason" class="form-label">Replacement Reason</label>
+                            <textarea asp-for="AdministrativeRequest.ReplacementReason" class="form-control" rows="2"></textarea>
+                            <span asp-validation-for="AdministrativeRequest.ReplacementReason" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label asp-for="AdministrativeRequest.AdditionalNotes" class="form-label">Additional Notes</label>
+                        <textarea asp-for="AdministrativeRequest.AdditionalNotes" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow,
+    .form-control {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+</style>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script>
+        $(document).ready(function() {
+            flatpickr("#requiredDate", {
+                enableTime: true,
+                dateFormat: "Y-m-d"
+            });
+
+            $('#isReplacement').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#replacementFields').show();
+                } else {
+                    $('#replacementFields').hide();
+                }
+            });
+
+            // Show replacement fields if editing and replacement is checked
+            if ($('#isReplacement').is(':checked')) {
+                $('#replacementFields').show();
+            }
+        });
+    </script>
+}

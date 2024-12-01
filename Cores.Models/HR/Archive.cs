@@ -18,7 +18,7 @@ public class Archive
     [ValidateNever]
     public ArchiveType ArchiveType { get; set; }
     
-    public string Path { get; set; }
+    public string? Path { get; set; }
     public string? Description { get; set; }
     public DateOnly UploadDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
     public DateTime? ExpiryDate { get; set; }

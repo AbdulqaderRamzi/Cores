@@ -50,7 +50,7 @@ public class ArchiveController : Controller
     [HttpPost]
     public async Task<IActionResult> Upsert(ArchiveVm archiveVm, IFormFile? file)
     {
-        if (!ModelState.IsValid)
+        if (!ModelState.IsValid || file is null)
         {
             await FillSelectionDate(archiveVm);
             return View(archiveVm);
@@ -59,26 +59,23 @@ public class ArchiveController : Controller
         /* Start Of Handling The File */
 
         var wwwRootPath = _webHostEnvironment.WebRootPath;
-        if (file is not null)
+        var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+        var documentsPath = Path.Combine(wwwRootPath, @"images\archives");
+        await using (var fileStream = new FileStream(Path.Combine(documentsPath, fileName), FileMode.Create))
         {
-            var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
-            var documentsPath = Path.Combine(wwwRootPath, @"images\archives");
-            await using (var fileStream = new FileStream(Path.Combine(documentsPath, fileName), FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
-
-            if (!string.IsNullOrEmpty(archiveVm.Archive.Path))
-            {
-                var oldDocumentPath = Path.Combine(wwwRootPath, archiveVm.Archive.Path.TrimStart('\\'));
-                if (System.IO.File.Exists(oldDocumentPath))
-                {
-                    System.IO.File.Delete(oldDocumentPath);
-                }
-            }
-            archiveVm.Archive.Path = @"\images\archives\" + fileName;
+            await file.CopyToAsync(fileStream);
         }
-        else
+
+        if (!string.IsNullOrEmpty(archiveVm.Archive.Path))
+        {
+            var oldDocumentPath = Path.Combine(wwwRootPath, archiveVm.Archive.Path.TrimStart('\\'));
+            if (System.IO.File.Exists(oldDocumentPath))
+            {
+                System.IO.File.Delete(oldDocumentPath);
+            }
+        }
+        archiveVm.Archive.Path = @"\images\archives\" + fileName;
+        /*else
         {
             var archive = await _unitOfWork.Archive.Get(a => a.Id == archiveVm.Archive.Id, isTracked:false);
             if (archive is null)
@@ -94,7 +91,7 @@ public class ArchiveController : Controller
             {
                 archiveVm.Archive.Path = archive.Path;
             }
-        }
+        }*/
 
         /* End Of Handling The File */
         if (archiveVm.Archive.Id == 0)

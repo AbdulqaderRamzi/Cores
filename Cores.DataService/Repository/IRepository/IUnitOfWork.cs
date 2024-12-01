@@ -53,5 +53,7 @@ public interface IUnitOfWork
     IGeneralLedgerRepository GeneralLedger { get; }
     IDocumentRequestRepository DocumentRequest { get; }
     ICompensationRequestRepository CompensationRequest { get; }
+    IBenefitsRequestRepository BenefitsRequest { get; }
+    IAdministrativeRequestRepository AdministrativeRequest { get; }
     Task SaveAsync();
 }

@@ -76,6 +76,8 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<GeneralLedger> GeneralLedgers { get; set; }
     public DbSet<DocumentRequest> DocumentRequests { get; set; }
     public DbSet<CompensationRequest> CompensationRequests { get; set; }
+    public DbSet<BenefitsRequest> BenefitsRequests { get; set; }
+    public DbSet<AdministrativeRequest> AdministrativeRequests { get; set; }
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
         IHttpContextAccessor httpContextAccessor) : base(options)

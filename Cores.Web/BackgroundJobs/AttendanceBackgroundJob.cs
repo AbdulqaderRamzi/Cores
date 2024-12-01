@@ -18,6 +18,7 @@ public class AttendanceBackgroundJob
         var today = DateOnly.FromDateTime(DateTime.Now);
         var missingEmployees = await GetEmployeesWithMissingAttendance(today);
 
+        
         foreach (var employee in missingEmployees)
         {
             // Log the missing attendance

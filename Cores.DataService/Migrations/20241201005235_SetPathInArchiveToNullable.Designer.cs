@@ -4,6 +4,7 @@ using Cores.DataService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cores.DataService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241201005235_SetPathInArchiveToNullable")]
+    partial class SetPathInArchiveToNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -835,63 +838,6 @@ namespace Cores.DataService.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("Cores.Models.HR.AdministrativeRequest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AdditionalNotes")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime?>("ApprovalDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("ApprovedById")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Comments")
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("IsReplacement")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Purpose")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ReplacementReason")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("RequestDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("RequestType")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("RequiredDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("ApprovedById");
-
-                    b.ToTable("AdministrativeRequests");
-                });
-
             modelBuilder.Entity("Cores.Models.HR.Archive", b =>
                 {
                     b.Property<int>("Id")
@@ -1009,57 +955,6 @@ namespace Cores.DataService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Benefits");
-                });
-
-            modelBuilder.Entity("Cores.Models.HR.BenefitsRequest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime?>("ApprovalDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("ApprovedById")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("BenefitType")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Comments")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Details")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("EffectiveDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("RequestDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("SupportingDocuments")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("ApprovedById");
-
-                    b.ToTable("BenefitsRequests");
                 });
 
             modelBuilder.Entity("Cores.Models.HR.CompensationRequest", b =>
@@ -2475,23 +2370,6 @@ namespace Cores.DataService.Migrations
                     b.Navigation("Tax");
                 });
 
-            modelBuilder.Entity("Cores.Models.HR.AdministrativeRequest", b =>
-                {
-                    b.HasOne("Cores.Models.ApplicationUser", "Employee")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cores.Models.ApplicationUser", "ApprovedBy")
-                        .WithMany()
-                        .HasForeignKey("ApprovedById");
-
-                    b.Navigation("ApprovedBy");
-
-                    b.Navigation("Employee");
-                });
-
             modelBuilder.Entity("Cores.Models.HR.Archive", b =>
                 {
                     b.HasOne("Cores.Models.HR.ArchiveType", "ArchiveType")
@@ -2514,23 +2392,6 @@ namespace Cores.DataService.Migrations
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("Cores.Models.HR.BenefitsRequest", b =>
-                {
-                    b.HasOne("Cores.Models.ApplicationUser", "Employee")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cores.Models.ApplicationUser", "ApprovedBy")
-                        .WithMany()
-                        .HasForeignKey("ApprovedById");
-
-                    b.Navigation("ApprovedBy");
 
                     b.Navigation("Employee");
                 });

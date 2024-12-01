@@ -1,0 +1,139 @@
+﻿@model BenefitsRequestVm
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header">
+            <h4 class="text-primary">@(Model.BenefitsRequest.Id == 0 ? "New Benefits Request" : "Edit Request")</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <input asp-for="BenefitsRequest.Id" hidden />
+                <input asp-for="BenefitsRequest.ApplicationUserId" hidden />
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="BenefitsRequest.BenefitType" class="form-label">Benefit Type</label>
+                        <select asp-for="BenefitsRequest.BenefitType" asp-items="Model.BenefitTypes"
+                                class="form-control select2" id="benefitType">
+                            <option disabled selected>-- Select Benefit Type --</option>
+                        </select>
+                        <span asp-validation-for="BenefitsRequest.BenefitType" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="BenefitsRequest.EffectiveDate" class="form-label">Effective Date</label>
+                        <input asp-for="BenefitsRequest.EffectiveDate" id="effectiveDate" class="form-control" />
+                        <span asp-validation-for="BenefitsRequest.EffectiveDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                @*
+                <div id="healthInsuranceFields">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="BenefitsRequest.DependentName" class="form-label">Dependent Name</label>
+                            <input asp-for="BenefitsRequest.DependentName" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="BenefitsRequest.Relationship" class="form-label">Relationship</label>
+                            <select asp-for="BenefitsRequest.Relationship" asp-items="Model.Relationships" 
+                                    class="form-select">
+                                <option disabled selected>-- Select Relationship --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                *@
+
+                @*
+                <div id="travelAllowanceFields">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="BenefitsRequest.RequestedAmount" class="form-label">Requested Amount</label>
+                            <input asp-for="BenefitsRequest.RequestedAmount" class="form-control" type="number" step="0.01" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="BenefitsRequest.TravelDetails" class="form-label">Travel Details</label>
+                            <textarea asp-for="BenefitsRequest.TravelDetails" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                *@
+
+                <div class="mb-3">
+                    <label asp-for="BenefitsRequest.Details" class="form-label">Additional Details</label>
+                    <textarea asp-for="BenefitsRequest.Details" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="BenefitsRequest.Details" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="BenefitsRequest.SupportingDocuments" class="form-label">Supporting Documents</label>
+                    <input asp-for="BenefitsRequest.SupportingDocuments" class="form-control" type="file" multiple />
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow,
+    .form-control {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn {
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+    .card {
+        border-radius: 0.5rem;
+    }
+    </style>
+
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script src="~/js/select2.js"></script>
+    <script>
+        $(document).ready(function() {
+            flatpickr("#effectiveDate", {
+                enableTime: true,
+                dateFormat: "Y-m-d"
+            });
+
+            @*$('#benefitType').change(function() {
+                if ($(this).val() == 'Health Insurance') {
+                    $('#healthInsuranceFields').show();
+                    $('#travelAllowanceFields').hide();
+                } else if ($(this).val() == 'Travel Allowance') {
+                    $('#healthInsuranceFields').hide();
+                    $('#travelAllowanceFields').show();
+                }
+            });
+
+            // Show appropriate fields if editing
+            if ($('#benefitType').val()) {
+                $('#benefitType').trigger('change');
+            }*@
+        });
+    </script>
+}
