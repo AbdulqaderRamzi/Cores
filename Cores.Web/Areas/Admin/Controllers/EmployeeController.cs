@@ -166,13 +166,14 @@ public class EmployeeController : Controller
         var employees = await _unitOfWork.ApplicationUser.GetAll();
         var departments = await _unitOfWork.Department.GetAll();
         var positions = await _unitOfWork.Position.GetAll();
-    
-        employeeVm.Roles = _roleManager.Roles.Select(r => r.Name).Select(n => new SelectListItem
-        {
-            Text = n,
-            Value = n
-        }).ToList();
 
+        employeeVm.Roles = _roleManager.Roles.Where(r => r.Name != SD.ADMIN_ROLE).Select(x => x.Name).Select(i =>
+        new SelectListItem
+        {
+            Text = i,
+            Value = i
+        }).ToList();
+        
         employeeVm.Employees = employees.Select(e => new SelectListItem
         {
             Text = $"{e.FirstName} {e.LastName}",

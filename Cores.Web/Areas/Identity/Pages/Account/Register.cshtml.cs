@@ -139,7 +139,7 @@ public class RegisterModel : PageModel
         var positions = await _unitOfWork.Position.GetAll();
         Input = new InputModel
         {
-            RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+            RoleList = _roleManager.Roles.Where(r => r.Name != SD.ADMIN_ROLE).Select(x => x.Name).Select(i => new SelectListItem
             {
                 Text = i,
                 Value = i

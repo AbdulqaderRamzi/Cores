@@ -132,8 +132,7 @@ public class AttendanceController : Controller
     public IActionResult Sign()
     {
         var attendance = new Attendance();
-        var claimsIdentity = (ClaimsIdentity)User.Identity!;
-        var employeeId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var employeeId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (employeeId is null)
             return NotFound();
         attendance.EmployeeId = employeeId;
@@ -142,16 +141,36 @@ public class AttendanceController : Controller
 
     public async Task<IActionResult> SignIn(Attendance attendance)
     {
-        var claimsIdentity = (ClaimsIdentity)User.Identity!;
-        var employeeId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        var employeeId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+       
+        if (employeeId is null)
+            return NotFound();
+        
+        var curDate = DateOnly.FromDateTime(DateTime.Now);
+        var curTime = TimeOnly.FromDateTime(DateTime.Now);
+        var curDay = DateTime.Now.DayOfWeek;
+        
+        var employee = await _unitOfWork.ApplicationUser
+                .Get(e => e.Id == employeeId, includeProperties:"WorkSchedules");
+        
+        if (employee is null)
+            return NotFound();
+
+        var isWorkingDay = employee.WorkSchedules.Any(workSchedule => workSchedule.DayOfWeek == curDay);
+        if (!isWorkingDay)
+        {
+            TempData["error"] = "Today is not a working day";
+            return RedirectToAction(nameof(EmployeeAttendance));
+        }
+        
         var employeeAttendance = await _unitOfWork.Attendance.Get(
             a => a.Date == DateOnly.FromDateTime(DateTime.Now)
              && a.EmployeeId == employeeId
              );
         if (employeeAttendance is null)
         {
-            attendance.Date = DateOnly.FromDateTime(DateTime.Now);
-            attendance.TimeIn = TimeOnly.FromDateTime(DateTime.Now);
+            attendance.Date = curDate;
+            attendance.TimeIn = curTime;
             attendance.IsPresent = await IsPresent(attendance.EmployeeId!, DateTime.Now, true);
             await _unitOfWork.Attendance.Add(attendance);
             await _unitOfWork.SaveAsync();
@@ -171,7 +190,13 @@ public class AttendanceController : Controller
                  && a.EmployeeId == employeeId
         );
 
-        if (employeeAttendance is not null && employeeAttendance.TimeOut is  null)
+        if (employeeAttendance?.TimeIn is null)
+        {
+            TempData["error"] = "You need to sign in first";
+            return RedirectToAction(nameof(EmployeeAttendance));
+        }
+
+        if (employeeAttendance.TimeOut is null)
         {
             employeeAttendance.TimeOut = TimeOnly.FromDateTime(DateTime.Now);
             employeeAttendance.IsPresent = await IsPresent(attendance.EmployeeId!, DateTime.Now, false);
@@ -179,7 +204,6 @@ public class AttendanceController : Controller
             await _unitOfWork.SaveAsync();
             TempData["success"] = "You signed out successfully";
             return RedirectToAction(nameof(EmployeeAttendance));
-
         }
         TempData["error"] = "You already signed out!";
         

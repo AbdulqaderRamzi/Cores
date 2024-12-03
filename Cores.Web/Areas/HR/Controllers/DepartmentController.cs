@@ -102,11 +102,15 @@ public class DepartmentController : Controller
         var department = await _unitOfWork.Department.Get(d => d.Id == id,"Employees");
         if (department is null)
             return NotFound();
-        foreach (var employee in department.Employees)
+        if (department.Employees.Count is not 0)
+        {
+            TempData["error"] = "The Department has employees";
+            return RedirectToAction(nameof(Index));
+        }
+        /*foreach (var employee in department.Employees)
         {
             employee.DepartmentId = null;
-        }
-
+        }*/
         _unitOfWork.Department.Remove(department);
         await _unitOfWork.SaveAsync();
         TempData["success"] = "Department deleted successfully";

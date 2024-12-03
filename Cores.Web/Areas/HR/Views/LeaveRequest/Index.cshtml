@@ -24,7 +24,7 @@
                     <th>Request Date</th>
                     <th>Start Date</th>
                     <th>End Date</th>
-                    <th>No. Days</th>
+                    @*<th>No. Days</th>*@
                     <th>Manager</th>
                     <th>Hr</th>
                     <th>Actions</th>
@@ -37,7 +37,7 @@
                    <th>Request Date</th>
                    <th>Start Date</th>
                    <th>End Date</th>
-                   <th>No. Days</th>
+                   @*<th>No. Days</th>*@
                    <th>Manager</th>
                    <th>Hr</th>
                    <th>Actions</th>
@@ -52,7 +52,7 @@
                         <td>@leaveRequest.RequestDate.ToString("yyyy MMMM dd")</td>
                         <td>@leaveRequest.StartDate.ToString("yyyy MMMM dd")</td>
                         <td>@leaveRequest.EndDate.ToString("yyyy MMMM dd")</td>
-                        <td>@leaveRequest.NumberOfDays</td>
+                        @*<td>@leaveRequest.NumberOfDays</td>*@
                         <td>
                             @(leaveRequest.ManagerResponse switch
                             {
@@ -79,7 +79,7 @@
                                 </button>
                                 <div class="dropdown-menu animated--fade-in"
                                      aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item"  asp-action="Upsert" asp-route-id="@leaveRequest.Id" asp-route-isFromGetById="@ViewBag.IsFromGetById"
+                                    <a class="dropdown-item" asp-action="Upsert" asp-route-id="@leaveRequest.Id" asp-route-isFromGetById="@ViewBag.IsFromGetById"
                                        onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';">
                                         <i class="fas fa-info-circle"></i> Details

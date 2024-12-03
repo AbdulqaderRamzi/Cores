@@ -18,7 +18,8 @@
                 <div class="form-group">
                     <label asp-for="ColorCode" class="form-label">Color</label>
                     <div class="input-group">
-                        <input asp-for="ColorCode" type="color" class="form-control form-control-color" title="Choose your color">
+                        <input asp-for="ColorCode" type="color" value="#1fa37b"
+                               class="form-control form-control-color" title="Choose color">
                         <input type="text" class="form-control" id="colorText" readonly>
                     </div>
                     <span asp-validation-for="ColorCode" class="text-danger"></span>

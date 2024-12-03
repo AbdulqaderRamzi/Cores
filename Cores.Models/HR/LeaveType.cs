@@ -12,4 +12,5 @@ public class LeaveType
     [Display(Name = "Maximum Days Per Year")]
     public int? MaxDaysPerYear { get; set; }   
     public string? Description { get; set; }
+    
 }

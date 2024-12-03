@@ -264,7 +264,9 @@
                 $("#start-date, #end-date").flatpickr({
                     dateFormat: "Y-m-d"
                 });
-    
+
+                updateNumberOfDays()
+
                 function updateNumberOfDays() {
                     const startDate = new Date($("#start-date").val());
                     const endDate = new Date($("#end-date").val());
@@ -280,7 +282,7 @@
                 holidays.empty(); // Clear previous results
                 
                 $.ajax({
-                    url: '/HR/LeaveRequest/GetHolidays', // Adjust to your endpoint
+                    url: '/HR/LeaveRequest/GetHolidays', 
                     type: 'GET',
                     data: {startDate, endDate},
                     success: function(data) {

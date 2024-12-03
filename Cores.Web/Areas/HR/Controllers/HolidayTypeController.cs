@@ -71,7 +71,11 @@ public class HolidayTypeController : Controller
         var holidayType = await _unitOfWork.HolidayType.Get(ht => ht.Id == id);
         if (holidayType == null)
             return NotFound();
-            
+        if (holidayType.Holidays.Count is not 0)
+        {
+            TempData["error"] = "The type is signed to holidays";
+        }
+
         _unitOfWork.HolidayType.Remove(holidayType);
         await _unitOfWork.SaveAsync();
         return RedirectToAction(nameof(Index));

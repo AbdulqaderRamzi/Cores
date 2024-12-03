@@ -88,9 +88,14 @@ public class PositionController : Controller
    {
       if (id is null)
          return NotFound();
-      var position = await _unitOfWork.Position.Get(p => p.Id == id);
+      var position = await _unitOfWork.Position.Get(p => p.Id == id, includeProperties:"Employees");
       if (position is null)
          return NotFound();
+      if (position.Employees.Count is not 0)
+      {
+         TempData["error"] = "The position has employees";
+         return RedirectToAction(nameof(Index));
+      }
       _unitOfWork.Position.Remove(position);
       await _unitOfWork.SaveAsync();
       TempData["success"] = "Position deleted successfully";

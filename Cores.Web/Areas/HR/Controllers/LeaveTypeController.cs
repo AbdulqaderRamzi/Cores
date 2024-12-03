@@ -65,6 +65,14 @@ public class LeaveTypeController : Controller
         var leaveType = await _unitOfWork.LeaveType.Get(lt => lt.Id == id);
         if (leaveType is null)
             return NotFound();
+        var leaveRequest = await _unitOfWork.LeaveRequest
+            .GetAll(lr => lr.LeaveTypeId == id);
+        if (leaveRequest.Count() is not 0)
+        {
+            TempData["error"] = "The type has leave requests, delete them first!";
+            return RedirectToAction(nameof(Index));
+        }
+
         _unitOfWork.LeaveType.Remove(leaveType);
         await _unitOfWork.SaveAsync();
         return RedirectToAction(nameof(Index));

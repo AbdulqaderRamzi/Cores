@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ApplicationUser>
+﻿@using System.Security.Claims
+@model IEnumerable<ApplicationUser>
 
 <!-- DataTale -->
 <div class="card shadow mb-4">
@@ -32,6 +33,8 @@
                 <tbody class="text-dark">
                 @foreach (var employee in Model)
                 {
+                    if (employee.Id == User.FindFirstValue(ClaimTypes.NameIdentifier)) 
+                        continue;
                     <tr>
                         <td>@string.Concat(employee.FirstName, " ", employee.LastName)</td>
                         <td>@employee.Email</td>
@@ -45,20 +48,15 @@
                                 </button>
                                 <div class="dropdown-menu animated--fade-in"
                                      aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" asp-action="Details" asp-route-id="@employee.Id"
-                                       onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
-                                       onmouseout="this.style.backgroundColor=''; this.style.color='';">
-                                        <i class="fas fa-info-circle"></i> Details
-                                    </a>
                                     <a class="dropdown-item " asp-controller="Employee" asp-action="Update" asp-route-id="@employee.Id"
                                        onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';">
-                                        <i class="fas fa-edit"></i> Update
+                                        <i class="fas fa-edit"></i> View Or Edit
                                     </a>
                                     <a class="dropdown-item " asp-action="ResetPass" asp-route-userEmail="@employee.Email"  
                                        onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';">
-                                        <i class="fas fa-edit"></i> Reset Pass
+                                        <i class="fas fa-key"></i> Reset Pass
                                     </a>
                                     
                                     @if (employee.LockoutEnd is null || employee.LockoutEnd <= DateTime.Now)
