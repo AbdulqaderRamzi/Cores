@@ -21,6 +21,7 @@
                             <span asp-validation-for="DocumentRequest.DocumentType" class="text-danger"></span>
                         </div>
                     </div>
+                    
                     <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="DocumentRequest.Purpose" class="form-label">Purpose</label>
@@ -30,14 +31,25 @@
                     </div>
                 </div>
                 
+                
                 <div class="row mb-3">
                     <label asp-for="DocumentRequest.AdditionalDetails" class="form-label">Additional Details</label>
                     <textarea asp-for="DocumentRequest.AdditionalDetails" class="form-control" rows="3"></textarea>
                 </div>
 
+                <div class="row mb-3">
+                    <label asp-for="DocumentRequest.Status" class="form-label">Status</label>
+                    <select asp-for="DocumentRequest.Status" class="form-control select2">
+                        <option value="Pending">Pending</option>
+                        <option value="Accepted">Accept</option>
+                        <option value="Rejected">Reject</option>
+                    </select>
+                    <span asp-validation-for="DocumentRequest.Status" class="text-danger"></span>
+                </div>
+                
                 <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Submit</button>
                     <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </form>
         </div>

@@ -1,15 +1,17 @@
-// Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#858796';
+// chart-pie-demo.js
+const requestData = document.getElementById("requestData");
 
-// Pie Chart Example
-let employeeCtx = document.getElementById("myPieChart");
-let myPieChart = new Chart(employeeCtx, {
+const openRequests = requestData.getAttribute("data-open-requests");
+const pendingRequests = requestData.getAttribute("data-pending-requests");
+const closedRequests = requestData.getAttribute("data-closed-requests");
+
+let pieCtx = document.getElementById("myPieChart");
+let myPieChart = new Chart(pieCtx, {
     type: 'doughnut',
     data: {
-        labels: ["Open", "Pending", "Close"],
+        labels: ["Open", "Pending", "Closed"],
         datasets: [{
-            data: [55, 30, 15],
+            data: [openRequests, pendingRequests, closedRequests],
             backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
             hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
             hoverBorderColor: "rgba(234, 236, 244, 1)",

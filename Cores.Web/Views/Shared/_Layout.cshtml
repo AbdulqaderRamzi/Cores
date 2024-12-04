@@ -57,19 +57,29 @@
                     <span>Dashboards</span>
                 </a>
                 <div id="dashboard" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" asp-area="Hr" asp-controller="Dashboard" asp-action="Index">Hr</a>
-                    <a class="collapse-item" asp-area="CRM" asp-controller="Dashboard" asp-action="Index">CRM</a>
-                    <a class="collapse-item" asp-area="Accounting" asp-controller="Dashboard" asp-action="Index">Accounting</a>
-                    <a class="collapse-item" asp-area="Employee" asp-controller="Dashboard" asp-action="Index">Employee</a>
-                </div>
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" asp-area="Hr" asp-controller="Dashboard" asp-action="Index">Hr</a>
+                        <a class="collapse-item" asp-area="CRM" asp-controller="Dashboard" asp-action="Index">CRM</a>
+                        <a class="collapse-item" asp-area="Accounting" asp-controller="Dashboard" asp-action="Index">Accounting</a>
+                    </div>
                 </div>
 
-            } else if (User.IsInRole(SD.HR_ROLE)) {
-                <a class="nav-link" asp-area="Hr" asp-controller="Dashboard" asp-action="Index">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a> 
+            } 
+            else if (User.IsInRole(SD.HR_ROLE)) {
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#hr-dashboard"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Dashboards</span>
+                </a>
+                <div id="hr-dashboard" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Dashboard</h6>
+                        <a class="collapse-item" asp-area="Hr" asp-controller="Dashboard" asp-action="Index">Hr Dashboard</a>
+                        <a class="collapse-item" asp-area="Employee" asp-controller="Dashboard" asp-action="Index">Personal</a>
+                    </div>
+                </div>
+               
+             
             } else if (User.IsInRole(SD.CRM_ROLE))
             {
                 <a class="nav-link" asp-area="CRM" asp-controller="Dashboard" asp-action="Index">
@@ -78,6 +88,7 @@
                 </a>
             } else if (User.IsInRole(SD.ACCOUNTING_ROLE))
             {
+                
                 <a class="nav-link" asp-area="Accounting" asp-controller="Dashboard" asp-action="Index">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
@@ -182,6 +193,7 @@
                 }
                 @if (User.IsInRole(SD.EMPLOYEE_ROLE))
                 {
+                    <h6 class="collapse-header">Requests</h6>
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                     <a class="collapse-item" asp-area="Hr" asp-controller="LeaveRequest" asp-action="GetById" asp-route-id="@userId">My Leave Requests</a>
                     @(await Component.InvokeAsync("WaitingRequest", userId))
@@ -246,16 +258,12 @@
                     <a class="collapse-item" asp-area="HR" asp-controller="LeaveRequest" asp-action="Index">Leave Requests</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="Attendance" asp-action="HrAttendance">Attendances</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="Attendance" asp-action="LateEmployee">Late Employees</a>
-                    
                     <a class="collapse-item" asp-area="HR" asp-controller="Recruitment" asp-action="Index">Recruitments</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="JobApplication" asp-action="Index">Job Applications</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="Salary" asp-action="Index">Salaries</a>
-                    <a class="collapse-item" asp-area="HR" asp-controller="Benefit" asp-action="Index">Benefits</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="EmployeeBenefit" asp-action="Index">Employees Benefits</a>
-                    <a class="collapse-item" asp-area="HR" asp-controller="Deduction" asp-action="Index">Deductions</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="EmployeeDeduction" asp-action="Index">Employees Deductions</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="Archive" asp-action="Index">Archives</a>
-                    <a class="collapse-item" asp-area="HR" asp-controller="Training" asp-action="Index">Training</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="EmployeeTraining" asp-action="Index">Employee Training</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="PerformanceReview" asp-action="Index">Performance Review</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="LeaveRequest" asp-action="WaitingRequests">Waiting Requests</a>
@@ -268,7 +276,9 @@
                     <a class="collapse-item" asp-area="HR" asp-controller="LeaveType" asp-action="Index">Leave Types</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="ArchiveType" asp-action="Index">Archive Types</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="HolidayType" asp-action="Index">Holiday Types</a>
-                    
+                    <a class="collapse-item" asp-area="HR" asp-controller="Benefit" asp-action="Index">Benefit Types</a>
+                    <a class="collapse-item" asp-area="HR" asp-controller="Deduction" asp-action="Index">Deduction Types</a>
+                    <a class="collapse-item" asp-area="HR" asp-controller="Training" asp-action="Index">Training Types</a>
                 </div>
             </div>
         </li>
@@ -340,7 +350,7 @@
                 <span>Employee</span>
             </a>
             <div id="collapseEmp" class="collapse" aria-labelledby="collapseEmp"
-                 data-parent="#employeeSidebar">
+                 data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Components</h6>
                     <a class="collapse-item" asp-area="HR" asp-controller="DocumentRequest" asp-action="Index">Document Requests</a>

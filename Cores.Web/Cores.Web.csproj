@@ -31,6 +31,7 @@
         <Folder Include="wwwroot\documents\leave_requests\" />
         <Folder Include="wwwroot\images\applicants\" />
         <Folder Include="wwwroot\images\archives\" />
+        <Folder Include="wwwroot\images\compensation-requests\" />
         <Folder Include="wwwroot\images\contacts\" />
     </ItemGroup>
 

@@ -60,6 +60,19 @@
                     </div>
                 </div>
 
+                @if (User.IsInRole(SD.ADMIN_ROLE) || User.IsInRole(SD.HR_ROLE))
+                {
+                    <div class="row mb-3">
+                        <label asp-for="AdministrativeRequest.Status" class="form-label">Status</label>
+                        <select asp-for="AdministrativeRequest.Status" class="form-control select2">
+                            <option value="Pending">Pending</option>
+                            <option value="Accepted">Accept</option>
+                            <option value="Rejected">Reject</option>
+                        </select>
+                        <span asp-validation-for="AdministrativeRequest.Status" class="text-danger"></span>
+                    </div>
+                }
+                
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <a asp-action="Index" class="btn btn-secondary">Back to List</a>

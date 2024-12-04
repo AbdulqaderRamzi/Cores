@@ -92,18 +92,15 @@ public class AdministrativeRequestController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    [HttpPost]
-    public async Task<IActionResult> ApproveRequest(int id)
+    public async Task<IActionResult> Answer(int id, bool response)
     {
         var request = await _unitOfWork.AdministrativeRequest.Get(r => r.Id == id);
-        if (request == null)
+        if (request is null)
             return NotFound();
 
-        var claimsIdentity = (ClaimsIdentity)User.Identity!;
-        request.ApprovedById = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        request.ApprovedById = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
         request.ApprovalDate = DateTime.Now;
-        request.Status = "Approved";
-
+        request.Status = response ? "Approved" : "Rejected";
         await _unitOfWork.SaveAsync();
         return RedirectToAction(nameof(Index));
     }

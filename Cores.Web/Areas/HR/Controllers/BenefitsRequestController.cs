@@ -13,10 +13,13 @@ namespace Cores.Web.Areas.HR.Controllers;
 public class BenefitsRequestController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
-    public BenefitsRequestController(IUnitOfWork unitOfWork)
+
+    public BenefitsRequestController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
     {
         _unitOfWork = unitOfWork;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     public async Task<IActionResult> Index()
@@ -91,19 +94,31 @@ public class BenefitsRequestController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    [HttpPost]
-    public async Task<IActionResult> ApproveRequest(int id)
+    public async Task<IActionResult> Answer(int id, bool response)
     {
         var request = await _unitOfWork.BenefitsRequest.Get(r => r.Id == id);
         if (request is null)
             return NotFound();
 
-        var claimsIdentity = (ClaimsIdentity)User.Identity!;
-        request.ApprovedById = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        request.ApprovedById = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
         request.ApprovalDate = DateTime.Now;
-        request.Status = "Approved";
-
+        request.Status = response ? "Approved" : "Rejected";
         await _unitOfWork.SaveAsync();
         return RedirectToAction(nameof(Index));
     }
+    
+    public async Task<IActionResult> DownloadDocument(int id)
+    {
+        var archive = await _unitOfWork.BenefitsRequest.Get(a => a.Id == id);
+        if (archive is null || string.IsNullOrEmpty(archive.SupportingDocuments))
+            return NotFound();
+
+        var filePath = Path.Combine(_webHostEnvironment.WebRootPath, archive.SupportingDocuments.TrimStart('\\'));
+        if (!System.IO.File.Exists(filePath))
+            return NotFound();
+
+        var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+        return File(fileBytes, "application/octet-stream", Path.GetFileName(filePath));
+    }
+    
 }

@@ -1,10 +1,12 @@
-﻿@model IEnumerable<DocumentRequest>
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<DocumentRequest>
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <div class="d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">Document Requests</h6>
-            <a class="btn btn-primary" asp-action="Upsert">
+            <a class="btn btn-secondary" asp-action="Upsert">
                 <i class="fas fa-plus"></i> New Request
             </a>
         </div>
@@ -23,31 +25,48 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                    @foreach (var request in Model)
                     {
                         <tr>
-                            <td>@item.Employee.FirstName @item.Employee.LastName</td>
-                            <td>@item.DocumentType</td>
-                            <td>@item.RequestDate.ToShortDateString()</td>
-                            <td>@item.Status</td>
-                            <td>@(item.ApprovedBy?.FirstName ?? "-")</td>
+                            <td>@request.Employee.FirstName @request.Employee.LastName</td>
+                            <td>@request.DocumentType</td>
+                            <td>@request.RequestDate.ToShortDateString()</td>
+                            <td>@request.Status</td>
+                            <td>@(request.ApprovedBy?.FirstName ?? "-")</td>
                             <td>
-                                <div class="btn-group">
-                                    <a asp-action="Upsert" asp-route-id="@item.Id" 
-                                       class="btn btn-primary">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    @if (item.Status == "Pending")
-                                    {
-                                        <form asp-action="ApproveRequest" asp-route-id="@item.Id" 
-                                              method="post" class="d-inline">
-                                            <button type="submit" class="btn btn-success">
-                                                <i class="fas fa-check"></i>
-                                            </button>
-                                        </form>
-                                    }
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        Actions
+                                    </button>
+                                    <div class="dropdown-menu animated--fade-in"
+                                         aria-labelledby="dropdownMenuButton">
+                                        @if (((User.IsInRole(SD.HR_ROLE) || User.IsInRole(SD.ADMIN_ROLE)) &&
+                                              request.ApplicationUserId != User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                                        {
+                                            <a class="dropdown-item" asp-controller="DocumentRequest" asp-action="Answer" asp-route-id="@request.Id"
+                                               asp-route-response="true"
+                                               onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
+                                               onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                                <i class="fas fa-info-circle"></i> Accept
+                                            </a>
+                                            <a class="dropdown-item" asp-controller="DocumentRequest" asp-action="Answer" asp-route-id="@request.Id"
+                                               asp-route-response="false"
+                                               onmouseover="this.style.backgroundColor='#f63e3e'; this.style.color='white';"
+                                               onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                                <i class="fas fa-edit"></i> Reject
+                                            </a>
+                                        }
+                                        <a class="dropdown-item" asp-controller="DocumentRequest" asp-action="Upsert" asp-route-id="@request.Id"
+                                           onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
+                                           onmouseout="this.style.backgroundColor=''; this.style.color='';">
+                                            <i class="fas fa-info-circle"></i> @(request.Status == "Pending" ? "View Or Edit" : "View")
+                                        </a>
+                                    </div>
                                 </div>
                             </td>
+
                         </tr>
                     }
                 </tbody>
