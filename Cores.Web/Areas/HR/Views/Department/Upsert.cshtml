@@ -20,6 +20,7 @@
                     <select class="form-control select2" asp-for="Department.DepartmentHeadId" asp-items="@Model.Employees">
                         <option value="" disabled selected>-- Select Department Head --</option>
                     </select>
+                    <span class="text-danger" asp-validation-for="Department.DepartmentHeadId"></span>
                 </div>
             </div>
             <div class="col-md-4">

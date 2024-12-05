@@ -144,15 +144,12 @@
 
 @section Scripts {
     <script src="~/js/problem-form.js"></script>
+    <script src="~/js/select2.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             flatpickr("#event-date", {
                 enableTime: true,
                 dateFormat: "Y-m-d H:i"
-            });
-
-            $('.select2').select2({
-                theme: 'bootstrap4',
             });
         });
     </script>

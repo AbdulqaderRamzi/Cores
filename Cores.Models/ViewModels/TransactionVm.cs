@@ -10,6 +10,8 @@ public class TransactionVm
     [ValidateNever]
     public IEnumerable<SelectListItem> Accounts{ get; set; }
     [ValidateNever]
+    public IEnumerable<SelectListItem> Currencies { get; set; }
+    [ValidateNever]
     public string EmployeeName { get; set; }
     /*
     public string SerializedProducts { get; set; }

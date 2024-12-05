@@ -9,4 +9,6 @@ public class PositionVm
     public Position Position { get; set; }
     [ValidateNever]
     public List<SelectListItem> Departments { get; set; }
+    [ValidateNever]
+    public List<SelectListItem> Currencies { get; set; }
 }

@@ -117,12 +117,12 @@ public class RegisterModel : PageModel
         public string IPAN { get; set; }
         public string CivilIdNumber { get; set; }
         public string PassportNumber { get; set; }
-        [Required] public DateTime? PassportExpiredDate { get; set; }
-        [Required] public DateTime? ResidenceExpiredDate { get; set; }
-        [Required] public DateTime? HealthCardExpiredDate { get; set; }
-        [Required] public DateTime? DrivingLicenseExpiredDate { get; set; }
-        [Required] public DateTime? StartAt { get; set; } = DateTime.Now;
-        [Required] public DateTime? DateOfBirth { get; set; }
+        public DateTime? PassportExpiredDate { get; set; }
+        public DateTime? ResidenceExpiredDate { get; set; }
+        public DateTime? HealthCardExpiredDate { get; set; }
+        public DateTime? DrivingLicenseExpiredDate { get; set; }
+        public DateTime? StartAt { get; set; } = DateTime.Now;
+        public DateTime? DateOfBirth { get; set; }
        
         public string EmergencyNumber { get; set; }
         public double AnnualLeaveBalance { get; set; }
@@ -212,7 +212,7 @@ public class RegisterModel : PageModel
         user.ResetAnnualLeave = Input.ResetAnnualLeave;
 
         // Set a temporary password
-        var tempPassword = $"Cores-{Input.CivilIdNumber}";
+        var tempPassword = $"Cores123${Guid.NewGuid().ToString()}";
         var result = await _userManager.CreateAsync(user, tempPassword);
 
         if (result.Succeeded)

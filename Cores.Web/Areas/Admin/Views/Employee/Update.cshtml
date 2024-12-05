@@ -110,7 +110,7 @@
                             <legend>Work Information</legend>
                             <div class="form-group">
                                 <label asp-for="Employee.DepartmentId">Department</label>
-                                <select class="custom-select" aria-required="true" asp-for="Employee.DepartmentId" asp-items="@Model.Departments">
+                                <select class="custom-select select2" aria-required="true" asp-for="Employee.DepartmentId" asp-items="@Model.Departments">
                                     <option value="" disabled selected>-- Select Department --</option>
                                 </select>
                                 <span asp-validation-for="Employee.DepartmentId" class="text-danger"></span>
@@ -118,7 +118,7 @@
 
                             <div class="form-group">
                                 <label asp-for="Employee.PositionID">Position</label>
-                                <select id="position" class="custom-select" aria-required="true" asp-for="Employee.PositionID" asp-items="@Model.Positions">
+                                <select id="position" class="custom-select select2" aria-required="true" asp-for="Employee.PositionID" asp-items="@Model.Positions">
                                     <option value="" disabled selected>-- Select Position --</option>
                                 </select>
                             </div>
@@ -136,14 +136,14 @@
 
                             <div class="form-group">
                                 <label asp-for="Employee.ManagerID">Manager</label>
-                                <select class="custom-select" aria-required="true" asp-for="Employee.ManagerID" asp-items="@Model.Employees">
+                                <select class="custom-select select2" aria-required="true" asp-for="Employee.ManagerID" asp-items="@Model.Employees">
                                     <option value="" disabled selected>-- Select Manager --</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label asp-for="Role">Role</label>
-                                <select class="custom-select" aria-required="true" asp-for="Role" asp-items="@Model.Roles">
+                                <select class="custom-select select2" aria-required="true" asp-for="Role" asp-items="@Model.Roles">
                                     <option value="" disabled selected>-- Select Role --</option>
                                 </select>
                             </div>
@@ -469,40 +469,80 @@
     .custom-control-inline {
         margin-right: 1rem;
     }
-    
-    #scheduleTable th, #scheduleTable td {
-        vertical-align: middle;
-    }
+
     input {
-       background: white !important;
+        background: white !important;
     }
-    
-     .iti {
-          width: 100%;
-      }
-      
-      .iti__separate-dial-code .form-control {
-          padding-left: 70px;
-      }
-      
-      /* Override any conflicting styles */
-      .iti__flag-container {
-          z-index: 3;
-      }
-      
-      .form-group .input-group .iti {
-          flex: 1 1 auto;
-      }
-      label {
-          color: #272727;
-      }
+
+    .dropzone {
+        border: 2px dashed #007bff;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: center;
+        margin-top: 20px;
+        color: #007bff;
+        cursor: pointer;
+    }
+
+    .dropzone:hover {
+        background-color: #f8f9fa;
+    }
+
+    .dropzone i {
+        font-size: 50px;
+        margin-bottom: 10px;
+    }
+
+    .dropzone-text {
+        font-size: 16px;
+        display: block;
+    }
+    #fileIcon {
+        font-size: 72px; /* or any other desired size */
+        margin-bottom: 20px;
+    }
+    .iti {
+        width: 100%;
+    }
+
+    .iti__separate-dial-code .form-control {
+        padding-left: 70px;
+    }
+
+    /* Override any conflicting styles */
+    .iti__flag-container {
+        z-index: 3;
+    }
+
+    .form-group .input-group .iti {
+        flex: 1 1 auto;
+    }
+    label {
+        color: #272727;
+    }
+
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow,
+    .form-control {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+
 </style>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial"/>
     <script src="~/js/populate-table.js"></script>
     <script src="~/js/work-schedule.js"></script>
     <script src="~/js/phone-input.js"></script>
+    <script src="~/js/select2.js"></script>
 
     <script>
         document.getElementById('fileInput').addEventListener('change', function(event) {
@@ -564,7 +604,7 @@
                 data: { id: positionId },
                 success: function (position) {
                     if (position) {
-                        $("#position-salary").val(position.salaryRange);
+                        $("#position-salary").val(position.averageSalary);
                     }
                 },
                 error: function(xhr, status, error) {

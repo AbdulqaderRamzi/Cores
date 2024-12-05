@@ -15,6 +15,7 @@ public class WaitingRequestViewComponent : ViewComponent
     public async Task<IViewComponentResult> InvokeAsync(string userId)
     { 
         var employee = await _unitOfWork.ApplicationUser.Get(e => e.Id == userId);
+        if (employee is null) return Content(string.Empty); // Or another appropriate response for a ViewComponent
         return View(employee);
     }
 }

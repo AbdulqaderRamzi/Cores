@@ -5,14 +5,14 @@
 namespace Cores.DataService.Migrations
 {
     /// <inheritdoc />
-    public partial class SetPathInArchiveToNullable : Migration
+    public partial class MakeDescriptionNullableInJournalEntry : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Path",
-                table: "Archives",
+                name: "Description",
+                table: "JournalEntries",
                 type: "longtext",
                 nullable: true,
                 oldClrType: typeof(string),
@@ -25,15 +25,15 @@ namespace Cores.DataService.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.UpdateData(
-                table: "Archives",
-                keyColumn: "Path",
+                table: "JournalEntries",
+                keyColumn: "Description",
                 keyValue: null,
-                column: "Path",
+                column: "Description",
                 value: "");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Path",
-                table: "Archives",
+                name: "Description",
+                table: "JournalEntries",
                 type: "longtext",
                 nullable: false,
                 oldClrType: typeof(string),

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cores.DataService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241127182256_AddTrnsactionNavigationPropToDetails")]
-    partial class AddTrnsactionNavigationPropToDetails
+    [Migration("20241204201245_AddCurrencyToPosition")]
+    partial class AddCurrencyToPosition
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,6 +132,45 @@ namespace Cores.DataService.Migrations
                     b.ToTable("Currencies");
                 });
 
+            modelBuilder.Entity("Cores.Models.Accounting.GeneralLedger", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("CreditAmount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("DebitAmount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("JournalEntryId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("RunningBalance")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("JournalEntryId");
+
+                    b.ToTable("GeneralLedgers");
+                });
+
             modelBuilder.Entity("Cores.Models.Accounting.Journal", b =>
                 {
                     b.Property<int>("Id")
@@ -196,7 +235,7 @@ namespace Cores.DataService.Migrations
                     b.Property<bool>("IsPosted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("JournalId")
+                    b.Property<int?>("JournalId")
                         .HasColumnType("int");
 
                     b.Property<string>("PostedBy")
@@ -206,9 +245,14 @@ namespace Cores.DataService.Migrations
                     b.Property<DateTime?>("PostedDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("TransactionId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("JournalId");
+
+                    b.HasIndex("TransactionId");
 
                     b.ToTable("JournalEntries");
                 });
@@ -227,6 +271,9 @@ namespace Cores.DataService.Migrations
                     b.Property<decimal>("CreditAmount")
                         .HasColumnType("decimal(65,30)");
 
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("DebitAmount")
                         .HasColumnType("decimal(65,30)");
 
@@ -240,6 +287,8 @@ namespace Cores.DataService.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("JournalEntryId");
 
@@ -409,11 +458,13 @@ namespace Cores.DataService.Migrations
                     b.Property<decimal>("CreditAmount")
                         .HasColumnType("decimal(65,30)");
 
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("DebitAmount")
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("TransactionId")
@@ -422,6 +473,8 @@ namespace Cores.DataService.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("TransactionId");
 
@@ -794,6 +847,63 @@ namespace Cores.DataService.Migrations
                     b.ToTable("Tags");
                 });
 
+            modelBuilder.Entity("Cores.Models.HR.AdministrativeRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdditionalNotes")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime?>("ApprovalDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ApprovedById")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsReplacement")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Purpose")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ReplacementReason")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("RequestDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("RequestType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("RequiredDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ApprovedById");
+
+                    b.ToTable("AdministrativeRequests");
+                });
+
             modelBuilder.Entity("Cores.Models.HR.Archive", b =>
                 {
                     b.Property<int>("Id")
@@ -815,7 +925,6 @@ namespace Cores.DataService.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Path")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateOnly>("UploadDate")
@@ -914,6 +1023,114 @@ namespace Cores.DataService.Migrations
                     b.ToTable("Benefits");
                 });
 
+            modelBuilder.Entity("Cores.Models.HR.BenefitsRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime?>("ApprovalDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ApprovedById")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("BenefitType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("EffectiveDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("RequestDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SupportingDocuments")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ApprovedById");
+
+                    b.ToTable("BenefitsRequests");
+                });
+
+            modelBuilder.Entity("Cores.Models.HR.CompensationRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime?>("ApprovalDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ApprovedById")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Justification")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("PeriodEnd")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("PeriodStart")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("RequestDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("RequestType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<decimal>("RequestedAmount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SupportingDocuments")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ApprovedById");
+
+                    b.ToTable("CompensationRequests");
+                });
+
             modelBuilder.Entity("Cores.Models.HR.Deduction", b =>
                 {
                     b.Property<int>("Id")
@@ -950,6 +1167,7 @@ namespace Cores.DataService.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("DepartmentHeadId")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Location")
@@ -964,6 +1182,54 @@ namespace Cores.DataService.Migrations
                     b.HasIndex("DepartmentHeadId");
 
                     b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("Cores.Models.HR.DocumentRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdditionalDetails")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime?>("ApprovalDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ApprovedById")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DocumentType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Purpose")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("RequestDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ApprovedById");
+
+                    b.ToTable("DocumentRequests");
                 });
 
             modelBuilder.Entity("Cores.Models.HR.EmployeeBenefit", b =>
@@ -1367,20 +1633,25 @@ namespace Cores.DataService.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal?>("AverageSalary")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("JobDescription")
                         .HasColumnType("longtext");
 
-                    b.Property<decimal>("SalaryRange")
-                        .HasColumnType("decimal(65,30)");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("DepartmentId");
 
@@ -2026,15 +2297,38 @@ namespace Cores.DataService.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Cores.Models.Accounting.JournalEntry", b =>
+            modelBuilder.Entity("Cores.Models.Accounting.GeneralLedger", b =>
                 {
-                    b.HasOne("Cores.Models.Accounting.Journal", "Journal")
-                        .WithMany("Entries")
-                        .HasForeignKey("JournalId")
+                    b.HasOne("Cores.Models.Accounting.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Journal");
+                    b.HasOne("Cores.Models.Accounting.JournalEntry", "JournalEntry")
+                        .WithMany()
+                        .HasForeignKey("JournalEntryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("JournalEntry");
+                });
+
+            modelBuilder.Entity("Cores.Models.Accounting.JournalEntry", b =>
+                {
+                    b.HasOne("Cores.Models.Accounting.Journal", null)
+                        .WithMany("Entries")
+                        .HasForeignKey("JournalId");
+
+                    b.HasOne("Cores.Models.Accounting.Transaction", "Transaction")
+                        .WithMany()
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Transaction");
                 });
 
             modelBuilder.Entity("Cores.Models.Accounting.JournalEntryDetail", b =>
@@ -2045,6 +2339,12 @@ namespace Cores.DataService.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Cores.Models.Accounting.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Cores.Models.Accounting.JournalEntry", "JournalEntry")
                         .WithMany("Details")
                         .HasForeignKey("JournalEntryId")
@@ -2052,6 +2352,8 @@ namespace Cores.DataService.Migrations
                         .IsRequired();
 
                     b.Navigation("Account");
+
+                    b.Navigation("Currency");
 
                     b.Navigation("JournalEntry");
                 });
@@ -2075,13 +2377,21 @@ namespace Cores.DataService.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Cores.Models.Accounting.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Cores.Models.Accounting.Transaction", "Transaction")
                         .WithMany("Details")
                         .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Account");
+
+                    b.Navigation("Currency");
 
                     b.Navigation("Transaction");
                 });
@@ -2199,6 +2509,23 @@ namespace Cores.DataService.Migrations
                     b.Navigation("Tax");
                 });
 
+            modelBuilder.Entity("Cores.Models.HR.AdministrativeRequest", b =>
+                {
+                    b.HasOne("Cores.Models.ApplicationUser", "Employee")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cores.Models.ApplicationUser", "ApprovedBy")
+                        .WithMany()
+                        .HasForeignKey("ApprovedById");
+
+                    b.Navigation("ApprovedBy");
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("Cores.Models.HR.Archive", b =>
                 {
                     b.HasOne("Cores.Models.HR.ArchiveType", "ArchiveType")
@@ -2225,13 +2552,66 @@ namespace Cores.DataService.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("Cores.Models.HR.BenefitsRequest", b =>
+                {
+                    b.HasOne("Cores.Models.ApplicationUser", "Employee")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cores.Models.ApplicationUser", "ApprovedBy")
+                        .WithMany()
+                        .HasForeignKey("ApprovedById");
+
+                    b.Navigation("ApprovedBy");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("Cores.Models.HR.CompensationRequest", b =>
+                {
+                    b.HasOne("Cores.Models.ApplicationUser", "Employee")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cores.Models.ApplicationUser", "ApprovedBy")
+                        .WithMany()
+                        .HasForeignKey("ApprovedById");
+
+                    b.Navigation("ApprovedBy");
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("Cores.Models.HR.Department", b =>
                 {
                     b.HasOne("Cores.Models.ApplicationUser", "DepartmentHead")
                         .WithMany()
-                        .HasForeignKey("DepartmentHeadId");
+                        .HasForeignKey("DepartmentHeadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("DepartmentHead");
+                });
+
+            modelBuilder.Entity("Cores.Models.HR.DocumentRequest", b =>
+                {
+                    b.HasOne("Cores.Models.ApplicationUser", "Employee")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cores.Models.ApplicationUser", "ApprovedBy")
+                        .WithMany()
+                        .HasForeignKey("ApprovedById");
+
+                    b.Navigation("ApprovedBy");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("Cores.Models.HR.EmployeeBenefit", b =>
@@ -2372,11 +2752,19 @@ namespace Cores.DataService.Migrations
 
             modelBuilder.Entity("Cores.Models.HR.Position", b =>
                 {
+                    b.HasOne("Cores.Models.HR.Department", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Cores.Models.HR.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Currency");
 
                     b.Navigation("Department");
                 });

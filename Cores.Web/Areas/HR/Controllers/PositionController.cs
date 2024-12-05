@@ -21,7 +21,7 @@ public class PositionController : Controller
 
    public async Task<IActionResult> Index()
    {
-      var position = await _unitOfWork.Position.GetAll(includeProperties:"Department");
+      var position = await _unitOfWork.Position.GetAll(includeProperties:"Department,Currency");
       return View(position);
    }
 
@@ -29,13 +29,8 @@ public class PositionController : Controller
    {
       var positionVm = new PositionVm();
       positionVm.Position = new();
-      var departments = await _unitOfWork.Department.GetAll();
-      positionVm.Departments = departments.Select(d => new SelectListItem
-      {
-         Text = d.Name,
-         Value = d.Id.ToString()
-      }).ToList();
-      
+
+      await FillSelectionDate(positionVm);
       if (id is 0)
       {
          return View(positionVm);
@@ -53,19 +48,7 @@ public class PositionController : Controller
    {
       if (!ModelState.IsValid)
       {
-         var departments = await _unitOfWork.Department.GetAll();
-         positionVm.Departments = departments.Select(d => new SelectListItem
-         {
-            Text = d.Name,
-            Value = d.Id.ToString()
-         }).ToList();
-         if (positionVm.Position.Id is not 0)
-         {
-             var position = await _unitOfWork.Position.Get(p => p.Id == positionVm.Position.Id, includeProperties:"Employees,Department");
-                  if (position is null)
-                     return NotFound();
-                  positionVm.Position = position;
-         }
+         await FillSelectionDate(positionVm);
          return View(positionVm);
       }
 
@@ -101,14 +84,32 @@ public class PositionController : Controller
       TempData["success"] = "Position deleted successfully";
       return RedirectToAction(nameof(Index));
    }
-   
-   
+
+   private async Task FillSelectionDate(PositionVm vm)
+   {
+      var departments = await _unitOfWork.Department.GetAll();
+      var currencies = await _unitOfWork.Currency.GetAll();
+      vm.Departments = departments.Select(d => new SelectListItem
+      {
+         Text = d.Name,
+         Value = d.Id.ToString()
+      }).ToList();
+      
+      vm.Currencies = currencies.Select(d => new SelectListItem
+      {
+         Text = $"{d.Code} - {d.Name}",
+         Value = d.Id.ToString()
+      }).ToList();
+   }
+
    #region API CALL
    
    [HttpGet]
    public async Task<IActionResult> GetPositionById(int? id)
    {
+      
       var position = await _unitOfWork.Position.Get(p => p.Id == id);
+      
       return Json(position);
    }
 

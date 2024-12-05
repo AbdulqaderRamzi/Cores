@@ -22,6 +22,6 @@ public class PositionRepository : Repository<Position>, IPositionRepository
         positionFromDb.Title = position.Title;
         positionFromDb.DepartmentId = position.DepartmentId;
         positionFromDb.JobDescription = position.JobDescription;
-        positionFromDb.SalaryRange = position.SalaryRange;
+        positionFromDb.AverageSalary = position.AverageSalary;
     }
 }

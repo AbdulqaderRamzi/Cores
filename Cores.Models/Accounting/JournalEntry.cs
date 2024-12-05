@@ -22,7 +22,7 @@ public class JournalEntry
     
     public string EntryNumber { get; set; }
     public DateTime EntryDate { get; set; }
-    public string Description { get; set; }
+    public string? Description { get; set; }
     public bool IsPosted { get; set; }
     public DateTime? PostedDate { get; set; }
     public string PostedBy { get; set; }

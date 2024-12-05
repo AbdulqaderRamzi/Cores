@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <label asp-for="Account.Type" class="form-label">Account Type</label>
                     <select class="form-control select2" asp-for="Account.Type" asp-items="Model.AccountTypes">
-                        <option value="">-- Select Account Type --</option>
+                        <option value="" selected disabled>-- Select Account Type --</option>
                     </select>
                     <span asp-validation-for="Account.Type" class="text-danger"></span>
                 </div>
@@ -39,7 +39,7 @@
                 <div class="form-group">
                     <label asp-for="Account.Category" class="form-label">Account Category</label>
                     <select class="form-control select2" asp-for="Account.Category" asp-items="Model.AccountCategories">
-                        <option value="">-- Select Account Category --</option>
+                        <option value="" selected disabled>-- Select Account Category --</option>
                     </select>
                     <span asp-validation-for="Account.Category" class="text-danger"></span>
                 </div>
@@ -96,14 +96,12 @@
     .card {
         border-radius: 0.5rem;
     }
+    .input-group-text {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+    }
 </style>
 
 @section Scripts {
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2({
-                theme: 'bootstrap4'
-            });
-        });
-    </script>
+    <script src="~/js/select2.js"></script>
 }

@@ -121,6 +121,7 @@
                                         <th>Description</th>
                                         <th>Debit</th>
                                         <th>Credit</th>
+                                        <th>Currency</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -157,6 +158,11 @@
                                                              onchange="updateTotals()">
                                                       
                                                   </div>
+                                              </td>
+                                              <td>
+                                                  <select class="form-control select2" asp-for="Transaction.Details[i].CurrencyId" asp-items="Model.Currencies">
+                                                      <option value="">-- Select Account --</option>
+                                                  </select>
                                               </td>
                                               <td class="text-center">
                                                   <div class="btn-group btn-group-sm">
@@ -301,10 +307,11 @@
               updateTotals();*/
           
               let accountOptions = @Json.Serialize(Model.Accounts.Select(a => new {value = a.Value, text = a.Text}));
+              let currencyOptions = @Json.Serialize(Model.Currencies.Select(a => new {value = a.Value, text = a.Text}));
               
               /* let existingDetails =  Html.Raw(Json.Serialize(Model.Transaction.Details));
                console.log(existingDetails);*/
-                initTable(accountOptions);
+                initTable(accountOptions, currencyOptions);
         
         });    
     </script>

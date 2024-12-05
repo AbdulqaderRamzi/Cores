@@ -29,25 +29,7 @@ public class DepartmentController : Controller
     public async Task<IActionResult> Upsert(int id)
     {
         var departmentVm = new DepartmentVm();
-        var employees = await _unitOfWork.ApplicationUser.GetAll();
-        List<ApplicationUser> employeesDepartment  = [];
-        departmentVm.Employees = employees
-            .Select(e =>
-            {
-                if (e.DepartmentId == id)
-                {
-                    employeesDepartment.Add(e);
-                }
-                return new SelectListItem
-                {
-                    Text = $"{e.FirstName} {e.LastName}",
-                    Value = e.Id
-                };
-            })
-            .ToList();
-
-        departmentVm.EmployeesDepartment = employeesDepartment;
-            
+        await FillSelectionDate(departmentVm);
         if (id is 0)
         {
             departmentVm.Department = new Department();
@@ -66,24 +48,7 @@ public class DepartmentController : Controller
     {
         if (!ModelState.IsValid)
         {
-            var employees = await _unitOfWork.ApplicationUser.GetAll(/*includeProperties:"Position,Manager"*/);
-            List<ApplicationUser> employeesDepartment  = [];
-            departmentVm.Employees = employees
-                .Select(e =>
-                {
-                    if (e.DepartmentId == departmentVm.Department.Id) 
-                    {
-                        employeesDepartment.Add(e);
-                    }
-                    return new SelectListItem
-                    {
-                        Text = $"{e.FirstName} {e.LastName}",
-                        Value = e.Id
-                    };
-                })
-                .ToList();
-
-            departmentVm.EmployeesDepartment = employeesDepartment;         
+            await FillSelectionDate(departmentVm);
             return View(departmentVm);
         }
 
@@ -115,5 +80,15 @@ public class DepartmentController : Controller
         await _unitOfWork.SaveAsync();
         TempData["success"] = "Department deleted successfully";
         return RedirectToAction(nameof(Index));
+    }
+
+    public async Task FillSelectionDate(DepartmentVm vm)
+    {
+        var employees = await _unitOfWork.ApplicationUser.GetAll();
+        vm.Employees = employees.Select(e => new SelectListItem
+        {
+            Text = e.Email,
+            Value = e.Id.ToString()   
+        }).ToList();
     }
 }

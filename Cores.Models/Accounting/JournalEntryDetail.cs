@@ -17,7 +17,12 @@ public class JournalEntryDetail
     [ValidateNever]
     public Account Account { get; set; }
 
+    public int CurrencyId { get; set; }
+    [ForeignKey("CurrencyId")]
+    [ValidateNever]
+    public Currency Currency { get; set; }    
+    
     public decimal DebitAmount { get; set; }
     public decimal CreditAmount { get; set; }
-    public string Description { get; set; }
+    public string? Description { get; set; }
 }

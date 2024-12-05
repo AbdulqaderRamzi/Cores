@@ -1,7 +1,8 @@
-﻿using Cores.DataService.Repository.IRepository;
+﻿using System.Security.Claims;
+using Cores.DataService.Repository.IRepository;
 using Cores.Models.HR;
 using Cores.Utilities;
-using Microsoft.AspNet.SignalR;
+using Microsoft.AspNetCore.Authorization; 
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cores.Web.Areas.HR.Controllers;
@@ -19,6 +20,7 @@ public class DashboardController : Controller
 
     public async Task<IActionResult> Index()
     {
+        
         var employees = await _unitOfWork.ApplicationUser
             .GetAll(e => e.Email != "admin@cores.com");
         var employeesList = employees.ToList();

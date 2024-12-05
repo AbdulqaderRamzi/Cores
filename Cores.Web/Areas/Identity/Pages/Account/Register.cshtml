@@ -115,14 +115,14 @@
                     <legend>Work Information</legend>
                     <div class="form-group">
                         <label asp-for="Input.DepartmentId">Department</label>
-                        <select class="custom-select" aria-required="true" asp-for="Input.DepartmentId" asp-items="@Model.Input.Departments">
+                        <select class="custom-select select2" aria-required="true" asp-for="Input.DepartmentId" asp-items="@Model.Input.Departments">
                             <option value="" disabled selected>-- Select Department --</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label asp-for="Input.PositionId">Position</label>
-                        <select id="position" class="custom-select" aria-required="true" asp-for="Input.PositionId" asp-items="@Model.Input.Positions">
+                        <select id="position" class="custom-select select2" aria-required="true" asp-for="Input.PositionId" asp-items="@Model.Input.Positions">
                             <option value="" disabled selected>-- Select Position --</option>
                         </select>
                     </div>
@@ -140,14 +140,14 @@
 
                     <div class="form-group">
                         <label asp-for="Input.Role">Role</label>
-                        <select class="custom-select" aria-required="true" asp-for="Input.Role" asp-items="@Model.Input.RoleList">
+                        <select class="custom-select select2" aria-required="true" asp-for="Input.Role" asp-items="@Model.Input.RoleList">
                             <option value="" disabled selected>-- Select Role --</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label asp-for="Input.ManagerId">Manager</label>
-                        <select class="custom-select" aria-required="true" asp-for="Input.ManagerId" asp-items="@Model.Input.Employees">
+                        <select class="custom-select select2" aria-required="true" asp-for="Input.ManagerId" asp-items="@Model.Input.Employees">
                             <option value="" disabled selected>-- Select Manager --</option>
                         </select>
                     </div>
@@ -520,13 +520,27 @@
     label {
         color: #272727;
     }
-
+    
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__rendered,
+    .select2-container--default .select2-selection--single .select2-selection__arrow,
+    .form-control {
+        height: 38px;
+        line-height: 38px;
+    }
+    .select2-container--default .select2-selection--single,
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+   
 </style>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/work-schedule.js"></script>
     <script src="~/js/phone-input.js"></script>
+    <script src="~/js/select2.js"></script>
     <script>
         document.getElementById('fileInput').addEventListener('change', function(event) {
             const file = event.target.files[0];
@@ -563,7 +577,7 @@
                 data: { id: positionId },
                 success: function (position) {
                     if (position) {
-                        $("#position-salary").val(position.salaryRange);
+                        $("#position-salary").val(position.averageSalary);
                     }
                 },
                 error: function(xhr, status, error) {

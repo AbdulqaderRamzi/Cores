@@ -189,6 +189,7 @@
                     <a class="collapse-item" asp-area="Accounting" asp-controller="JournalEntry" asp-action="Index">Journal Entries</a>  
                     <a class="collapse-item" asp-area="Accounting" asp-controller="GeneralLedger" asp-action="Index">General Ledger</a>  
                     <a class="collapse-item" asp-area="Accounting" asp-controller="Tax" asp-action="Index">Taxes</a>  
+                   // <a class="collapse-item" asp-area="Accounting" asp-controller="Currency" asp-action="Index">Currencies</a>  
                     <a class="collapse-item" asp-area="Accounting" asp-controller="Payroll" asp-action="Index">Payrolls</a>  
                 }
                 @if (User.IsInRole(SD.EMPLOYEE_ROLE))
@@ -357,11 +358,14 @@
                     <a class="collapse-item" asp-area="HR" asp-controller="CompensationRequest" asp-action="Index">Compensation Requests</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="BenefitsRequest" asp-action="Index">Benefits Requests</a>
                     <a class="collapse-item" asp-area="HR" asp-controller="AdministrativeRequest" asp-action="Index">Administrative Requests</a>
-
+    
                     @{
                         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                        @await Component.InvokeAsync("WaitingRequest", userId)
-                     }
+                        if (userId is not null)
+                        {
+                            @await Component.InvokeAsync("WaitingRequest", userId)
+                        }
+                    }
                     @*
                     <h6 class="collapse-header">Options</h6>
                     *@

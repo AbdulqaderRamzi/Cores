@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cores.DataService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241201135141_AddAdministrativeRequest")]
-    partial class AddAdministrativeRequest
+    [Migration("20241204052001_MakeDescriptionInTransactionNullable")]
+    partial class MakeDescriptionInTransactionNullable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -271,6 +271,9 @@ namespace Cores.DataService.Migrations
                     b.Property<decimal>("CreditAmount")
                         .HasColumnType("decimal(65,30)");
 
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("DebitAmount")
                         .HasColumnType("decimal(65,30)");
 
@@ -284,6 +287,8 @@ namespace Cores.DataService.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("JournalEntryId");
 
@@ -453,11 +458,13 @@ namespace Cores.DataService.Migrations
                     b.Property<decimal>("CreditAmount")
                         .HasColumnType("decimal(65,30)");
 
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("DebitAmount")
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("TransactionId")
@@ -466,6 +473,8 @@ namespace Cores.DataService.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("TransactionId");
 
@@ -2324,6 +2333,12 @@ namespace Cores.DataService.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Cores.Models.Accounting.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Cores.Models.Accounting.JournalEntry", "JournalEntry")
                         .WithMany("Details")
                         .HasForeignKey("JournalEntryId")
@@ -2331,6 +2346,8 @@ namespace Cores.DataService.Migrations
                         .IsRequired();
 
                     b.Navigation("Account");
+
+                    b.Navigation("Currency");
 
                     b.Navigation("JournalEntry");
                 });
@@ -2354,6 +2371,12 @@ namespace Cores.DataService.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Cores.Models.Accounting.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Cores.Models.Accounting.Transaction", "Transaction")
                         .WithMany("Details")
                         .HasForeignKey("TransactionId")
@@ -2361,6 +2384,8 @@ namespace Cores.DataService.Migrations
                         .IsRequired();
 
                     b.Navigation("Account");
+
+                    b.Navigation("Currency");
 
                     b.Navigation("Transaction");
                 });

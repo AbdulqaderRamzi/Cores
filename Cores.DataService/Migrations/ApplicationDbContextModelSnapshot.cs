@@ -147,7 +147,6 @@ namespace Cores.DataService.Migrations
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("JournalEntryId")
@@ -219,7 +218,6 @@ namespace Cores.DataService.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("EntryDate")
@@ -268,11 +266,13 @@ namespace Cores.DataService.Migrations
                     b.Property<decimal>("CreditAmount")
                         .HasColumnType("decimal(65,30)");
 
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("DebitAmount")
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("JournalEntryId")
@@ -281,6 +281,8 @@ namespace Cores.DataService.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("JournalEntryId");
 
@@ -450,11 +452,13 @@ namespace Cores.DataService.Migrations
                     b.Property<decimal>("CreditAmount")
                         .HasColumnType("decimal(65,30)");
 
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("DebitAmount")
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("TransactionId")
@@ -463,6 +467,8 @@ namespace Cores.DataService.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("TransactionId");
 
@@ -1155,6 +1161,7 @@ namespace Cores.DataService.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("DepartmentHeadId")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Location")
@@ -1620,20 +1627,25 @@ namespace Cores.DataService.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal?>("AverageSalary")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("JobDescription")
                         .HasColumnType("longtext");
 
-                    b.Property<decimal>("SalaryRange")
-                        .HasColumnType("decimal(65,30)");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("DepartmentId");
 
@@ -2321,6 +2333,12 @@ namespace Cores.DataService.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Cores.Models.Accounting.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Cores.Models.Accounting.JournalEntry", "JournalEntry")
                         .WithMany("Details")
                         .HasForeignKey("JournalEntryId")
@@ -2328,6 +2346,8 @@ namespace Cores.DataService.Migrations
                         .IsRequired();
 
                     b.Navigation("Account");
+
+                    b.Navigation("Currency");
 
                     b.Navigation("JournalEntry");
                 });
@@ -2351,6 +2371,12 @@ namespace Cores.DataService.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Cores.Models.Accounting.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Cores.Models.Accounting.Transaction", "Transaction")
                         .WithMany("Details")
                         .HasForeignKey("TransactionId")
@@ -2358,6 +2384,8 @@ namespace Cores.DataService.Migrations
                         .IsRequired();
 
                     b.Navigation("Account");
+
+                    b.Navigation("Currency");
 
                     b.Navigation("Transaction");
                 });
@@ -2556,7 +2584,9 @@ namespace Cores.DataService.Migrations
                 {
                     b.HasOne("Cores.Models.ApplicationUser", "DepartmentHead")
                         .WithMany()
-                        .HasForeignKey("DepartmentHeadId");
+                        .HasForeignKey("DepartmentHeadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("DepartmentHead");
                 });
@@ -2716,11 +2746,19 @@ namespace Cores.DataService.Migrations
 
             modelBuilder.Entity("Cores.Models.HR.Position", b =>
                 {
+                    b.HasOne("Cores.Models.HR.Department", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Cores.Models.HR.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Currency");
 
                     b.Navigation("Department");
                 });

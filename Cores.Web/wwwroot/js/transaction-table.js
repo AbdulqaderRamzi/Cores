@@ -1,8 +1,10 @@
 ﻿let accountOptions;
+let currencyOptions;
 let rowTemplate;
 
-function initTable(accountOpts) {
+function initTable(accountOpts, currencyOpts) {
     accountOptions = accountOpts;
+    currencyOptions = currencyOpts;
     console.log(accountOptions);
     /*updateTotals();
     // Store template only if we have existing rows
@@ -81,6 +83,14 @@ function createNewRow(index) {
                            onfocusout="formatNumber(this)"
                            placeholder="0.00">
                 </div>
+            </td>
+             <td>
+                <select name="Transaction.Details[${index}].CurrencyId" 
+                        class="form-control select2"
+                        required>
+                    <option value="" disabled selected>-- Select Currency --</option>
+                    ${currencyOptions.map(opt => `<option value="${opt.value}">${opt.text}</option>`).join('')}
+                </select>
             </td>
             <td class="text-center">
                 <div class="btn-group btn-group-sm">
@@ -351,6 +361,7 @@ function getSerializedTransactionDetails() {
     $('#detailsTableBody tr').each(function() {
         let row = $(this);
         let accountId = row.find('select[name*="AccountId"]').val();
+        let currencyId = row.find('select[name*="CurrencyId"]').val();
         let debitAmount = parseFloat(row.find('.debit-amount').val() || 0);
         let creditAmount = parseFloat(row.find('.credit-amount').val() || 0);
         let description = row.find('input[name*="Description"]').val();
@@ -360,6 +371,7 @@ function getSerializedTransactionDetails() {
             details.push({
                 transactionId: $('#transactionId').val() || 0,
                 accountId: parseInt(accountId),
+                currencyId: parseInt(currencyId),
                 description: description || '',
                 debitAmount: debitAmount,
                 creditAmount: creditAmount

@@ -5,43 +5,57 @@
     <form method="POST" class="bg-white shadow-sm rounded p-4">
         <input asp-for="Position.Id" hidden>
 
-        <div class="row mb-4">
+        <div class="row mb-3">
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="Position.Title" class="form-label">Position Title</label>
                     <input asp-for="Position.Title" class="form-control" type="text">
                     <span class="text-danger" asp-validation-for="Position.Title"></span>
                 </div>
-            </div>
-            <div class="col-md-6">
-               <label asp-for="Position.DepartmentId" class="form-label">Department</label>
-               <select class="form-control select2" asp-for="Position.DepartmentId" asp-items="@Model.Departments">
-                   <option value="" disabled selected>-- Select Department --</option>
-               </select>
-            </div>
-        </div>
-        <div class="row mb-4">
+            </div>  
             <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="Position.SalaryRange" class="form-label">Salary Range</label>
-                    @if (Model.Position.SalaryRange is not 0)
+                    <label asp-for="Position.AverageSalary" class="form-label">Salary Range</label>
+                    @if (Model.Position.AverageSalary is not 0)
                     {
-                        <input asp-for="Position.SalaryRange" class="form-control" type="text" value="@(Model.Position.SalaryRange.ToString("F2"))">
+                        <input asp-for="Position.AverageSalary" class="form-control" type="text" value="@(Model.Position.AverageSalary?.ToString("F2"))">
                     }
                     else
                     {
-                        <input asp-for="Position.SalaryRange" class="form-control" type="text">
+                        <input asp-for="Position.AverageSalary" class="form-control" type="text">
                     }
-                    <span class="text-danger" asp-validation-for="Position.SalaryRange"></span>
+                    <span class="text-danger" asp-validation-for="Position.AverageSalary"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Position.DepartmentId" class="form-label">Department</label>
+                    <select class="form-control select2" asp-for="Position.DepartmentId" asp-items="@Model.Departments">
+                        <option value="" disabled selected>-- Select Department --</option>
+                    </select>
+                    <span asp-validation-for="Position.DepartmentId" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="Position.JobDescription" class="form-label">Job Description</label>
-                    <textarea asp-for="Position.JobDescription" class="form-control" rows="3"></textarea>
+                    <label asp-for="Position.CurrencyId" class="form-label">Salary Currency</label>
+                    <select class="form-control select2" asp-for="Position.CurrencyId" asp-items="@Model.Currencies">
+                        <option value="" disabled selected>-- Select Currency --</option>
+                    </select>
+                    <span asp-validation-for="Position.CurrencyId" class="text-danger"></span>
                 </div>
             </div>
+            
         </div>
+
+        <div class="row mb-3">
+            <label asp-for="Position.JobDescription" class="form-label">Job Description</label>
+            <textarea asp-for="Position.JobDescription" class="form-control" rows="3"></textarea>
+        </div>
+        
         @if (Model.Position.Id is not 0)
         {
             <div class="card-body">
@@ -81,7 +95,7 @@
         }
         <div class="row">
             <div class="col-12">
-                <a asp-controller="Department" asp-action="Index" class="btn btn-secondary">
+                <a asp-controller="Position" asp-action="Index" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> Back
                 </a>
                 <button type="submit" class="btn btn-primary">

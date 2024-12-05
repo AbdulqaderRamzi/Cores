@@ -12,7 +12,8 @@ public class Department
     [Required]
     public string Name { get; set; }
 
-    public string? DepartmentHeadId { get; set; }
+    
+    public string DepartmentHeadId { get; set; }
     [ForeignKey("DepartmentHeadId")]
     [ValidateNever]
     public ApplicationUser DepartmentHead { get; set; }

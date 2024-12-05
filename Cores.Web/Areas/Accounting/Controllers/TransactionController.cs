@@ -35,7 +35,8 @@ public class TransactionController : Controller
         var transactionVm = new TransactionVm
         {
             Transaction = new(),
-            Accounts = await GetActiveAccounts()
+            Accounts = await GetActiveAccounts(),
+            Currencies = await GetCurrencies()
         };
 
         if (id is null or 0)
@@ -87,6 +88,8 @@ public class TransactionController : Controller
         {
             ModelState.AddModelError("", "Total debits must equal total credits");
             transactionVm.Accounts = await GetActiveAccounts();
+            transactionVm.Currencies = await GetCurrencies();
+            
             return View(transactionVm);
         }
         
@@ -156,7 +159,7 @@ public class TransactionController : Controller
         // If transaction is not in draft status, update account balances
         if (transactionVm.Transaction.Status != TransactionState.Draft.ToString())
         {
-             ProcessTransaction(transactionVm.Transaction);
+             await ProcessTransaction(transactionVm.Transaction);
         }
 
         await _unitOfWork.SaveAsync();
@@ -216,6 +219,7 @@ public class TransactionController : Controller
             Details = transaction.Details.Select(d => new TransactionDetail
             {
                 AccountId = d.AccountId,
+                CurrencyId = d.CurrencyId,
                 Description = $"Void of transaction {transaction.ReferenceNo}",
                 // Swap debit and credit amounts
                 DebitAmount = d.CreditAmount,
@@ -253,6 +257,16 @@ public class TransactionController : Controller
             Value = a.Id.ToString()
         }).ToList();
     }
+    
+    private async Task<List<SelectListItem>> GetCurrencies()
+    {
+        var currencies = await _unitOfWork.Currency.GetAll();
+        return currencies.Select(a => new SelectListItem
+        {
+            Text = $"{a.Code} - {a.Name}",
+            Value = a.Id.ToString()
+        }).ToList();
+    }
 
     private async Task ProcessTransaction(Transaction transaction)
     {
@@ -271,6 +285,7 @@ public class TransactionController : Controller
             Details = transaction.Details.Select(d => new JournalEntryDetail
             {
                 AccountId = d.AccountId,
+                CurrencyId = d.CurrencyId,
                 Description = d.Description,
                 DebitAmount = d.DebitAmount,
                 CreditAmount = d.CreditAmount
@@ -325,7 +340,7 @@ public class TransactionController : Controller
     {
         var transaction = await _unitOfWork.Transaction.Get(
             t => t.Id == transactionId,
-            includeProperties: "Details.Account");
+            includeProperties: "Details.Account,Currency");
 
         if (transaction == null)
         {
@@ -334,7 +349,8 @@ public class TransactionController : Controller
 
         var details = transaction.Details.Select(d => new
         {
-            d.Account.Id,
+            d.AccountId,
+            d.CurrencyId,
             d.Account.Name,
             d.DebitAmount,
             d.CreditAmount,

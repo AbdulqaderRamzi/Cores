@@ -27,6 +27,7 @@
                    <th>Title</th>
                     <th>Department</th>
                     <th>Salary Range</th>
+                    <th>Currency</th>
                     <th>Actions</th>
                                        
                 </tr>
@@ -37,7 +38,8 @@
                     <tr>
                         <td>@position.Title</td>
                         <td>@position.Department.Name</td>
-                        <td>@position.SalaryRange.ToString("F2")</td>
+                        <td>@position.AverageSalary?.ToString("F2")</td>
+                        <td>@position.Currency.Name)</td>
                         <td>
                             <div class="dropdown">
                                 <button class="btn btn-primary dropdown-toggle" type="button"

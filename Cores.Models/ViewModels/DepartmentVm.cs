@@ -9,6 +9,4 @@ public class DepartmentVm
     public Department Department { get; set; }
     [ValidateNever]
     public List<SelectListItem> Employees { get; set; }
-    [ValidateNever] 
-    public List<ApplicationUser> EmployeesDepartment { get; set; }
 }
