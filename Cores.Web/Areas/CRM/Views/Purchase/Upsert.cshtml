@@ -46,10 +46,13 @@
                         <h3 class="text-dark mb-3">Customer Information</h3>
                       @if (Model.ContactId is not null)
                         {  
-                            <label asp-for="SelectedContactId">Choose Customer</label>
-                            <select class="form-control select2" asp-for="SelectedContactId" asp-items="@Model.Contacts" id="customerSelect">
-                                <option selected>@($"{Model.Contact.FirstName} {Model.Contact.LastName}")</option>
-                            </select>
+                            <div class="form-group mt-3">
+                                <label asp-for="Contact.FirstName">Customer Name</label>
+                                <input asp-for="Contact.FirstName" type="text" class="form-control" id="customerName" readonly>
+                            </div>
+                            @*<select class="form-control select2"  asp-items="@Model.Contacts" id="">
+                                <option selected></option>
+                            </select>*@
                             <div class="form-group mt-3">
                                 <label asp-for="Contact.PhoneNumber">Customer Phone Number</label>
                                 <input asp-for="Contact.PhoneNumber" type="text" class="form-control" id="customerPhone" readonly>

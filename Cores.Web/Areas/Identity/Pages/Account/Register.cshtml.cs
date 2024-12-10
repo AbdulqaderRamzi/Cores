@@ -292,14 +292,14 @@ public class RegisterModel : PageModel
             // Enqueue background job
             BackgroundJob.Enqueue(() => SendWelcomeEmailAsync(user.Id, tempPassword, resetPasswordUrl));
 
-            if (User.IsInRole(SD.ADMIN_ROLE))
+            if (User.IsInRole(SD.ADMIN_ROLE) || User.IsInRole(SD.HR_ROLE))
             {
                 TempData["success"] = "The account has been created.";
             }
-            else
+            /*else
             {
                 await _signInManager.SignInAsync(user, isPersistent: false);
-            }
+            }*/
 
             return LocalRedirect($"{returnUrl}Admin/Employee/Index");
         }

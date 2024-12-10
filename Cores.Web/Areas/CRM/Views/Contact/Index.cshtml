@@ -61,15 +61,10 @@
                                 </button>
                                 <div class="dropdown-menu animated--fade-in"
                                      aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#"
+                                    <a class="dropdown-item" asp-controller="Contact" asp-action="Upsert" asp-route-id="@contact.Id"
                                        onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';">
-                                        <i class="fas fa-info-circle"></i> Details
-                                    </a>
-                                    <a class="dropdown-item" asp-controller="Contact" asp-action="Upsert" asp-route-id="@contact.Id"
-                                       onmouseover="this.style.backgroundColor='#5cb85e'; this.style.color='white';"
-                                       onmouseout="this.style.backgroundColor=''; this.style.color='';">
-                                        <i class="fas fa-edit"></i> Update
+                                        <i class="fas fa-edit"></i> View Or Edit
                                     </a>
                                     <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/CRM/Contact/Delete?id=@contact.Id')"
                                        onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
