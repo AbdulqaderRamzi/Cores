@@ -132,8 +132,8 @@
                 @if (User.IsInRole(SD.CRM_ROLE))
                 {
                     <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index">Contacts</a>
-                    <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index">Customers</a>
-                    <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index">Leads</a>
+                    <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index" asp-route-isCustomer="true">Customers</a>
+                    <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index" asp-route-isCustomer="false">Leads</a>
                     <a class="collapse-item" asp-area="CRM" asp-controller="Purchase" asp-action="Index">Purchases</a>
                     <a class="collapse-item" asp-area="CRM" asp-controller="Problem" asp-action="Index">Problems</a>
                     <a class="collapse-item" asp-area="CRM" asp-controller="Event" asp-action="Index">Event</a>
@@ -180,7 +180,7 @@
                 {
                     <a class="collapse-item" asp-area="CRM" asp-controller="Purchase" asp-action="Index">Invoices</a>  
                     <a class="collapse-item" asp-area="Accounting" asp-controller="Vendor" asp-action="Index">Vendors</a>  
-                    <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index">Customers</a>  
+                    <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index" asp-route-isCustomer="true">Customers</a>
                     <a class="collapse-item" asp-area="Accounting" asp-controller="Transaction" asp-action="Index">Transactions</a>  
                     <a class="collapse-item" asp-area="Accounting" asp-controller="Account" asp-action="Index">Accounts</a>  
                     @*
@@ -299,7 +299,7 @@
                     <h6 class="collapse-header">Components</h6>
                     <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index">Contacts</a>
                     <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index">Customers</a>
-                    <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index">Leads</a>
+                    <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index" asp-route-isCustomer="false">Leads</a>
                     <a class="collapse-item" asp-area="CRM" asp-controller="Purchase" asp-action="Index">Purchases</a>
                     <a class="collapse-item" asp-area="CRM" asp-controller="Problem" asp-action="Index">Problems</a>
                     <a class="collapse-item" asp-area="CRM" asp-controller="Event" asp-action="Index">Event</a>

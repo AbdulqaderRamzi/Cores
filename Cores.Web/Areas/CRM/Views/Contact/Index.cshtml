@@ -14,7 +14,11 @@
                     @*<a class="btn btn-secondary" onclick="printTable()">
                     <i class="fas fa-plus-circle"></i> Print
                 </a>*@
-                    <a class="btn btn-secondary" asp-controller="Contact" asp-action="Upsert">
+                    <a class="btn btn-secondary"
+                       asp-controller="Contact" 
+                       asp-action="Upsert"
+                       asp-route-isItCustomer="@ViewBag.isCustomer">
+                       
                         <i class="fas fa-plus-circle"></i> Create Contact
                     </a>
                 </div>
@@ -61,16 +65,21 @@
                                 </button>
                                 <div class="dropdown-menu animated--fade-in"
                                      aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" asp-controller="Contact" asp-action="Upsert" asp-route-id="@contact.Id"
+                                    <a class="dropdown-item" asp-controller="Contact" asp-action="Upsert" 
+                                       asp-route-id="@contact.Id"
+                                       asp-route-isItCustomer="@ViewBag.isCustomer"
                                        onmouseover="this.style.backgroundColor='#f6a23e'; this.style.color='white';"
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';">
                                         <i class="fas fa-edit"></i> View Or Edit
                                     </a>
-                                    <a class="dropdown-item" href="javascript:void(0);" onclick="deleteObj('/CRM/Contact/Delete?id=@contact.Id')"
+                                    <a class="dropdown-item" href="javascript:void(0);"
+                                       onclick="deleteObj('@Url.Action("Delete", "Contact", new { id = contact.Id, ViewBag.isCustomer })')"
                                        onmouseover="this.style.backgroundColor='#e74a3e'; this.style.color='white';"
-                                       onmouseout="this.style.backgroundColor=''; this.style.color='';" style="cursor: pointer;">
+                                       onmouseout="this.style.backgroundColor=''; this.style.color='';"
+                                       style="cursor: pointer;">
                                         <i class="fas fa-trash"></i> Delete
                                     </a>
+
                                     <a class="dropdown-item" asp-controller="Contact" asp-action="DownloadSummery" asp-route-id="@contact.Id"
                                        onmouseover="this.style.backgroundColor='#5c9eb8'; this.style.color='white';"
                                        onmouseout="this.style.backgroundColor=''; this.style.color='';">

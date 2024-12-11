@@ -24,14 +24,19 @@ public class ContactController : Controller
         _webHostEnvironment = webHostEnvironment;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(bool? isCustomer = null)
     {
-        var contacts = await _unitOfWork.Contact.GetAll();
+        var contacts =
+            isCustomer is null ? await _unitOfWork.Contact.GetAll()
+            : (bool) isCustomer ? await _unitOfWork.Contact.GetAll(c => c.Status == "Customer")
+            : await _unitOfWork.Contact.GetAll(c => c.Status == "Lead");
+        ViewBag.isCustomer = isCustomer;
         return View(contacts);
     }
     
+    
     [Authorize(Roles = SD.CRM_ROLE + "," + SD.ADMIN_ROLE)]
-    public async Task<IActionResult> Upsert(int id)
+    public async Task<IActionResult> Upsert(int id, bool? isItCustomer)
     {
         var tags = await _unitOfWork.Tag.GetAll();
         var tagsSelectItems = tags.Select(t => new SelectListItem
@@ -70,12 +75,14 @@ public class ContactController : Controller
             SelectedTagIds = selectedTagIds, 
             Purchases = purchasesList
         };
+        ViewBag.isCustomer = isItCustomer;
         return View(contactVm);
     }
 
     [HttpPost]
     [Authorize(Roles = SD.CRM_ROLE + "," + SD.ADMIN_ROLE)]
-    public async Task<IActionResult> Upsert(IFormFile? file, List<string> languages, ContactVm contactVm, bool createPurchase)
+    public async Task<IActionResult> Upsert(IFormFile? file, List<string> languages,
+        ContactVm contactVm, bool createPurchase, bool? isItCustomer)
     {
         if (!ModelState.IsValid)
         {
@@ -92,6 +99,8 @@ public class ContactController : Controller
                 languagesOptions.Add(new CheckBox { Id = i, Value = languagesList[i - 1].Value, isChecked = false });
 
             contactVm.LanguagesOptions = languagesOptions;
+            
+            ViewBag.isCustomer = isItCustomer;
             return View(contactVm);
         }
 
@@ -149,7 +158,7 @@ public class ContactController : Controller
             await _unitOfWork.SaveAsync();
             TempData["success"] = "Contact added successfully";
             return createPurchase ? RedirectToAction(nameof(Upsert), "Purchase", new { contactId = contactVm.Contact.Id }) :
-                         RedirectToAction(nameof(Index));
+                         RedirectToAction(nameof(Index), new { isCustomer = isItCustomer });
         }
         await _unitOfWork.Contact.Update(contactVm.Contact, languages);
         await _unitOfWork.SaveAsync();
@@ -158,11 +167,11 @@ public class ContactController : Controller
             return RedirectToAction(nameof(Upsert), "Purchase", new { contactId = contactVm.Contact.Id });
         }
         TempData["success"] = "Contact updated successfully";
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), new { isCustomer = isItCustomer });
     }
 
     [Authorize(Roles = SD.CRM_ROLE + "," + SD.ADMIN_ROLE)]
-    public async Task<IActionResult> Delete(int? id)
+    public async Task<IActionResult> Delete(int? id, bool isItCustomer)
     {
         if (id is null)
             return NotFound();
@@ -179,7 +188,7 @@ public class ContactController : Controller
         _unitOfWork.Contact.Remove(contact);
         await _unitOfWork.SaveAsync();
         TempData["success"] = "Contact deleted successfully";
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), new { isCustomer = isItCustomer });
     }
 
     [Authorize(Roles = SD.CRM_ROLE + "," + SD.ADMIN_ROLE)]
