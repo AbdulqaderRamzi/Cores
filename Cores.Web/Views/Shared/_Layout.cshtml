@@ -26,6 +26,8 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- intlTelInput -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css" />
+    <link rel="icon" type="image/x-icon" href="/img/icons8-smiley-face-16.png">
+
 
 
 
@@ -328,16 +330,14 @@
                     <a class="collapse-item" asp-area="CRM" asp-controller="Contact" asp-action="Index">Customers</a>  
                     <a class="collapse-item" asp-area="Accounting" asp-controller="Transaction" asp-action="Index">Transactions</a>  
                     <a class="collapse-item" asp-area="Accounting" asp-controller="Account" asp-action="Index">Accounts</a>  
-                    @*
-                    <a class="collapse-item" asp-area="Accounting" asp-controller="Journal" asp-action="Index">Journals</a> 
-                    *@
                     <a class="collapse-item" asp-area="Accounting" asp-controller="JournalEntry" asp-action="Index">Journal Entries</a>  
                     <a class="collapse-item" asp-area="Accounting" asp-controller="GeneralLedger" asp-action="Index">General Ledger</a>  
                     <a class="collapse-item" asp-area="Accounting" asp-controller="Tax" asp-action="Index">Taxes</a>
                     <a class="collapse-item" asp-area="Accounting" asp-controller="Payroll" asp-action="Index">Payrolls</a>
-                    
-                    
                     <h6 class="collapse-header">Options</h6>
+                    <a class="collapse-item" asp-area="Accounting" asp-controller="Product" asp-action="Index">Products</a>
+                    <a class="collapse-item" asp-area="Accounting" asp-controller="Currency" asp-action="Index">Currencies</a>
+                    <a class="collapse-item" asp-area="Accounting" asp-controller="PaymentMethod" asp-action="Index">Payment Methods</a>
                     
                 </div>
             </div>
@@ -463,7 +463,7 @@
                     <i class="fa fa-bars"></i>
                 </button>
                 <!-- Topbar Search -->
-                <form
+                @*<form
                     class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                     <div class="input-group">
                         <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
@@ -474,7 +474,7 @@
                             </button>
                         </div>
                     </div>
-                </form>
+                </form>*@
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <!-- Nav Item - Search Dropdown (Visible Only XS) -->

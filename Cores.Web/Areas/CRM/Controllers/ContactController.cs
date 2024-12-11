@@ -236,7 +236,8 @@ public class ContactController : Controller
     {
         if (id is null)
             return NotFound();
-        var contact = await _unitOfWork.Contact.Get(c => c.Id == id, includeProperties: "Languages");
+        var contact = await _unitOfWork.Contact.Get(c => c.Id == id, 
+            includeProperties: "Languages,Purchases.Orders,Purchases.Currency,Purchases.PaymentMethod,Purchases.Tax");
         if (contact is null)
             return NotFound();
         var wwwRootPath = _webHostEnvironment.WebRootPath;
@@ -259,6 +260,7 @@ public class ContactController : Controller
                 });
                 page.Content().Column(col1 =>
                 {
+                    // Personal Info Section
                     col1.Item().Text("Personal Info").Bold().FontSize(25).Underline();
                     col1.Item().PaddingTop(30).Row(row =>
                     {
@@ -335,7 +337,104 @@ public class ContactController : Controller
                             txt.Span(string.Join(", ", languages)).FontSize(15);
                         });
                     });
-                    col1.Item().PaddingTop(30).Text("Purchase Info").Bold().FontSize(25).Underline();
+
+                    // Purchase Info Section
+                    col1.Item().PaddingTop(30).Text("Purchase History").Bold().FontSize(25).Underline();
+                    
+                    if (!contact.Purchases.Any())
+                    {
+                        col1.Item().PaddingTop(10).Text("No purchase history available.").FontSize(15);
+                    }
+                    else
+                    {
+                        foreach (var purchase in contact.Purchases.OrderByDescending(p => p.PurchaseDate))
+                        {
+                            col1.Item().PaddingTop(20).Column(purchaseCol =>
+                            {
+                                // Purchase Header
+                                purchaseCol.Item().Row(row =>
+                                {
+                                    row.RelativeItem().Text(txt =>
+                                    {
+                                        txt.Span("Purchase Date: ").Bold().FontSize(15);
+                                        txt.Span(purchase.PurchaseDate.ToString("dd/MM/yyyy")).FontSize(15);
+                                    });
+                                    row.RelativeItem().Text(txt =>
+                                    {
+                                        txt.Span("Status: ").Bold().FontSize(15);
+                                        txt.Span(purchase.Status).FontSize(15);
+                                    });
+                                });
+
+                                // Purchase Details
+                                purchaseCol.Item().PaddingTop(10).Row(row =>
+                                {
+                                    row.RelativeItem().Text(txt =>
+                                    {
+                                        txt.Span("Payment Method: ").Bold().FontSize(15);
+                                        txt.Span(purchase.PaymentMethod?.Name ?? "N/A").FontSize(15);
+                                    });
+                                    row.RelativeItem().Text(txt =>
+                                    {
+                                        txt.Span("Currency: ").Bold().FontSize(15);
+                                        txt.Span(purchase.Currency?.Code ?? "N/A").FontSize(15);
+                                    });
+                                });
+
+                                // Orders Table
+                                if (purchase.Orders.Any())
+                                {
+                                    purchaseCol.Item().PaddingTop(10).Table(table =>
+                                    {
+                                        table.ColumnsDefinition(columns =>
+                                        {
+                                            columns.RelativeColumn(3);
+                                            columns.RelativeColumn();
+                                            columns.RelativeColumn();
+                                            columns.RelativeColumn();
+                                        });
+
+                                        // Table Header
+                                        table.Header(header =>
+                                        {
+                                            header.Cell().Background("#D1D5DB").Padding(5).Text("Item").Bold();
+                                            header.Cell().Background("#D1D5DB").Padding(5).Text("Quantity").Bold();
+                                            header.Cell().Background("#D1D5DB").Padding(5).Text("Unit Price").Bold();
+                                            header.Cell().Background("#D1D5DB").Padding(5).Text("Total").Bold();
+                                        });
+
+                                        // Table Content
+                                        foreach (var order in purchase.Orders)
+                                        {
+                                            table.Cell().Padding(5).Text(order.Name);
+                                            table.Cell().Padding(5).Text(order.Quantity.ToString());
+                                            table.Cell().Padding(5).Text(order.UnitPrice.ToString("C"));
+                                            table.Cell().Padding(5).Text(order.TotalPrice.ToString("C"));
+                                        }
+                                    });
+
+                                    // Purchase Summary
+                                    purchaseCol.Item().PaddingTop(10).Row(row =>
+                                    {
+                                        row.RelativeItem().AlignRight().Text(txt =>
+                                        {
+                                            txt.Span("Total Amount: ").Bold().FontSize(15);
+                                            txt.Span($"{purchase.PurchaseAmount:C} {purchase.Currency?.Code}").FontSize(15);
+                                        });
+                                    });
+
+                                    if (!string.IsNullOrEmpty(purchase.Note))
+                                    {
+                                        purchaseCol.Item().PaddingTop(5).Text(txt =>
+                                        {
+                                            txt.Span("Note: ").Bold().FontSize(13);
+                                            txt.Span(purchase.Note).FontSize(13);
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
                 });
                 page.Footer().AlignRight().Text(txt =>
                 {
@@ -348,6 +447,6 @@ public class ContactController : Controller
         }).GeneratePdf();
 
         Stream stream = new MemoryStream(data);
-        return File(stream, "application/pdf", "Mahmoud.pdf");
+        return File(stream, "application/pdf", $"{contact.FirstName}_{contact.LastName}_Summary.pdf");
     }
 }
